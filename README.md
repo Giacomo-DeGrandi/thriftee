@@ -1,5 +1,5 @@
 
-# <span style="color:#FFA500"> 🔥Thriftee🔥</span>
+# <span style="color:#FFA500"> *🔥Thriftee🔥*</span>
 
 ## Simple Marketplace based on JS, PHP, HTML, CSS, SQL;
 
