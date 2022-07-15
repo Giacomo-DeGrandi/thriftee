@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Roboto:ital,wght@0,100;0,300;0,500;0,700;0,900;1,100&display=swap');
+
+
+:root {
+    --genfont: 'Roboto', sans-serif;
+    --condfont: 'Roboto Condensed', sans-serif;
+    --orange :#F1641E;
+    --white :#FFFFFF;
+    --darkgray: #263238;
+}
+
+* {
+    font-family: var(--genfont);
+}
+
+a {
+    text-decoration: none!important;
+    color: var(--orange)!important;
+}
+
+/*   TYPOS   */
+
+.cond-font {
+    font-family: var(--condfont)!important;
+}
+
+.darkgray-font {
+    color: var(--darkgray)!important;
+}
+
+.lens {
+    font-size: 2em!important;
+}
+
+
+/*    PICS   */
+
+
+.bg-main-img {
+    background: url("../images/main.svg") no-repeat !important;
+    background-size: 80% !important;
+
+}
+
+.signup-img {
+    background: url("../images/signup.svg") no-repeat !important;
+}
+
+.signin-img {
+    background: url("../images/signin.svg") no-repeat !important;
+}
+
+
+/* ICONS   */
+
+.user-icon {
+    background: url("../icons/name.svg") no-repeat !important;
+    background-size: auto !important;
+}
+
+/* COLORS */
+
+.bg-orange {
+    background-color: var(--orange)!important;
+    color: var(--white)!important;
+}
+
+/* SPACING   */
+
+.w-15{
+
+    width:15vh!important;
+}
+
+
+/*  ALT HEADINGS  */
+
+.alt-h1 {
+    font-size: 3em!important;
+}
