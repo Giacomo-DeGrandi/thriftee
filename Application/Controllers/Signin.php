@@ -15,6 +15,8 @@ class Signin{
         require_once ($header);
         require_once('Templates/Footer.php');
         require_once('Templates/Layout.php');
-
     }
+
+
+
 }

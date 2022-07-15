@@ -81,10 +81,52 @@ if(isset($_POST)) {
         case isset($_POST['emailIn']):
         case isset($_POST['passwordIn']):
         case isset($_POST['signin']):
-            
 
+
+            $errors= [];
+
+            // receive all input values from the form
+            $password = $_POST['passwordIn'];
+            $email = htmlspecialchars($_POST['emailIn']);
+
+            // form validation:
+            // count errors
+            if(empty($password)){     array_push($errors, "Password is required"); }
+            if(empty($email)){     array_push($errors, "Email is required");       }
+
+            // check the database to make sure
+            // a user does exist with the same login and password
+            $checkExists = (new Signup)->emailTestReceiver($email);
+
+            if ( !$checkExists ) {
+                array_push($errors, "This email is not registered, please subscribe to log in");
+            }
+
+            if (!password_verify($password, $checkExists[0]['password'])) {
+                array_push($errors, "Wrong password");
+                print_r(json_encode('Wrong password'));
+
+                break;
+            }
+
+            if (empty($errors)) {
+
+                // apparently cookies doesn't set immediately,
+                // the page is relocate by JS so they basically never set
+                // to address this problem i set them in JS- directly -->(after encrypting them would be better)!
+                //  BUT THE ONES WITH *POSSIBLY* sens D, They'll be SESSION -->(after encrypting them would be better)!!
+
+                $_SESSION['id']=$checkExists[0]['id'];
+                $_SESSION['rights']= $checkExists[0]['rights'];
+                setcookie("connected", 0, time() - 3600000 * 240);
+                setcookie("id", 0, time() - 3600000 * 240);
+                setcookie("id", $checkExists[0]['id'], time()+7200);
+                print_r(json_encode($_SESSION['id']));
+
+            }
 
         break;
+
 
     endswitch;
 }

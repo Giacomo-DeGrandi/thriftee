@@ -9,7 +9,7 @@ ob_start();
             <div class="signin-img col p-5">
             </div>
             <div  class="col p-4 me-5">
-                <form class="p-4">
+                <form class="p-4 " method="post" id="formSignin">
                     <p class="p-2 h1 mb-4 darkgray-font">Sign In</p>
 
                     <!-- Email input -->
@@ -26,7 +26,7 @@ ob_start();
 
                     <!-- Submit button -->
                     <div class="p-4">
-                        <button type="button" class="btn bg-orange btn-block mb-4" name="singin">Sign In</button>
+                        <button type="button" class="btn bg-orange btn-block mb-4" name="singin" id="signin">Sign In</button>
                     </div>
 
                     <!-- Register buttons -->
