@@ -1,9 +1,13 @@
 <?php
 
+session_start();
+
 
 require_once('Application/Controllers/Signup.php');
+require_once('Application/Controllers/Signin.php');
 
 use Application\Controllers\Signup\Signup;
+use Application\Controllers\Signin\Signin;
 use Application\Controllers\User\User;
 
 
@@ -38,20 +42,20 @@ if(isset($_POST)) {
             $dob = $_POST['date'];
 
             // check for errors in user inputs and count them
-            if(empty($name)){     array_push($errors, "Name is required");     }
-            if(empty($lastname)){     array_push($errors, "Lastname is required");     }
-            if(empty($username)){     array_push($errors, "Firstname is required");     }
-            if(empty($email)){     array_push($errors, "Email is required");       }
-            if (!preg_match('/^[a-z0-9._-]+[@]+[a-zA-Z0-9._-]+[.]+[a-z]{2,3}$/', $email)){    array_push($errors, "Email format is wrong");     }
-            if(empty($pw)){     array_push($errors, "Password is required"); }
-            if(empty($dob)){    array_push($errors, "Date is required");    }
-            if ($pw !== $pwC) {     array_push($errors, "The two passwords do not match");      }
-            if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/', $pw)) {    array_push($errors, "Password format is wrong");    }
+            if(empty($name)){     $errors[] = "Name is required";     }
+            if(empty($lastname)){     $errors[] = "Lastname is required";     }
+            if(empty($username)){     $errors[] = "Firstname is required";     }
+            if(empty($email)){     $errors[] = "Email is required";       }
+            if (!preg_match('/^[a-z0-9._-]+[@]+[a-zA-Z0-9._-]+[.]+[a-z]{2,3}$/', $email)){    $errors[] = "Email format is wrong";     }
+            if(empty($pw)){     $errors[] = "Password is required"; }
+            if(empty($dob)){    $errors[] = "Date is required";    }
+            if ($pw !== $pwC) {     $errors[] = "The two passwords do not match";      }
+            if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/', $pw)) {    $errors[] = "Password format is wrong";    }
 
             //check if user exists
             $chkExists = (new Signup)->emailTestReceiver($_POST['email']);
 
-            if ( !empty($chkExists)) {    array_push($errors, "This user has already subscribed, please log in");     }
+            if ( !empty($chkExists)) {    $errors[] = "This user has already subscribed, please log in";     }
 
             // check if user is at least 18
             $nowDate = getdate();
@@ -63,7 +67,7 @@ if(isset($_POST)) {
 
             $difference = $nowDate->diff($testDate);
 
-            if($difference-> y < 18){    array_push($errors, "You have to be at least 18yo to subscribe");   }
+            if($difference-> y < 18){    $errors[] = "You have to be at least 18yo to subscribe";   }
 
             // Finally, register user if there are no errors in the form
             if ( empty($errors) ) {
@@ -78,6 +82,10 @@ if(isset($_POST)) {
             }
         break;
 
+            // add tokens
+        case isset($_SESSION['token-expire']):
+        case isset($_SESSION['token']):
+        case isset($_POST['token']):
         case isset($_POST['emailIn']):
         case isset($_POST['passwordIn']):
         case isset($_POST['signin']):
@@ -91,19 +99,21 @@ if(isset($_POST)) {
 
             // form validation:
             // count errors
-            if(empty($password)){     array_push($errors, "Password is required"); }
-            if(empty($email)){     array_push($errors, "Email is required");       }
+            if(empty($password)){     $errors[] = "Password is required"; }
+            if(empty($email)){     $errors[] = "Email is required";       }
 
             // check the database to make sure
             // a user does exist with the same login and password
-            $checkExists = (new Signup)->emailTestReceiver($email);
+            $checkExists = (new Signin)->emailTestReceiver($email);
 
             if ( !$checkExists ) {
-                array_push($errors, "This email is not registered, please subscribe to log in");
+                $errors[] = "This email is not registered, please subscribe to log in";
             }
 
-            if (!password_verify($password, $checkExists[0]['password'])) {
-                array_push($errors, "Wrong password");
+            $cpw = (new User)->getPw($email);
+
+            if (!password_verify($password, $cpw[0]['password'])) {
+                $errors[] = "Wrong password";
                 print_r(json_encode('Wrong password'));
 
                 break;
@@ -111,18 +121,28 @@ if(isset($_POST)) {
 
             if (empty($errors)) {
 
-                // apparently cookies doesn't set immediately,
-                // the page is relocate by JS so they basically never set
-                // to address this problem i set them in JS- directly -->(after encrypting them would be better)!
-                //  BUT THE ONES WITH *POSSIBLY* sens D, They'll be SESSION -->(after encrypting them would be better)!!
+                //  Token Validation --->
+                if ($_SESSION["token"]==$_POST["token"]) {
+                    // expired?
+                    if (time() >= $_SESSION["token-expire"]) {
 
-                $_SESSION['id']=$checkExists[0]['id'];
-                $_SESSION['rights']= $checkExists[0]['rights'];
-                setcookie("connected", 0, time() - 3600000 * 240);
-                setcookie("id", 0, time() - 3600000 * 240);
-                setcookie("id", $checkExists[0]['id'], time()+7200);
-                print_r(json_encode($_SESSION['id']));
+                        print_r(json_encode("Token expired. Please reload form."));
 
+                    } else {
+
+                        $_SESSION['id']=((new User)->getId($email))[0]['id'];
+                        $_SESSION['rights']= ((new User)->getRights($email))[0]['id_rights'];
+                        setcookie("connected", 0, time() - 3600000 * 240);
+                        setcookie("id", 0, time() - 3600000 * 240);
+                        setcookie("id", ((new User)->getId($email))[0]['id'], time()+7200);
+                        print_r(json_encode(((new User)->getId($email))[0]['id']));
+
+                        // we unset the two tokens to
+                        unset($_SESSION["token"]);
+                        unset($_SESSION["token-expire"]);
+
+                    }
+                }
             }
 
         break;

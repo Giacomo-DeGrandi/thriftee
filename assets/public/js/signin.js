@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function(){
     let emailLog = document.querySelector('#emailIn' );
     let pwLog = document.querySelector('#passwordIn');
     let submitLog = document.querySelector('#signin');
+    let token = document.querySelector('#token');
 
 
     pwLog.addEventListener('input',function(){
@@ -12,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function(){
     })
 
     //_______________ VALIDATION FOR EMAIL IN CONNECTION  ____________// ------------------>
-
     const testValidEmailLog = () => {
         // initialise my valid condition to false to test the errors
         let isValid = false
@@ -108,25 +108,35 @@ document.addEventListener('DOMContentLoaded', function(){
             let logData = new FormData();
 
             logData.append('submitLog', 'true');
-            logData.append('inputEmail', emailLog.value);
-            logData.append('inputPassword', pwLogV);
+            logData.append('emailIn', emailLog.value);
+            logData.append('passwordIn', pwLogV);
+            logData.append('token', token.value);
 
             fetch("JsPostRouter.php", {
                 method: 'POST',
                 body: logData
-            }).then(r => r.json())
+            })
+                .then(r => r.json())
                 .then(d => {
-                    console.log(d)
+
                     if(d !== 'Wrong password'){
+
                         setCookie('connected', 1 , '1');
                         setCookie('id', d , '1');
-                        window.location = "index?profile";
+                        window.location = "index?details";
+
                     } else if(d === 'Wrong password'){
 
                         testValidEmailLog();
                         showErrors(pwLog, 'This password is wrong')
+
+                    } else if(d === 'Token expired. Please reload form.'){
+
+                        showErrors(pwLog, 'Token expired. Please reload form.')
+
                     }
                 })
+
         } else {
             testValidEmailLog();
         }

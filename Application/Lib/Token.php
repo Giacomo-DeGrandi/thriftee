@@ -3,18 +3,17 @@
 namespace Application\Lib\Token;
 
 
-abstract Class Token {
+Class Token {
 
 
-    protected function generateToken()
+    public function generateToken(): string
     {
-        
-
+        return bin2hex(random_bytes(32));
     }
 
-    protected function readToken()
+    public function generateExpiration(): int
     {
-
+        return time() + 3600; // 1 hour = 3600 secs
     }
 
 }

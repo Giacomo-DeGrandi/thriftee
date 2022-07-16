@@ -1,5 +1,11 @@
 <?php
 
+ob_start();
+?>
+    <script src="assets/public/js/signin.js"></script>
+<?php
+$script = ob_get_clean();
+
 
 ob_start();
 ?>
@@ -16,18 +22,23 @@ ob_start();
                     <div class="form-outline mb-4">
                         <input type="email" id="emailIn" name="emailIn" class="form-control" />
                         <label class="form-label" for="email">Email address</label>
+                        <small></small>
                     </div>
 
                     <!-- Password input -->
                     <div class="form-outline mb-4">
                         <input type="password" id="passwordIn" name="passwordIn" class="form-control" />
                         <label class="form-label" for="password">Password</label>
+                        <small></small>
                     </div>
 
                     <!-- Submit button -->
                     <div class="p-4">
                         <button type="button" class="btn bg-orange btn-block mb-4" name="singin" id="signin">Sign In</button>
                     </div>
+
+                    <!-- CSRF Token  -->
+                    <input type="hidden" name="token" id="token" value="<?= $_SESSION["token"] ?>"/>
 
                     <!-- Register buttons -->
                     <div class="text-center">

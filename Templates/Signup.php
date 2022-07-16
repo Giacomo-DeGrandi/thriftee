@@ -1,5 +1,12 @@
 <?php
 
+ob_start();
+?>
+    <script src="assets/public/js/signup.js"></script>
+<?php
+$script = ob_get_clean();
+
+
 
 ob_start();
 ?>
