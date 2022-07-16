@@ -16,12 +16,20 @@ With Uploadcare you can upload and manage files quickly and easily via their PHP
 
 */
 
+
+
 ob_start();
 ?>
-<div class="container-fluid">
+    <script src="assets/public/js/signin.js"></script>
+<?php
+$script = ob_get_clean();
+
+ob_start();
+?>
+<div class="container">
     <div class="d-flex flex-column align-items-center justify-content-center">
 
-        <h1 class="p-3">Account Details</h1>
+        <h1 class="p-4">Account Details</h1>
 
         <form method="post" action="index?profile" class="form w-100 p-4" enctype="multipart/form-data">
 
@@ -30,11 +38,11 @@ ob_start();
 
                 <p class="h4">*Register as: </p>
 
-                <input type="checkbox" class="border border-0 ms-3" name="buyer" id="termsBox">
-                <label for="terms" class="h3">Buyer 🛍️</label><br>
+                <input type="checkbox" class="border border-0 ms-3" name="buyer" id="buyerBox">
+                <label for="buyerBox" class="h3">Buyer 🛍️</label><br>
 
-                <input type="checkbox" class="border border-0 ms-3" name="buyer" id="termsBox">
-                <label for="terms" class="h3">Shop 🏢</label><br>
+                <input type="checkbox" class="border border-0 ms-3" name="seller" id="sellerBox">
+                <label for="sellerBox" class="h3">Shop 🏢</label><br>
 
             </div>
 
@@ -54,7 +62,7 @@ ob_start();
 
                 <div class="col">
                     <h4>Your profile picture </h4>
-                    <div class="w-25 h-50 border border-light"></div>
+                    <div class="w-25 h-50 border border-light uploaded-img"></div>
                 </div>
 
                 <div class="col">
@@ -62,7 +70,7 @@ ob_start();
                         <input type="file" id="myFile" class="d-none" name="myFile"/>
                         Choose a picture
                     </label>
-                    <button type="submit" class="btn btn-block bg-orange" value="upload">upload</button>
+                    <button type="submit" id="upload" name="upload" class="btn btn-block bg-orange" value="upload">upload</button>
                 </div>
 
 
@@ -71,26 +79,40 @@ ob_start();
             <hr>
 
             <div class="form-outline mt-4 mb-5 d-flex flex-column align-items-center justify-content-evenly">
-
-                <div class="col-4">
-                    <h4>Your Bios </h4>
-                    <div class="w-25 h-50 border border-light"></div>
-                </div>
-
+                <label for="bios" class="h4 text-nowrap">Your Bios</label><br>
+                <textarea name="bios" id="bios" class="w-100" >write here your bios ...</textarea>
             </div>
 
             <hr>
 
-            <!-- Password input -->
-            <div class="form-outline mb-4">
-                <input type="password" id="passwordIn" name="passwordIn" class="form-control" />
-                <label class="form-label" for="password">Password</label>
+            <h2 class="p-4">Address</h2>
+
+            <!-- Adress input -->
+            <div class="form-outline mt-3 mb-4">
+                <input type="text" id="address" name="address" class="form-control" />
+                <label class="form-label" for="address">Address</label>
                 <small></small>
             </div>
 
+            <!-- City input -->
+            <div class="form-outline mb-4">
+                <input type="text" id="city" name="city" class="form-control" />
+                <label class="form-label" for="city">City</label>
+                <small></small>
+            </div>
+
+            <!-- Zip Code input -->
+            <div class="form-outline mb-4">
+                <input type="text" id="zipCode" name="zipCode" class="form-control" />
+                <label class="form-label" for="zipCode">Zip Code</label>
+                <small></small>
+            </div>
+
+            <hr>
+
             <!-- Submit button -->
-            <div class="p-4">
-                <button type="button" class="btn bg-orange btn-block mb-4" name="singin" id="signin">Sign In</button>
+            <div class="p-4 text-center">
+                <button type="button" class="btn bg-orange btn-block mb-4" name="saveDetails" id="saveDetails">Save details</button>
             </div>
 
             <!-- CSRF Token  -->

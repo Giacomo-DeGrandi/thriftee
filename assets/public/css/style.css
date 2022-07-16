@@ -7,6 +7,7 @@
     --orange :#F1641E;
     --white :#FFFFFF;
     --darkgray: #263238;
+    --genshad: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 /* QUERIES CLASSES  */
@@ -26,6 +27,8 @@
     }
 }
 
+/* GENERAL  */
+
 * {
     font-family: var(--genfont);
 }
@@ -33,6 +36,11 @@
 a {
     text-decoration: none!important;
     color: var(--orange)!important;
+}
+
+button:hover {
+
+    box-shadow:var(--genshad)!important;
 }
 
 /*   TYPOS   */

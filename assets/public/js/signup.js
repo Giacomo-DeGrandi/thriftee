@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
     // ____________ ADD EVENT LISTENER TO ALL THE INPUTS FROM FORM ____________________________________//
 
-    // Listen to the inputs for callback in both the forms !!!!!!!!!!!!!!
+    // Listen to the inputs for callback
 
     form.addEventListener('input', function (e) {
 
