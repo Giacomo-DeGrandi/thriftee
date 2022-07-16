@@ -259,7 +259,6 @@ document.addEventListener('DOMContentLoaded',function(){
         return re.test(password);
     }
 
-
     // date
     const validateDate = (value) => {
 
@@ -404,7 +403,8 @@ document.addEventListener('DOMContentLoaded',function(){
             fetch("JsPostRouter.php", {
                 method: 'POST',
                 body: submitData
-            }).then(r => r.json())
+            })
+                .then(r => r.json())
                 .then(d => {
                     if (d === 'setted') {
                         window.location = "index?signin";

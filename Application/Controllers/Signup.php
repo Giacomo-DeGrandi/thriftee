@@ -19,7 +19,7 @@ class Signup{
         require_once('Templates/Layout.php');
     }
 
-    public function emailTestReceiver($email)
+    public function emailTestReceiver($email): string
     {
         return (new User)->emailExists($email);
     }
