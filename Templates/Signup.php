@@ -12,9 +12,8 @@ ob_start();
 ?>
 <div class="container-fluid">
     <div class="row flex-wrap">
-        <span class="w-15"> </span>
         <div class="col">
-            <div class="signup-img col d-none-mobile h-50">
+            <div class="signup-img col d-none-mobile h-50 ms-5">
             </div>
             <h1 class="h1 darkgray-font p-3">Support independent creators</h1>
             <p class="lead p-3">There’s no Thriftee warehouse – just millions of people selling the things they love.
@@ -87,8 +86,8 @@ ob_start();
                     <div class="col d-flex flex-column text-start text-nowrap">
                         <div class="row w-75">
                             <p class="small h6">I've read and I accept<br><a href="../../divers/TERMS.txt" class=" p-2">all the Terms</a>
-                                <input type="checkbox" class="p-2 border border-0 bg-cherry-white" name="terms" id="termsBox">
-                                <label for="terms" class="py-1 text-cherry">Terms</label><br>
+                                <input type="checkbox" class="p-2 border border-0 " name="terms" id="termsBox">
+                                <label for="terms" class="py-1">Terms</label><br>
                                 <br><small></small>
                             </p>
                         </div>
@@ -104,7 +103,7 @@ ob_start();
 
                 <!-- Register buttons -->
                 <div class="text-center">
-                    <p>Already a member? <a href="index?signin">Sign in</a></p>
+                    <p>Already a member? <a href="index?signin" class="hover-underline-animation">Sign in</a></p>
                 </div>
 
 

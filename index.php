@@ -18,6 +18,16 @@ if(isset($_GET)){
 
     switch($_GET):
 
+        case isset($_GET['index']):
+            // Default Homepage
+            require_once('Application/Controllers/Homepage.php');
+            require_once('Application/Controllers/Header.php');
+            $homepage = new Homepage;
+            $homepage->execute();
+            $header = Header::execute();
+            require_once($header);
+        break;
+
         case isset($_GET['signup']):
             require_once('Application/Controllers/Signup.php');
             $signup = new Signup;
@@ -41,19 +51,6 @@ if(isset($_GET)){
          break;
 
     endswitch;
-
-
-} else {
-
-    // Default Homepage
-    require_once('Application/Controllers/Homepage.php');
-    require_once('Application/Controllers/Header.php');
-
-    $homepage = new Homepage;
-    $homepage->execute();
-
-    $header = new Header;
-    $header->execute();
 
 }
 

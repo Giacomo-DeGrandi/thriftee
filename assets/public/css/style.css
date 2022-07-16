@@ -1,12 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Roboto:ital,wght@0,100;0,300;0,500;0,700;0,900;1,100&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200;300;500;700&family=Roboto+Condensed:ital,wght@0,400;0,700;1,400&display=swap');
 
 :root {
-    --genfont: 'Roboto', sans-serif;
+    --genfont: 'Readex Pro', sans-serif;
     --condfont: 'Roboto Condensed', sans-serif;
     --orange :#F1641E;
     --white :#FFFFFF;
     --darkgray: #263238;
+}
+
+/* QUERIES CLASSES  */
+
+@media screen and (max-width: 480px) {
+    .d-none-mobile {
+        display: none!important;
+    }
+
+    .d-flex-column-mobile{
+        display:flex!important;
+        flex-direction: column!important;
+    }
+
+    .w-100-mobile{
+        width:100vh!important;
+    }
 }
 
 * {
@@ -28,13 +45,16 @@ a {
     color: var(--darkgray)!important;
 }
 
+.orange-font {
+    color: var(--orange)!important;
+}
+
 .lens {
     font-size: 2em!important;
 }
 
 
 /*    PICS   */
-
 
 .bg-main-img {
     background: url("../images/main.svg") no-repeat !important;
@@ -72,9 +92,40 @@ a {
     width:15vh!important;
 }
 
+/*  BORDER  */
+
+.border-orange{
+    border-color:var(--orange)!important;
+}
+
 
 /*  ALT HEADINGS  */
 
 .alt-h1 {
     font-size: 3em!important;
+}
+
+
+/*   EFFECTS KIFF  */
+
+.hover-underline-animation {
+    display: inline-block;
+    position: relative;
+    color: var(--orange);
+}
+.hover-underline-animation::after {
+    content: '';
+    position: absolute;
+    width: 55%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--orange);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+.hover-underline-animation:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
 }

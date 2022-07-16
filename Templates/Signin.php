@@ -11,8 +11,7 @@ ob_start();
 ?>
     <div class="container-fluid">
         <div class="row flex-wrap">
-            <span class="w-15"> </span>
-            <div class="signin-img col p-5">
+            <div class="signin-img d-none-mobile col p-5 ms-5">
             </div>
             <div  class="col p-4 me-5">
                 <form class="p-4 " method="post" id="formSignin">
@@ -42,7 +41,7 @@ ob_start();
 
                     <!-- Register buttons -->
                     <div class="text-center">
-                        <p>Not a member? <a href="index?signup">Register</a></p>
+                        <p>Not a member? <a href="index?signup" class="hover-underline-animation">Register</a></p>
                     </div>
 
 
