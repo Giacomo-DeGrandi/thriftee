@@ -2,23 +2,18 @@
 
 namespace Application\Controllers\Profile;
 
-require_once('Header.php');
-require_once('User.php');
+require_once('Controller.php');
 
-use Application\Controllers\Header\Header;
+use Application\Controllers\Controller\Controller;
 use Application\Controllers\User\User;
 
-class Details{
+class Details extends Controller{
 
     public function showDetails()
     {
         if(isset($_COOKIE['id']) && isset($_COOKIE['connected'])){
 
-            require_once('Templates/Details.php');
-            $header = Header::execute();
-            require_once($header);
-            require_once('Templates/Footer.php');
-            require_once('Templates/Layout.php');
+            self::render('Details');
 
         } else {
 

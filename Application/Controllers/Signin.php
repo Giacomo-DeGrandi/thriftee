@@ -3,19 +3,17 @@
 namespace Application\Controllers\Signin;
 
 require_once('Header.php');
+require_once('Controller.php');
 
+use Application\Controllers\Controller\Controller;
 use Application\Controllers\Header\Header;
 use Application\Controllers\User\User;
 
-class Signin{
+class Signin extends Controller{
 
     public function showSignin()
     {
-        require_once('Templates/Signin.php');
-        $header = Header::execute();
-        require_once ($header);
-        require_once('Templates/Footer.php');
-        require_once('Templates/Layout.php');
+        self::render('Signin');
     }
 
     public function emailTestReceiver($email): string

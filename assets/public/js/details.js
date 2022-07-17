@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', function(){
 
     //_________________________________VALIDATION   FUNCTIONS  _______________________________________///
 
-    //______________  VALIDATION FOR NAMES  ___________//
+    //______________  VALIDATION FOR Address  ___________//
 
-    const testValidName = () => {
+    const testValidAddress = () => {
         // initialise my valide condition to false to test the errors
         let isValid = false
         // min num of chars

@@ -2,7 +2,9 @@
 
 session_start();
 
+
 require_once('Application/Lib/Token.php');
+
 
 use Application\Controllers\Homepage\Homepage;
 use Application\Controllers\Header\Header;
@@ -11,10 +13,7 @@ use Application\Controllers\Signin\Signin;
 use Application\Controllers\Signup\Signup;
 use Application\Lib\Token\Token;
 
-
 if(isset($_GET)){
-
-    // $_GET switch
 
     switch($_GET):
 
@@ -23,7 +22,7 @@ if(isset($_GET)){
             require_once('Application/Controllers/Homepage.php');
             require_once('Application/Controllers/Header.php');
             $homepage = new Homepage;
-            $homepage->execute();
+            $homepage->showHome();
             $header = Header::execute();
             require_once($header);
         break;

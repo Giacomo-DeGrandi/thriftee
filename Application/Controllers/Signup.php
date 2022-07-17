@@ -2,21 +2,17 @@
 
 namespace Application\Controllers\Signup;
 
-require_once('Header.php');
 require_once('User.php');
+require_once('Controller.php');
 
-use Application\Controllers\Header\Header;
+use Application\Controllers\Controller\Controller;
 use Application\Controllers\User\User;
 
-class Signup{
+class Signup extends Controller{
 
     public function showSignup()
     {
-        require_once('Templates/Signup.php');
-        $header = Header::execute();
-        require_once($header);
-        require_once('Templates/Footer.php');
-        require_once('Templates/Layout.php');
+        self::render('Signup');
     }
 
     public function emailTestReceiver($email): string
