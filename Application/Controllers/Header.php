@@ -4,7 +4,7 @@ namespace Application\Controllers\Header;
 
 class Header
 {
-    public static function execute()
+    public static function execute(): string
     {
         return 'Templates/Header.php';
     }

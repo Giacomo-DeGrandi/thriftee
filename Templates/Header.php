@@ -8,10 +8,10 @@ ob_start();
                 <input type="text" class="rounded-pill form-control-sm border border-1 w-100 border-secondary" placeholder="Search" aria-label=" Search" aria-describedby="basic-addon2" name="search">
                 <button type="submit" class="border border-1 rounded-pill bg-orange">🔎</button>
             </form>
-            <div class="col-2 text-center">
+            <div class="col-2 text-center h5">
                 <a href="index?signup" class="text-center hover-underline-animation">Subscribe</a>
             </div>
-            <div class="col-2 text-center">
+            <div class="col-2 text-center h5">
                 <a href="index?signin" class="text-center hover-underline-animation text-nowrap">Sign In</a>
             </div>
 

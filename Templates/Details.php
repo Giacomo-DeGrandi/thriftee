@@ -16,11 +16,9 @@ With Uploadcare you can upload and manage files quickly and easily via their PHP
 
 */
 
-
-
 ob_start();
 ?>
-    <script src="assets/public/js/signin.js"></script>
+    <script src="assets/public/js/details.js"></script>
 <?php
 $script = ob_get_clean();
 
@@ -31,7 +29,7 @@ ob_start();
 
         <h1 class="p-4">Account Details</h1>
 
-        <form method="post" action="index?profile" class="form w-100 p-4" enctype="multipart/form-data">
+        <form method="post" action="index?profile" class="form w-100 p-4" id="formDetails" enctype="multipart/form-data">
 
             <!-- Email input -->
             <div class="form-outline mb-4 d-flex align-items-center justify-content-evenly">
@@ -43,6 +41,7 @@ ob_start();
 
                 <input type="checkbox" class="border border-0 ms-3" name="seller" id="sellerBox">
                 <label for="sellerBox" class="h3">Shop 🏢</label><br>
+                <small></small>
 
             </div>
 

@@ -2,6 +2,10 @@
 
 session_start();
 
+
+require_once('Application/Controllers/Signup.php');
+require_once('Application/Controllers/Signin.php');
+
 use Application\Controllers\Signup\Signup;
 use Application\Controllers\Signin\Signin;
 use Application\Controllers\User\User;
