@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded',function(){
         // initialise my valide condition to false to test the errors
         let isValid = false
         // min num of chars
-        let min = 3
+        let min = 2
         // max num of chars
         let max = 30
         // take away spaces
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
             formData.append('emailExists', emailVal);
 
-            fetch("Application/Lib/JsSigninSignup.php", {
+            fetch("index.php", {
                 method: 'POST',
                 body: formData,
             })
@@ -408,7 +408,7 @@ document.addEventListener('DOMContentLoaded',function(){
             submitData.append('passwordConf', passwordConf.value);
             submitData.append('date', date.value);
 
-            fetch("Application/Lib/JsSigninSignup.php", {
+            fetch("index.php", {
                 method: 'POST',
                 body: submitData
             })

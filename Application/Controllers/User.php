@@ -2,8 +2,8 @@
 
 namespace Application\Controllers\User;
 
-require_once ('../Models/User.php');
-require_once ('../Lib/Token.php');
+require_once ('Application/Models/User.php');
+require_once ('Application/Lib/Token.php');
 
 use Application\Lib\Token\Token;
 use Application\Models\User\User as Usermodel;
@@ -38,6 +38,16 @@ class User
     public function getRights(string $email): bool|array
     {
         return (new Usermodel)->getRights($email);
+    }
+
+    public function registerDetails(mixed $address, mixed $city, mixed $zipCode, mixed $bios, string $newFilepath, int $id)
+    {
+        (new Usermodel)->registerDetails( $address, $city, $zipCode, $bios, $newFilepath, $id );
+    }
+
+    public function getAddress(mixed $id): bool|array
+    {
+        return (new Usermodel)->getAddress($id);
     }
 
 }

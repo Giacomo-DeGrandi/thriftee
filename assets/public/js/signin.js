@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
             formData.append('emailExists', emailLogVal);
 
-            fetch("Application/Lib/JsSigninSignup.php", {
+            fetch("index.php", {
                 method: 'POST',
                 body: formData,
             })
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function(){
             logData.append('passwordIn', pwLogV);
             logData.append('token', token.value);
 
-            fetch("Application/Lib/JsSigninSignup.php", {
+            fetch("index.php", {
                 method: 'POST',
                 body: logData
             })
@@ -123,7 +123,30 @@ document.addEventListener('DOMContentLoaded', function(){
 
                         setCookie('connected', 1 , '1');
                         setCookie('id', d , '1');
-                        window.location = "index?details";
+
+                        // check address, if empty send to details registration page else send to profile
+
+                        let checkData = new FormData();
+
+                        checkData.append('checkAddress', d);
+
+                        fetch("index.php", {
+                            method: 'POST',
+                            body: checkData
+                        })
+                            .then(r => r.json())
+                            .then(d => {
+
+                                if(d === 'details'){
+                                    window.location = "index?details";
+                                } else if(d === 'profile') {
+                                    window.location = "index?profile";
+                                } else {
+                                    showErrors(pwLog, 'Something went wrong, please contact the administrator')
+
+                                }
+
+                            })
 
                     } else if(d === 'Wrong password'){
 
@@ -133,6 +156,10 @@ document.addEventListener('DOMContentLoaded', function(){
                     } else if(d === 'Token expired. Please reload form.'){
 
                         showErrors(pwLog, 'Token expired. Please reload form.')
+
+                    } else {
+
+                        showErrors(pwLog, 'Something went wrong, please contact the administrator')
 
                     }
                 })

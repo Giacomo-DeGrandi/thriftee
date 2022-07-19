@@ -51,5 +51,20 @@ Class User extends Database{
         return $result->fetchAll();
     }
 
+    public function registerDetails(mixed $address, mixed $city, mixed $zipCode, mixed $bios, string $newFilepath, int $id)
+    {
+        $sql = 'UPDATE `users` SET `address`=:address,`zip_code`=:zip_code, `city`= :city, `bios`= :bios, `img_profile`= :img_profile WHERE id = :id';
+        $params = ([':address' => $address,':zip_code' => $zipCode,':city' => $city, ':bios' => $bios, ':img_profile' => $newFilepath, ':id' => $id]);
+        $this->selectQuery($sql, $params);
+    }
+
+    public function getAddress(mixed $id)
+    {
+        $sql = "SELECT address FROM users WHERE id = :id";
+        $params = [':id' => $id ];
+        $result = $this->selectQuery($sql,  $params);
+        return $result->fetchAll();
+    }
+
 
 }

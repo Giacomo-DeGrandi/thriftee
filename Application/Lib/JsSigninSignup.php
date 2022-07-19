@@ -11,6 +11,7 @@ use Application\Controllers\Signin\Signin;
 use Application\Controllers\User\User;
 
 
+
 if(isset($_POST)) {
     switch ($_POST):
 
@@ -44,13 +45,13 @@ if(isset($_POST)) {
             // check for errors in user inputs and count them
             if(empty($name)){     $errors[] = "Name is required";     }
             if(!preg_match('/^[a-zA-Z]*$/', $name)){    $errors[] = "You can't use special characters in name field";     }
-            if(count($name) < 2 || count($name) > 23){    $errors[] = "Name must be in between 2 and 23 characters";     }
+            if(strlen($name) < 2 || strlen($name) > 23){    $errors[] = "Name must be in between 2 and 23 characters";     }
             if(empty($lastname)){     $errors[] = "Lastname is required";     }
             if(!preg_match('/^[a-zA-Z]*$/', $lastname)){    $errors[] = "You can't use special characters in lastname field";     }
-            if(count($lastname) < 2 || count($lastname) > 23){    $errors[] = "Lastname must be in between 2 and 23 characters";     }
+            if(strlen($lastname) < 2 || strlen($lastname) > 23){    $errors[] = "Lastname must be in between 2 and 23 characters";     }
             if(empty($username)){     $errors[] = "Firstname is required";     }
             if(!preg_match('/^[a-zA-Z]*$/', $username)){    $errors[] = "You can't use special characters in username field";     }
-            if(empty($username)){     $errors[] = "Firstname is required";     }
+            if(strlen($lastname) < 2 || strlen($lastname) > 30){    $errors[] = "Username must be in between 2 and 23 characters";     }
             if(empty($email)){     $errors[] = "Email is required";       }
             if (!preg_match('/^[a-z0-9._-]+[@]+[a-zA-Z0-9._-]+[.]+[a-z]{2,3}$/', $email)){    $errors[] = "Email format is wrong";     }
             if(empty($pw)){     $errors[] = "Password is required"; }
@@ -144,7 +145,7 @@ if(isset($_POST)) {
                         setcookie("id", ((new User)->getId($email))[0]['id'], time()+7200);
                         print_r(json_encode(((new User)->getId($email))[0]['id']));
 
-                        // we unset the two tokens to
+                        // we unset the two tokens
                         unset($_SESSION["token"]);
                         unset($_SESSION["token-expire"]);
 
@@ -154,18 +155,16 @@ if(isset($_POST)) {
 
         break;
 
-        case isset($_SESSION['token-expire']):
-        case isset($_SESSION['token']):
-        case isset($_POST['tokenD']):
-        case isset($_POST['address']):
-        case isset($_POST['city']):
-        case isset($_POST['zipCode']):
-        case isset($_POST['bios']):
-        case isset($_POST['buyer']):
-        case isset($_POST['seller']):
-        case isset($_POST['myFile']):
-        case isset($_POST['saveDetails']):
-            var_dump($_POST['myFile']);
+        case isset($_POST['checkAddress']):
+
+            $address = ((new User)->getAddress($_POST['checkAddress']))[0]['address'];
+
+            if(empty($address)){
+                print_r(json_encode('details'));
+            } else {
+                print_r(json_encode('profile'));
+            }
+
         break;
 
     endswitch;

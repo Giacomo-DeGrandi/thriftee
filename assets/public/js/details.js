@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function(){
         // min num of chars
         let min = 3
         // max num of chars
-        let max = 50
+        let max = 30
         // take away spaces
         let addressVal = address.value.trim();
 
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function(){
             showErrors(address, 'Address can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
         } else if (!validateAddress(addressVal) ||!isBetween(addressVal.length, min, max)) {
-            showErrors(address, 'Address has to be between 3 and 50 characters')
+            showErrors(address, 'Address has to be between 3 and 30 characters')
             // else validate the input
         } else {
             showValids(address)
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function(){
         // min num of chars
         let min = 3
         // max num of chars
-        let max = 50
+        let max = 30
         // take away spaces
         let cityVal = city.value.trim();
 
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function(){
             showErrors(city, 'City can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
         } else if (!validateCity(cityVal) || !isBetween(cityVal.length, min, max)) {
-            showErrors(city, 'City has to be between 3 and 50 characters')
+            showErrors(city, 'City has to be between 3 and 30 characters')
             // else validate the input
         } else {
             showValids(city)
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function(){
         // min num of chars
         let min = 2
         // max num of chars
-        let max = 6
+        let max = 7
         // take away spaces
         let zipCodeVal = zipCode.value.trim();
 
@@ -132,11 +132,8 @@ document.addEventListener('DOMContentLoaded', function(){
         let biosVal = bios.value.trim();
 
         // test if required function is valid else give an error
-        if (!isRequired(biosVal)) {
-            showErrors(bios, 'Let others discover you through your bios')
-            // test if the length is at least 3ch and the max is 15ch
-        } else if (!validateBios(biosVal) || !isBetween(biosVal.length, min, max)) {
-            showErrors(bios, 'Bios can have max 500 characters')
+        if (!validateBios(biosVal) || !isBetween(biosVal.length, min, max)) {
+            showErrors(bios, 'Bios can have max 500 characters and can contain only  .,_ \'?!-  , without quotes.')
             // else validate the input
         } else {
             showValids(bios)
@@ -207,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     const validateBios = (bios) => {
-        const re = /^[a-zA-Z0-9._ ?!-]*$/
+        const re = /^[a-zA-Z0-9.,_ '?!-]*$/
         return re.test(bios);
     }
 
@@ -275,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function(){
             buyerV = testValidBoxes(),
             myFileV = testValidImage();
 
-        let isFormValid = addressV && cityV && zipCodeV && biosV && sellerV && buyerV && myFileV
+        let isFormValid = addressV && cityV && zipCodeV && biosV && (sellerV || buyerV) && myFileV
 
         let upData = new FormData();
 
@@ -291,15 +288,16 @@ document.addEventListener('DOMContentLoaded', function(){
 
         if(isFormValid){
 
-            fetch("Application/Lib/JsDetails.php", {
+            fetch("index.php", {
                 method: 'POST',
                 body: upData
             })
                 .then(r => r.json())
                 .then(d => {
                     if (d === 'setted') {
-                        window.location = "index?signin";
+                        window.location = "index?profile";
                     } else {
+                        console.log(d);
                         let errors = document.querySelector('#errors');
                         errors.textContent = 'Invalid , please reload the page and try again';
                     }
