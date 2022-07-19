@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
             formData.append('emailExists', emailLogVal);
 
-            fetch("JsPostRouter.php", {
+            fetch("Application/Lib/JsSigninSignup.php", {
                 method: 'POST',
                 body: formData,
             })
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function(){
             logData.append('passwordIn', pwLogV);
             logData.append('token', token.value);
 
-            fetch("JsPostRouter.php", {
+            fetch("Application/Lib/JsSigninSignup.php", {
                 method: 'POST',
                 body: logData
             })

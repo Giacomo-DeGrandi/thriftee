@@ -3,18 +3,17 @@ document.addEventListener('DOMContentLoaded', function(){
     // Seller Buyer box
     let buyer = document.querySelector('#buyerBox');
     let seller = document.querySelector('#sellerBox');
+    let sbSmall = document.querySelector('#sbSmall');
 
     // file upload
     let file = document.querySelector('#myFile');
-    let uploadBtn = document.querySelector('#uploadBtn');
 
-    console.log(file.value);
+    let imgSmall = document.querySelector('#imgSmall');
+    //let uploadBtn = document.querySelector('#uploadBtn');
+    // initialise btn none
+    //uploadBtn.style.pointerEvents = "none";
 
-    file.addEventListener('input', function (e) {
-        console.log(e.target.files[0])
-    })
-
-        // Bios
+    // Bios
     let bios = document.querySelector('#bios');
 
     // ins log in
@@ -38,11 +37,11 @@ document.addEventListener('DOMContentLoaded', function(){
 
         // test if required function is valid else give an error
         if (!sellerVal&&!buyerVal) {
-            showErrors(seller, 'You have to choose at least one role. ')
+            sbSmall.textContent =  'You have to choose at least one role. '
         } else if(sellerVal&&buyerVal){
-            showErrors(seller,'You can choose at max one role.')
+            sbSmall.textContent =  'You can choose at max one role.'
         } else {
-            showValids(seller)
+            sbSmall.textContent =  'Good choice!'
             isValid = true;
         }
         return isValid
@@ -101,9 +100,9 @@ document.addEventListener('DOMContentLoaded', function(){
         // initialise my valide condition to false to test the errors
         let isValid = false
         // min num of chars
-        let min = 3
+        let min = 2
         // max num of chars
-        let max = 50
+        let max = 6
         // take away spaces
         let zipCodeVal = zipCode.value.trim();
 
@@ -126,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function(){
         // initialise my valide condition to false to test the errors
         let isValid = false
         // min num of chars
-        let min = 3
+        let min = 0
         // max num of chars
         let max = 500
         // take away spaces
@@ -134,10 +133,10 @@ document.addEventListener('DOMContentLoaded', function(){
 
         // test if required function is valid else give an error
         if (!isRequired(biosVal)) {
-            showErrors(bios, 'Zip code can\'t be blank')
+            showErrors(bios, 'Let others discover you through your bios')
             // test if the length is at least 3ch and the max is 15ch
         } else if (!validateBios(biosVal) || !isBetween(biosVal.length, min, max)) {
-            showErrors(bios, 'Invalid Zip Code')
+            showErrors(bios, 'Bios can have max 500 characters')
             // else validate the input
         } else {
             showValids(bios)
@@ -146,34 +145,41 @@ document.addEventListener('DOMContentLoaded', function(){
         return isValid
     }
 
-    formDetails.addEventListener('input', function (e) {})
 
-
-        const testValidUpload = () => {
+    const testValidImage = () => {
 
         // initialise my valid condition to false to test the errors
         let isValid = false
 
-        // take away spaces
-        let fileDetails = file.target.files[0];
+        let fileDetails = file.files[0];
 
-        let validExtensions =  ['jpeg','jpg','png','svg','gif']; // These will be the only file extensions allowed
+        // whitelist valid extensions
+        let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif'];
+        // check for type match
+        let imgDef = 'image/';
+        const found = fileDetails.type.match(imgDef);
+        let fileType = fileDetails.type.replace('image/', '')
 
-        console.log(fileDetails.type)
-        // test if required function is valid else give an error
-        if (!isRequired(biosVal)) {
-            showErrors(bios, 'Zip code can\'t be blank')
+        if (!isRequired(fileDetails)) {
+            imgSmall.textContent = 'Choose a profile picture please'
             // test if the length is at least 3ch and the max is 15ch
-        } else if (!validateBios(biosVal) ||!isBetween(biosVal.length, min, max)) {
-            showErrors(bios, 'Invalid Zip Code')
-            // else validate the input
+        } else if (!found) {
+            imgSmall.textContent = 'Invalid file type'
+        } else if (!validExtensions.includes(fileType)) {
+            imgSmall.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\' are allowed '
+        } else if (fileDetails.size === 0 || fileDetails.size > 1000000) {
+            imgSmall.textContent = '1MB is the max size allowed per picture'
         } else {
-            showValids(bios)
+            //uploadBtn.style.pointerEvents = "auto";
+            //uploadBtn.style.backgroundColor = "#F1641E";
+            imgSmall.textContent = '✔ loaded';
+
             isValid = true
         }
-        return isValid
-    }
 
+        return isValid
+
+    }
 
 
 
@@ -191,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     const validateZipCode = (zip) => {
-        const re = /^[a-zA-Z]*$/
+        const re = /^[0-9]*$/
         return re.test(zip);
     }
 
@@ -208,7 +214,6 @@ document.addEventListener('DOMContentLoaded', function(){
     // Validation showing function if is valid remove the invalid class and add is_valid
     const showValids = (input) => {
         const myForm = input.parentElement
-        console.log(input);
         myForm.classList.remove('not_valid')
         myForm.classList.add('is_valid')
         // select the small as containers and insert the error message as content
@@ -245,11 +250,63 @@ document.addEventListener('DOMContentLoaded', function(){
             case 'bios':
                 testValidBios();
                 break;
-            case 'seller':
-            case 'buyer':
+            case 'sellerBox':
+            case 'buyerBox':
                 testValidBoxes();
                 break;
+            case 'myFile':
+                testValidImage();
+                break;
         }
+
+    })
+
+
+
+    saveDetails.addEventListener('click', function (event) {
+
+        event.preventDefault()
+
+        let addressV = testValidCity(),
+            cityV = testValidAddress(),
+            zipCodeV = testValidZipCode(),
+            biosV = testValidBios(),
+            sellerV = testValidBoxes(),
+            buyerV = testValidBoxes(),
+            myFileV = testValidImage();
+
+        let isFormValid = addressV && cityV && zipCodeV && biosV && sellerV && buyerV && myFileV
+
+        let upData = new FormData();
+
+        upData.append('tokenD', token.value);
+        upData.append('address', address.value);
+        upData.append('city', city.value);
+        upData.append('zipCode', zipCode.value);
+        upData.append('bios', bios.value);
+        upData.append('seller', seller.checked);
+        upData.append('buyer', buyer.checked);
+        upData.append('upload',file.files[0]);
+        upData.append('saveDetails', 'true');
+
+        if(isFormValid){
+
+            fetch("Application/Lib/JsDetails.php", {
+                method: 'POST',
+                body: upData
+            })
+                .then(r => r.json())
+                .then(d => {
+                    if (d === 'setted') {
+                        window.location = "index?signin";
+                    } else {
+                        let errors = document.querySelector('#errors');
+                        errors.textContent = 'Invalid , please reload the page and try again';
+                    }
+                })
+        }
+
+
 
     })
 

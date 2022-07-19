@@ -2,8 +2,8 @@
 
 namespace Application\Controllers\User;
 
-require_once ('Application/Models/User.php');
-require_once ('Application/Lib/Token.php');
+require_once ('../Models/User.php');
+require_once ('../Lib/Token.php');
 
 use Application\Lib\Token\Token;
 use Application\Models\User\User as Usermodel;

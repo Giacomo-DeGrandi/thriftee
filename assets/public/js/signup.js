@@ -24,9 +24,9 @@ document.addEventListener('DOMContentLoaded',function(){
         // initialise my valide condition to false to test the errors
         let isValid = false
         // min num of chars
-        let min = 3
+        let min = 2
         // max num of chars
-        let max = 15
+        let max = 23
         // take away spaces
         let userVal = name.value.trim();
 
@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded',function(){
         if (!isRequired(userVal)) {
             showErrors(name, 'Name can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
-        } else if (!isBetween(userVal.length, min, max)) {
-            showErrors(name, 'Name has to be between 3 and 15 characters')
+        } else if (!isBetween(userVal.length, min, max)|| !validateName(userVal)) {
+            showErrors(name, 'Name has to be between 2 and 23 characters')
             // else validate the input
         } else {
             showValids(name)
@@ -48,9 +48,9 @@ document.addEventListener('DOMContentLoaded',function(){
         // initialise my valide condition to false to test the errors
         let isValid = false
         // min num of chars
-        let min = 3
+        let min = 2
         // max num of chars
-        let max = 15
+        let max = 23
         // take away spaces
         let userVal = lastname.value.trim();
 
@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded',function(){
         if (!isRequired(userVal)) {
             showErrors(lastname, 'Lastname can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
-        } else if (!isBetween(userVal.length, min, max)) {
-            showErrors(lastname, 'Lastname has to be between 3 and 15 characters')
+        } else if (!isBetween(userVal.length, min, max)|| !validateName(userVal)) {
+            showErrors(lastname, 'Lastname has to be between 2 and 23 characters')
             // else validate the input
         } else {
             showValids(lastname)
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded',function(){
         if (!isRequired(userVal)) {
             showErrors(user, 'Username can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
-        } else if (!isBetween(userVal.length, min, max)) {
+        } else if (!isBetween(userVal.length, min, max)|| !validateName(userVal)) {
             showErrors(user, 'Username has to be between 3 and 30 characters')
             // else validate the input
         } else {
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
             formData.append('emailExists', emailVal);
 
-            fetch("JsPostRouter.php", {
+            fetch("Application/Lib/JsSigninSignup.php", {
                 method: 'POST',
                 body: formData,
             })
@@ -252,6 +252,14 @@ document.addEventListener('DOMContentLoaded',function(){
         const re = /^[a-z0-9._-]+[@]+[a-zA-Z0-9._-]+[.]+[a-z]{2,3}$/   //  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/   //     /^[a-z0-9._-]+[@]+[a-zA-Z0-9._-]+[.]+[a-z]{2,3}$/    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
     };
+
+    // Name Lastname Username regex
+    const validateName = (name) => {
+        const re = /^[a-z0-9]*$/
+        return re.test(name);
+    };
+
+
 
     // password regex
     const validatePassword = (password) => {
@@ -400,7 +408,7 @@ document.addEventListener('DOMContentLoaded',function(){
             submitData.append('passwordConf', passwordConf.value);
             submitData.append('date', date.value);
 
-            fetch("JsPostRouter.php", {
+            fetch("Application/Lib/JsSigninSignup.php", {
                 method: 'POST',
                 body: submitData
             })

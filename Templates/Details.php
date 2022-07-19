@@ -29,31 +29,32 @@ ob_start();
 
         <h1 class="p-4">Account Details</h1>
 
-        <form method="post" action="index?profile" class="form w-100 p-4" id="formDetails" enctype="multipart/form-data">
+        <form method="post" class="form w-100 p-4" id="formDetails" enctype="multipart/form-data">
 
             <!-- Email input -->
             <div class="form-outline mb-4 d-flex align-items-center justify-content-evenly">
 
-                <p class="h4">*Register as: </p>
+                <p class="h4">Register as*: </p>
 
                 <input type="checkbox" class="border border-0 ms-3" name="buyer" id="buyerBox">
-                <label for="buyerBox" class="h3">Buyer 🛍️</label><br>
+                <label for="buyerBox" class="h3 fw-bold orange-font">Buyer 🛍️</label><br>
 
                 <input type="checkbox" class="border border-0 ms-3" name="seller" id="sellerBox">
-                <label for="sellerBox" class="h3">Shop 🏢</label><br>
-                <small></small>
+                <label for="sellerBox" class="h3 fw-bold blue-font">Shop 🏢</label><br>
 
             </div>
+            <small id="sbSmall" class="float-end"></small><br>
+
 
             <!-- BUYER EXPLANATION  -->
             <p class="h5 mb-3">As a <b class="orange-font">Buyer</b> you will be able to find your treasures thrifts,
             to contact other buyers and sellers and to give them feedback after your purchases</p>
 
             <!-- SELLER EXPLANATION  -->
-            <p class="h5 mb-3">As a <b class="orange-font">Shop</b> you will be able to sell your thrifts,
-                to contact other buyers and sellers, to manage your offers before selling them</p>
+            <p class="h5 mb-3">As a <b class="blue-font">Shop</b> you will be able to sell your thrifts,
+                to contact other buyers and sellers, to manage your offers before the sale</p>
 
-            <p class="h6 mb-3"><i>*You will not be able to change after sign up validation.</i></p>
+            <p class="h6 mb-3"><i>*You will NOT be able to change after your registration process ends.</i></p>
 
             <hr>
 
@@ -69,7 +70,7 @@ ob_start();
                         <input type="file" id="myFile" class="d-none" name="myFile"/>
                         Choose a picture
                     </label>
-                    <button type="submit" id="upload" name="upload" class="btn btn-block bg-orange" value="upload">upload</button>
+                    <small id="imgSmall"></small>
                 </div>
 
 
@@ -80,6 +81,7 @@ ob_start();
             <div class="form-outline mt-4 mb-5 d-flex flex-column align-items-center justify-content-evenly">
                 <label for="bios" class="h4 text-nowrap">Your Bios</label><br>
                 <textarea name="bios" id="bios" class="w-100" >write here your bios ...</textarea>
+                <small></small>
             </div>
 
             <hr>
@@ -115,8 +117,9 @@ ob_start();
             </div>
 
             <!-- CSRF Token  -->
-            <input type="hidden" name="token" id="token" value="<?= $_SESSION["token"] ?>"/>
+            <input type="hidden" name="tokenD" id="token" value="<?= $_SESSION["token"] ?>"/>
         </form>
+        <span id="errors"></span>
     </div>
 </div>
 <?php

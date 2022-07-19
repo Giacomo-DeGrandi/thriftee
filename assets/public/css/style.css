@@ -5,6 +5,7 @@
     --genfont: 'Readex Pro', sans-serif;
     --condfont: 'Roboto Condensed', sans-serif;
     --orange :#F1641E;
+    --blueshop :#3185FC;
     --white :#FFFFFF;
     --darkgray: #263238;
     --genshad: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
@@ -55,6 +56,10 @@ button:hover {
 
 .orange-font {
     color: var(--orange)!important;
+}
+
+.blue-font {
+    color: var(--blueshop)!important;
 }
 
 .lens {

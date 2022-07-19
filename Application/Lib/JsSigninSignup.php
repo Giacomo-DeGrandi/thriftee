@@ -3,8 +3,8 @@
 session_start();
 
 
-require_once('Application/Controllers/Signup.php');
-require_once('Application/Controllers/Signin.php');
+require_once('../Controllers/Signup.php');
+require_once('../Controllers/Signin.php');
 
 use Application\Controllers\Signup\Signup;
 use Application\Controllers\Signin\Signin;
@@ -43,7 +43,13 @@ if(isset($_POST)) {
 
             // check for errors in user inputs and count them
             if(empty($name)){     $errors[] = "Name is required";     }
+            if(!preg_match('/^[a-zA-Z]*$/', $name)){    $errors[] = "You can't use special characters in name field";     }
+            if(count($name) < 2 || count($name) > 23){    $errors[] = "Name must be in between 2 and 23 characters";     }
             if(empty($lastname)){     $errors[] = "Lastname is required";     }
+            if(!preg_match('/^[a-zA-Z]*$/', $lastname)){    $errors[] = "You can't use special characters in lastname field";     }
+            if(count($lastname) < 2 || count($lastname) > 23){    $errors[] = "Lastname must be in between 2 and 23 characters";     }
+            if(empty($username)){     $errors[] = "Firstname is required";     }
+            if(!preg_match('/^[a-zA-Z]*$/', $username)){    $errors[] = "You can't use special characters in username field";     }
             if(empty($username)){     $errors[] = "Firstname is required";     }
             if(empty($email)){     $errors[] = "Email is required";       }
             if (!preg_match('/^[a-z0-9._-]+[@]+[a-zA-Z0-9._-]+[.]+[a-z]{2,3}$/', $email)){    $errors[] = "Email format is wrong";     }
@@ -83,12 +89,13 @@ if(isset($_POST)) {
         break;
 
             // add tokens
-        case isset($_SESSION['token-expire']):
-        case isset($_SESSION['token']):
-        case isset($_POST['token']):
+
         case isset($_POST['emailIn']):
         case isset($_POST['passwordIn']):
         case isset($_POST['signin']):
+        case isset($_SESSION['token-expire']):
+        case isset($_SESSION['token']):
+        case isset($_POST['token']):
 
 
             $errors= [];
@@ -147,6 +154,19 @@ if(isset($_POST)) {
 
         break;
 
+        case isset($_SESSION['token-expire']):
+        case isset($_SESSION['token']):
+        case isset($_POST['tokenD']):
+        case isset($_POST['address']):
+        case isset($_POST['city']):
+        case isset($_POST['zipCode']):
+        case isset($_POST['bios']):
+        case isset($_POST['buyer']):
+        case isset($_POST['seller']):
+        case isset($_POST['myFile']):
+        case isset($_POST['saveDetails']):
+            var_dump($_POST['myFile']);
+        break;
 
     endswitch;
 }

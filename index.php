@@ -47,10 +47,10 @@ if(isset($_GET)){
             $_SESSION['token']= (new Token)->generateToken();
             $_SESSION['token-expire']= (new Token)->generateExpiration();
             $details->showDetails();
-         break;
+        break;
 
     endswitch;
 
 }
 
-
+var_dump($_FILES);

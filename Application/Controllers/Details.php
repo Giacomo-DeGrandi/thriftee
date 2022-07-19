@@ -24,19 +24,6 @@ class Details extends Controller{
         }
     }
 
-    public function upload(){
-
-        $currentDirectory = getcwd();
-        $uploadDirectory = "uploads/";
-
-        $errors = [];
-
-        $fileExtensionsAllowed = ['jpeg','jpg','png','svg']; // These will be the only file extensions allowed
-
-
-
-
-    }
 
 
 }
