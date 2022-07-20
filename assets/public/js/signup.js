@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded',function(){
             })
                 .then(response => response.json())
                 .then(data =>{
-                    console.log(data)
+
                     if (data === 'exists') {
                         showErrors(email, 'This email already exists, please choose another one')
                         return false;
@@ -361,7 +361,6 @@ document.addEventListener('DOMContentLoaded',function(){
     // Validation showing function if is valid remove the invalid class and add is_valid
     const showValids = (input) => {
         const myForm = input.parentElement
-        console.log(input);
         myForm.classList.remove('not_valid')
         myForm.classList.add('is_valid')
         // select the small as containers and insert the error message as content

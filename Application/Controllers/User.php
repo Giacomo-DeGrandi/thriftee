@@ -50,4 +50,101 @@ class User
         return (new Usermodel)->getAddress($id);
     }
 
+    public function validateDetails(mixed $address, mixed $city, mixed $zipCode, mixed $bios, mixed $newFilepath, mixed $errors)
+    {
+        if (empty($address)) {
+            $errors[] = "Address is required";
+        }
+        if (!preg_match('/^[a-zA-Z0-9_ -]*$/', $address)) {
+            $errors[] = "You can use only letters and numbers in address field";
+        }
+        if (strlen($address) < 3 || strlen($address) > 30) {
+            $errors[] = "Address must be in between 2 and 23 characters";
+        }
+        if (empty($city)) {
+            $errors[] = "City is required";
+        }
+        if (!preg_match('/^[a-zA-Z]*$/', $city)) {
+            $errors[] = "You can use only letters in city field";
+        }
+        if (strlen($city) < 2 || strlen($city) > 23) {
+            $errors[] = "City must be in between 3 and 30 characters";
+        }
+        if (empty($zipCode)) {
+            $errors[] = "zip Code is required";
+        }
+        if (!preg_match('/^[0-9]*$/', $zipCode)) {
+            $errors[] = "You can use only numbers in zip code field";
+        }
+        if (strlen($zipCode) < 2 || strlen($zipCode) > 23) {
+            $errors[] = "Zip Code must be in between 2 and 7 characters";
+        }
+        if (!preg_match("/^[a-zA-Z0-9.,_ '?!-]*$/", $bios)) {
+            $errors[] = "You can use only numbers, letters and  .,_ '?!-  in bios field";
+        }
+        if (strlen($bios) < 0 || strlen($bios) > 500) {
+            $errors[] = "Zip Code must be in between 2 and 7 characters";
+        }
+
+        if (empty($errors)) {
+
+                (new User)->registerDetails($address, $city, $zipCode, $bios, $newFilepath, $_SESSION['id']);
+                unset($_SESSION["token"]);
+                unset($_SESSION["token-expire"]);
+                return  print_r(json_encode('setted'));
+
+        } else {
+            return print_r(json_encode($errors));
+        }
+
+    }
+
+    public function validateChoice($seller, $buyer, array $errors): array
+    {
+
+        if ($seller == 'false' && $buyer == 'false') {
+            $errors [] = 'You have to chose at least a role';
+        }
+        if ($seller !== 'true' && $buyer !== 'true') {
+            $errors [] = 'You can chose at max one role.';
+        }
+        return $errors;
+    }
+
+    public function uploadImage(array $errors): array
+    {
+        // FILE
+        $filepath = $_FILES['upload']['tmp_name'];
+        $fileSize = filesize($filepath);
+        $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+        $filetype = finfo_file($fileinfo, $filepath);
+
+        if ($fileSize === 0) {
+            $errors [] = 'This file is empty';
+        }
+        if ($fileSize > 1000000) {
+            $errors [] = 'Max size allowed 1MB';
+        }
+
+        $allowedTypes = ['image/png' => 'png', 'image/jpeg' => 'jpg', 'image/svg+xml' => 'svg', 'image/gif' => 'gif'];
+
+        if (!in_array($filetype, array_keys($allowedTypes))) {
+            $errors [] = "File not allowed.";
+        }
+
+        $filename = basename($filepath); // I'm using the original name here, but you can also change the name of the file here
+        $extension = $allowedTypes[$filetype];
+        $targetDirectory = 'assets/uploads';
+        $newFilepath = $targetDirectory . "/" . $filename . "." . $extension;
+
+        // Copy the file, returns false if fail
+        if (!copy($filepath, $newFilepath)) {
+            $errors [] = "Can't move file.";
+        }
+        unlink($filepath);
+
+        return [$errors,$newFilepath];
+
+    }
+
 }
