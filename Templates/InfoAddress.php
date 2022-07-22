@@ -9,11 +9,11 @@ ob_start();
         <!-- CRUMBLES  -->
         <div class="d-flex flex-row p-4 flex-wrap">
             <form method="get" action="index?" class="text-start">
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="ersonal">Personal Information</button>
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="Password">Password</button>
-                <button type="submit" class="h5  p-1 px-4 bg-white blue-font rounded-pill border border-0" name="Address">Address</button>
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="Listings">Listings</button>
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="PublicProfile">Public Profile</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPersonal">Personal Information</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPassword">Password</button>
+                <button type="submit" class="h5 p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoAddress">Address</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoListings">Listings</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoProfile">Public Profile</button>
             </form>
         </div>
 
@@ -30,11 +30,11 @@ ob_start();
                     <tr>
                         <td class="col-8 h5 p-4">
                             <label for="address" class="p-2">Address</label>
-                            <input type="text" name="address" class="border border-1" > <br class="d-none-desktop">
+                            <input type="text" name="address" placeholder="address..." class="border border-1" > <br class="d-none-desktop">
                             <label for="zipCode" class="p-2">Zip Code</label>
-                            <input type="text" name="zipCode" class="border border-1" >
+                            <input type="text" name="zipCode" placeholder="zip code..." class="border border-1" >
                             <label for="city" class="p-2">City</label>
-                            <input type="text" name="city" class="border border-1" >
+                            <input type="text" name="city" placeholder="city..." class="border border-1" >
                         </td>
                     </tr>
                 </table>

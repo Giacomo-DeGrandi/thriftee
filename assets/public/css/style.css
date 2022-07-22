@@ -127,7 +127,11 @@ a {
 /*  BORDER  */
 
 .border-orange{
-    border-color:var(--orange)!important;
+    border: solid 1px var(--orange)!important;
+}
+
+.border-blue{
+    border: solid 1px var(--blueshop)!important;
 }
 
 

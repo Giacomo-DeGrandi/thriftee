@@ -11,9 +11,9 @@ ob_start();
             <form method="get" action="index?" class="text-start">
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPersonal">Personal Information</button>
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPassword">Password</button>
-                <button type="submit" class="h5  p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoAddress">Address</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoAddress">Address</button>
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoListings">Listings</button>
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoProfile">Public Profile</button>
+                <button type="submit" class="h5 p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoProfile">Public Profile</button>
             </form>
         </div>
 
@@ -23,7 +23,7 @@ ob_start();
         <div class="container row p-4">
             <form method="post" enctype="multipart/form-data">
 
-                <h3>Your Listings</h3>
+                <h3>Profile</h3>
             </form>
 
         </div>

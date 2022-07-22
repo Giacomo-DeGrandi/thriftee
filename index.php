@@ -150,7 +150,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     exit();
   // } elseif(){       <--------- add conditions 'routes' here
 
-} elseif(isset($_GET['profile'])){
+} elseif(isset($_GET['profile'])||isset($_GET['infoPersonal'])){
 
     require_once('Application/Controllers/Profile.php');
     $profile = new Profile;
@@ -194,6 +194,15 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $_SESSION['token-expire'] = (new Token)->generateExpiration();
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
         $profile->showInfo($userInfos,'InfoProfile');
+
+}  elseif(isset($_GET['addNewListing'])){
+
+        require_once('Application/Controllers/Profile.php');
+        $profile = new Profile;
+        $_SESSION['token'] = (new Token)->generateToken();
+        $_SESSION['token-expire'] = (new Token)->generateExpiration();
+        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+        $profile->showInfo($userInfos,'InfoNewListing');
 
 } else {
 
