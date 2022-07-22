@@ -8,6 +8,7 @@ require_once('Application/Controllers/Signup.php');
 require_once('Application/Controllers/Signin.php');
 
 
+use Application\Controllers\Profile\Profile;
 use Application\Controllers\User\User;
 use Application\Controllers\Homepage\Homepage;
 use Application\Controllers\Header\Header;
@@ -15,7 +16,6 @@ use Application\Controllers\Profile\Details;
 use Application\Controllers\Signin\Signin;
 use Application\Controllers\Signup\Signup;
 use Application\Lib\Token\Token;
-
 
 
 if (isset($_GET['index'])) {       //    <------------ INDEX
@@ -89,12 +89,10 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
             $token = filter_var($_POST['token'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $token_session = $_SESSION['token'];
             $token_expire = $_SESSION['token-expire'];
-            $session_id = $_SESSION['id'];
-            $session_rights = $_SESSION['rights'];
 
             print_r((new Signin)->signIn($emailIn,$passwordIn,$token,$token_session,$token_expire));
 
-}  elseif (isset($_POST['checkAddress'])) {
+}  elseif (isset($_POST['checkAddress'])) {           //   <-------- GET ADRESS FOR DETAILS
 
             if(isset(((new User)->getAddress($_POST['checkAddress']))[0]['address'])){
                 $address = ((new User)->getAddress($_POST['checkAddress']))[0]['address'];
@@ -126,17 +124,18 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
             $errors = [];
 
-            $errorsAndnewFilepath = (new User)->uploadImage($errors);
-            $errors = $errorsAndnewFilepath[0];
-            $newFilepath = $errorsAndnewFilepath[1];
-
+            $errors_newFilepath = (new User)->uploadImage($errors);
+            $errors = $errors_newFilepath[0];
+            $newFilepath = $errors_newFilepath[1];
 
         // CHOICE
 
-            $seller =$_POST['seller'];
+            $seller = $_POST['seller'];
             $buyer = $_POST['buyer'];
 
-            $errors = (new User())->validateChoice($seller,$buyer,$errors);
+            $errors_rights = (new User())->validateChoice($seller,$buyer,$errors);
+            $errors = $errors_rights[0];
+            $rights = $errors_rights[1];
 
             // DETAILS
 
@@ -145,11 +144,56 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
             $zipCode = $_POST['zipCode'];
             $bios = $_POST['bios'];
 
-            (new User())->validateDetails($address,$city,$zipCode,$bios,$errors,$newFilepath);
+            (new User())->validateDetails($address,$city,$zipCode,$bios,$errors,$newFilepath,$rights);
 
 
     exit();
   // } elseif(){       <--------- add conditions 'routes' here
+
+} elseif(isset($_GET['profile'])){
+
+    require_once('Application/Controllers/Profile.php');
+    $profile = new Profile;
+    $_SESSION['token'] = (new Token)->generateToken();
+    $_SESSION['token-expire'] = (new Token)->generateExpiration();
+    $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+    $profile->showProfile($_SESSION['id'],$userInfos);
+
+}  elseif(isset($_GET['infoPassword'])){
+
+        require_once('Application/Controllers/Profile.php');
+        $profile = new Profile;
+        $_SESSION['token'] = (new Token)->generateToken();
+        $_SESSION['token-expire'] = (new Token)->generateExpiration();
+        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+        $profile->showInfo($userInfos,'InfoPassword');
+
+} elseif(isset($_GET['infoAddress'])){
+
+        require_once('Application/Controllers/Profile.php');
+        $profile = new Profile;
+        $_SESSION['token'] = (new Token)->generateToken();
+        $_SESSION['token-expire'] = (new Token)->generateExpiration();
+        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+        $profile->showInfo($userInfos,'InfoAddress');
+
+} elseif(isset($_GET['infoListings'])){
+
+        require_once('Application/Controllers/Profile.php');
+        $profile = new Profile;
+        $_SESSION['token'] = (new Token)->generateToken();
+        $_SESSION['token-expire'] = (new Token)->generateExpiration();
+        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+        $profile->showInfo($userInfos,'InfoListings');
+
+} elseif(isset($_GET['infoProfile'])){
+
+        require_once('Application/Controllers/Profile.php');
+        $profile = new Profile;
+        $_SESSION['token'] = (new Token)->generateToken();
+        $_SESSION['token-expire'] = (new Token)->generateExpiration();
+        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+        $profile->showInfo($userInfos,'InfoProfile');
 
 } else {
 

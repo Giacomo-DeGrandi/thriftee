@@ -28,7 +28,14 @@
     }
 }
 
+@media screen and (min-width: 769px){
+    .d-none-desktop {
+        display: none!important;
+    }
+}
+
 /* GENERAL  */
+
 
 * {
     font-family: var(--genfont);
@@ -39,9 +46,13 @@ a {
     color: var(--orange)!important;
 }
 
-button:hover {
+.my-button:hover {
 
     box-shadow:var(--genshad)!important;
+}
+
+.no-shad {
+    box-shadow:none!important;
 }
 
 /*   TYPOS   */
@@ -84,7 +95,10 @@ button:hover {
 }
 
 
-/* ICONS   */
+
+
+
+    /* ICONS   */
 
 .user-icon {
     background: url("../icons/name.svg") no-repeat !important;
@@ -92,6 +106,11 @@ button:hover {
 }
 
 /* COLORS */
+
+.bg-blue {
+    background-color: var(--blueshop)!important;
+    color: var(--white)!important;
+}
 
 .bg-orange {
     background-color: var(--orange)!important;

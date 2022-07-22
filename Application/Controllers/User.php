@@ -40,9 +40,15 @@ class User
         return (new Usermodel)->getRights($email);
     }
 
-    public function registerDetails(mixed $address, mixed $city, mixed $zipCode, mixed $bios, string $newFilepath, int $id)
+    public function getRightsById($id): bool|array
     {
-        (new Usermodel)->registerDetails( $address, $city, $zipCode, $bios, $newFilepath, $id );
+        return (new Usermodel)->getRightsById($id);
+    }
+
+
+    public function registerDetails(mixed $address, mixed $city, mixed $zipCode, mixed $bios, string $newFilepath, int $id, int $rights)
+    {
+        (new Usermodel)->registerDetails( $address, $city, $zipCode, $bios, $newFilepath, $id, $rights);
     }
 
     public function getAddress(mixed $id): bool|array
@@ -50,7 +56,7 @@ class User
         return (new Usermodel)->getAddress($id);
     }
 
-    public function validateDetails(mixed $address, mixed $city, mixed $zipCode, mixed $bios, mixed $newFilepath, mixed $errors)
+    public function validateDetails(mixed $address, mixed $city, mixed $zipCode, mixed $bios, mixed $newFilepath, mixed $errors, int $rights)
     {
         if (empty($address)) {
             $errors[] = "Address is required";
@@ -88,7 +94,7 @@ class User
 
         if (empty($errors)) {
 
-                (new User)->registerDetails($address, $city, $zipCode, $bios, $newFilepath, $_SESSION['id']);
+                (new User)->registerDetails($address, $city, $zipCode, $bios, $newFilepath, $_SESSION['id'], $rights);
                 unset($_SESSION["token"]);
                 unset($_SESSION["token-expire"]);
                 return  print_r(json_encode('setted'));
@@ -108,7 +114,13 @@ class User
         if ($seller !== 'true' && $buyer !== 'true') {
             $errors [] = 'You can chose at max one role.';
         }
-        return $errors;
+        if($seller === 'false' && $buyer === 'true'){
+            $rights = 2;
+        }
+        if($seller === 'true' && $buyer === 'false'){
+            $rights = 3;
+        }
+        return [$errors, $rights];
     }
 
     public function uploadImage(array $errors): array
@@ -145,6 +157,11 @@ class User
 
         return [$errors,$newFilepath];
 
+    }
+
+    public function getAllInfosByid(mixed $id)
+    {
+        return (new Usermodel)->getAllInfosByid($id);
     }
 
 }
