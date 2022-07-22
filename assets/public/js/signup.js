@@ -24,9 +24,9 @@ document.addEventListener('DOMContentLoaded',function(){
         // initialise my valide condition to false to test the errors
         let isValid = false
         // min num of chars
-        let min = 3
+        let min = 2
         // max num of chars
-        let max = 15
+        let max = 23
         // take away spaces
         let userVal = name.value.trim();
 
@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded',function(){
         if (!isRequired(userVal)) {
             showErrors(name, 'Name can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
-        } else if (!isBetween(userVal.length, min, max)) {
-            showErrors(name, 'Name has to be between 3 and 15 characters')
+        } else if (!isBetween(userVal.length, min, max)|| !validateName(userVal)) {
+            showErrors(name, 'Name has to be between 2 and 23 characters')
             // else validate the input
         } else {
             showValids(name)
@@ -48,9 +48,9 @@ document.addEventListener('DOMContentLoaded',function(){
         // initialise my valide condition to false to test the errors
         let isValid = false
         // min num of chars
-        let min = 3
+        let min = 2
         // max num of chars
-        let max = 15
+        let max = 23
         // take away spaces
         let userVal = lastname.value.trim();
 
@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded',function(){
         if (!isRequired(userVal)) {
             showErrors(lastname, 'Lastname can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
-        } else if (!isBetween(userVal.length, min, max)) {
-            showErrors(lastname, 'Lastname has to be between 3 and 15 characters')
+        } else if (!isBetween(userVal.length, min, max)|| !validateName(userVal)) {
+            showErrors(lastname, 'Lastname has to be between 2 and 23 characters')
             // else validate the input
         } else {
             showValids(lastname)
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded',function(){
         // initialise my valide condition to false to test the errors
         let isValid = false
         // min num of chars
-        let min = 3
+        let min = 2
         // max num of chars
         let max = 30
         // take away spaces
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded',function(){
         if (!isRequired(userVal)) {
             showErrors(user, 'Username can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
-        } else if (!isBetween(userVal.length, min, max)) {
+        } else if (!isBetween(userVal.length, min, max)|| !validateName(userVal)) {
             showErrors(user, 'Username has to be between 3 and 30 characters')
             // else validate the input
         } else {
@@ -116,13 +116,13 @@ document.addEventListener('DOMContentLoaded',function(){
 
             formData.append('emailExists', emailVal);
 
-            fetch("JsPostRouter.php", {
+            fetch("index.php", {
                 method: 'POST',
                 body: formData,
             })
                 .then(response => response.json())
                 .then(data =>{
-                    console.log(data)
+
                     if (data === 'exists') {
                         showErrors(email, 'This email already exists, please choose another one')
                         return false;
@@ -253,6 +253,14 @@ document.addEventListener('DOMContentLoaded',function(){
         return re.test(email);
     };
 
+    // Name Lastname Username regex
+    const validateName = (name) => {
+        const re = /^[a-z0-9]*$/
+        return re.test(name);
+    };
+
+
+
     // password regex
     const validatePassword = (password) => {
         const re = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
@@ -313,7 +321,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
     // ____________ ADD EVENT LISTENER TO ALL THE INPUTS FROM FORM ____________________________________//
 
-    // Listen to the inputs for callback in both the forms !!!!!!!!!!!!!!
+    // Listen to the inputs for callback
 
     form.addEventListener('input', function (e) {
 
@@ -353,7 +361,6 @@ document.addEventListener('DOMContentLoaded',function(){
     // Validation showing function if is valid remove the invalid class and add is_valid
     const showValids = (input) => {
         const myForm = input.parentElement
-        console.log(input);
         myForm.classList.remove('not_valid')
         myForm.classList.add('is_valid')
         // select the small as containers and insert the error message as content
@@ -400,7 +407,7 @@ document.addEventListener('DOMContentLoaded',function(){
             submitData.append('passwordConf', passwordConf.value);
             submitData.append('date', date.value);
 
-            fetch("JsPostRouter.php", {
+            fetch("index.php", {
                 method: 'POST',
                 body: submitData
             })
