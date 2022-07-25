@@ -6,9 +6,13 @@ session_start();
 require_once('Application/Lib/Token.php');
 require_once('Application/Controllers/Signup.php');
 require_once('Application/Controllers/Signin.php');
+require_once('Application/Controllers/Categories.php');
+require_once('Application/Controllers/SubCategories.php');
 
 
+use Application\Controllers\Categories\Categories;
 use Application\Controllers\Profile\Profile;
+use Application\Controllers\SubCategories;
 use Application\Controllers\User\User;
 use Application\Controllers\Homepage\Homepage;
 use Application\Controllers\Header\Header;
@@ -202,7 +206,14 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $_SESSION['token'] = (new Token)->generateToken();
         $_SESSION['token-expire'] = (new Token)->generateExpiration();
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
-        $profile->showInfo($userInfos,'InfoNewListing');
+        $category = (new Categories)->getAllCategories();
+        $infoCat = [$userInfos, $category];
+        $profile->showInfo($infoCat,'InfoNewListing');
+
+}  elseif(isset($_POST['subId'])){
+
+    $subCat = (new SubCategories)->getAllSubCategoriesByCat($_POST['subId']);
+    print_r(json_encode($subCat));
 
 } else {
 

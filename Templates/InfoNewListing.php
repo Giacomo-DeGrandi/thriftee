@@ -4,6 +4,16 @@
 
 ob_start();
 ?>
+    <script src="assets/public/js/newListing.js"></script>
+<?php
+$script = ob_get_clean();
+
+ob_start();
+
+$infoUser = $chunks[0];
+$cat = $chunks[1];
+$cat = array_merge(...array_values($cat));
+?>
     <div class="container">
 
         <!-- CRUMBLES  -->
@@ -28,53 +38,28 @@ ob_start();
             </form>
         </div>
 
+        <hr>
+
 
         <!-- MODIFY  -->
         <div class="container row p-4">
             <form method="post" enctype="multipart/form-data">
 
-                <table class="table">
+                <table class="table-borderless">
                     <tr>
                         <th class="col-4 h3 p-4 blue-font">Main Informations</th>
                     </tr>
                     <tr>
                         <td class="col-8 h5 p-4">
                             <label for="title" class="p-2">Title</label>
-                            <input type="text" name="title" class="border border-1" > <br class="d-none-desktop">
+                            <input type="text" id="title" name="title" class="border border-1" > <br class="d-none-desktop">
                             <label for="price" class="p-2">Price</label>
                             <input type="number" step="0.01" class="border border-1" id="price">
                         </td>
                     </tr>
                 </table>
 
-                <table class="table">
-                    <tr>
-                        <th class="col-4 h3 p-4 blue-font">Categories</th>
-                    </tr>
-                    <tr>
-                        <td class="col-8 h5 p-4">
-                            <label for="category" class="p-2">Category</label>
-                            <input type="text" name="category" class="border border-1" > <br class="d-none-desktop">
-                            <label for="sub_category" class="p-2">Sub Category</label>
-                            <input type="text" name="sub_category" class="border border-1" >
-                        </td>
-                    </tr>
-                </table>
-
-
-                <table class="table">
-                    <tr>
-                        <th class="col-4 h3 p-4 blue-font">About the Listing</th>
-                    </tr>
-                    <tr>
-                        <td class="col-8 h5 p-4">
-                            <label for="obj_condition" class="p-2">Condition</label>
-                            <input type="text" name="obj_condition" class="border border-1" > <br class="d-none-desktop">
-                            <label for="description" class="p-2">Description</label>
-                            <textarea type="text" name="description" class="border border-1" ></textarea>
-                        </td>
-                    </tr>
-                </table>
+                <hr>
 
                 <div class="d-flex flex-column p-4">
 
@@ -114,18 +99,75 @@ ob_start();
 
                 </div>
 
+                <hr>
+
+                <table class="table table-borderless">
+                    <tr>
+                        <th class="col-4 h3 p-4 blue-font">Categories</th>
+                    </tr>
+                    <tr>
+                        <td class="col-8 h5 p-4">
+
+                            <label for="category" class="h5 p-2">Categories</label>
+                            <select id="category" class="h5 p-1 border border-1 rounded-pill mb-2" name="category">
+                                <option>Choose a category..</option>
+                                <?php  for($l=0;$l<=isset($cat[$l]['name']);$l++){ ?>
+                                    <option value="<?=  $cat[$l]['id'];  ?>"> <?= $cat[$l]['name'] ?></option>
+                                <?php } ?>
+                            </select>
+
+                            <label for="subCat" class="h5 p-2">Sub-Categories</label>
+                            <select id="subCat" class="h5 p-1 border border-1 rounded-pill mb-2" name="subCat">
+
+                            </select>
+
+                        </td>
+                    </tr>
+                </table>
+
+
 
                 <hr>
 
-                <table class="table">
+                <table class="table table-borderless">
+                    <tr>
+                        <th class="h3 p-4 blue-font text-nowrap">About the Listing</th>
+                    </tr>
+                    <tr>
+                        <td class="h5 blue-font">Condition</td>
+                    </tr>
+                    <tr class="h5 p-2">
+
+                        <td class="d-flex flex-row d-flex-column-mobile">
+
+                            <input type="checkbox" class="border border-0 ms-3 p-4" name="used" id="used">
+                            <label for="used" class="p-2">Used</label><br>
+
+                            <input type="checkbox" class="border border-0 ms-3 p-4" name="new" id="new">
+                            <label for="new" class="p-2" >Good</label><br>
+
+                            <input type="checkbox" class="border border-0 ms-3 p-4" name="mint" id="mint">
+                            <label for="mint" class="p-2">Mint</label><br>
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="h5 blue-font"><small id="smCond"></small></td>
+                    </tr>
+                </table>
+
+                <hr>
+
+                <table class="table table-borderless">
                     <tr>
                         <th class="col-4 h3 p-4 blue-font">Details</th>
                     </tr>
                     <tr>
                         <td class="col-8 h5 p-4">
-                            <label for="obj_condition" class="p-2">Shipping Method</label>
-                            <input type="text" name="obj_condition" class="border border-1" > <br class="d-none-desktop">
-                            <label for="description" class="p-2">Year</label>
+                            <label for="shipping" class="p-2">Shipping Method</label>
+                            <input type="text" name="shipping" id="shipping" class="border border-1" > <br class="d-none-desktop">
+                            <label for="year" class="p-2">Year</label>
                             <input type="number" class="border border-1" id="year" name="year">
                         </td>
                     </tr>
@@ -134,7 +176,7 @@ ob_start();
                 <hr>
 
                 <div class="d-flex align-items-center justify-content-center">
-                    <button type="submit" class="bg-blue border border-0 rounded-1" name="saveListing">Save Listing</button>
+                    <button type="submit" class="bg-blue border p-2 border-0 mt-2 rounded-1" name="saveListing" id="saveListing">Save Listing</button>
                 </div>
 
             </form>

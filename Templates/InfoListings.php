@@ -32,19 +32,19 @@ ob_start();
 
         <div class="d-flex flex-row d-flex-column-mobile align-items-center justify-content-center flex-wrap">
             <div class="col p-2">
-                <div class="h2">Active</div>
+                <div class="h2 blue-font">Active</div>
                 <div></div>
             </div>
             <div class="col p-2">
-                <div class="h2">Sold</div>
+                <div class="h2 blue-font">Sold</div>
                 <div></div>
             </div>
             <div class="col p-2">
-                <div class="h2">Ended</div>
+                <div class="h2 blue-font">Ended</div>
                 <div></div>
             </div>
             <div class="col p-2">
-                <div class="h2">Total</div>
+                <div class="h2 blue-font">Total</div>
                 <div></div>
             </div>
         </div>
