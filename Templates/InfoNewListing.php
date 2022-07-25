@@ -43,18 +43,25 @@ $cat = array_merge(...array_values($cat));
 
         <!-- MODIFY  -->
         <div class="container row p-4">
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" id="formNewListing">
 
                 <table class="table-borderless">
                     <tr>
                         <th class="col-4 h3 p-4 blue-font">Main Informations</th>
                     </tr>
                     <tr>
-                        <td class="col-8 h5 p-4">
-                            <label for="title" class="p-2">Title</label>
-                            <input type="text" id="title" name="title" class="border border-1" > <br class="d-none-desktop">
-                            <label for="price" class="p-2">Price</label>
-                            <input type="number" step="0.01" class="border border-1" id="price">
+                        <td class="col-8 h5 p-4 d-flex flex-row">
+                            <div>
+                                <label for="title" class="p-2">Title</label>
+                                <input type="text" id="title" name="title" class="border border-1" > <br>
+                                <small></small>
+                            </div>
+                            <div>
+                                <label for="price" class="p-2">Price</label>
+                                <input type="number" step="0.01" class="border border-1" id="price"> <br>
+                                <small></small>
+                            </div>
+
                         </td>
                     </tr>
                 </table>
@@ -96,6 +103,7 @@ $cat = array_merge(...array_values($cat));
                         </div>
 
                     </div>
+                    <small class="h6" id="imgListSmall"></small>
 
                 </div>
 
@@ -110,16 +118,18 @@ $cat = array_merge(...array_values($cat));
 
                             <label for="category" class="h5 p-2">Categories</label>
                             <select id="category" class="h5 p-1 border border-1 rounded-pill mb-2" name="category">
-                                <option>Choose a category..</option>
                                 <?php  for($l=0;$l<=isset($cat[$l]['name']);$l++){ ?>
                                     <option value="<?=  $cat[$l]['id'];  ?>"> <?= $cat[$l]['name'] ?></option>
                                 <?php } ?>
                             </select>
+                            <small></small>
+
 
                             <label for="subCat" class="h5 p-2">Sub-Categories</label>
                             <select id="subCat" class="h5 p-1 border border-1 rounded-pill mb-2" name="subCat">
-
+                                <!-- Options JS here -->
                             </select>
+                            <small></small>
 
                         </td>
                     </tr>
@@ -160,17 +170,40 @@ $cat = array_merge(...array_values($cat));
                 <hr>
 
                 <table class="table table-borderless">
+
                     <tr>
                         <th class="col-4 h3 p-4 blue-font">Details</th>
                     </tr>
+
                     <tr>
-                        <td class="col-8 h5 p-4">
+
+                        <td class="col-4 h5 p-4">
                             <label for="shipping" class="p-2">Shipping Method</label>
-                            <input type="text" name="shipping" id="shipping" class="border border-1" > <br class="d-none-desktop">
+
+                            <div class="row">
+
+                                <div>
+                                    <input type="checkbox" class="border border-0 p-2" name="hands" id="hands">
+                                    <label for="hands" class="p-2">Hands</label><br>
+                                </div>
+                                <div>
+                                    <input type="checkbox" class="border border-0 p-2" name="delivery" id="delivery">
+                                    <label for="delivery" class="p-2">Delivery</label><br>
+                                </div>
+
+                            </div>
+                            <small id="smShip"></small>
+
+                        </td>
+                        <td  class="col-4 h5 p-4">
+
                             <label for="year" class="p-2">Year</label>
                             <input type="number" class="border border-1" id="year" name="year">
+
                         </td>
+
                     </tr>
+
                 </table>
 
                 <hr>

@@ -8,14 +8,14 @@ use Application\Models\Database\Database;
 
 Class SubCategories extends Database
 {
-    public function getAllSubCategories()
+    public function getAllSubCategories(): bool|array
     {
         $sql = "SELECT * FROM sub_categories";
         $result = $this->selectQuery($sql);
         return $result->fetchAll();
     }
 
-    public function getAllSubCategoriesByCat(mixed $subCat)
+    public function getAllSubCategoriesByCat(mixed $subCat): bool|array
     {
         $sql = "SELECT * FROM sub_categories WHERE id_categories = :id";
         $params = [':id' => $subCat ];

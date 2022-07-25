@@ -8,17 +8,19 @@ require_once('Application/Controllers/Signup.php');
 require_once('Application/Controllers/Signin.php');
 require_once('Application/Controllers/Categories.php');
 require_once('Application/Controllers/SubCategories.php');
+require_once('Application/Controllers/Listing.php');
 
 
 use Application\Controllers\Categories\Categories;
-use Application\Controllers\Profile\Profile;
-use Application\Controllers\SubCategories;
-use Application\Controllers\User\User;
-use Application\Controllers\Homepage\Homepage;
 use Application\Controllers\Header\Header;
+use Application\Controllers\Homepage\Homepage;
+use Application\Controllers\Listing\Listing;
 use Application\Controllers\Profile\Details;
+use Application\Controllers\Profile\Profile;
 use Application\Controllers\Signin\Signin;
 use Application\Controllers\Signup\Signup;
+use Application\Controllers\SubCategories;
+use Application\Controllers\User\User;
 use Application\Lib\Token\Token;
 
 
@@ -215,6 +217,41 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     $subCat = (new SubCategories)->getAllSubCategoriesByCat($_POST['subId']);
     print_r(json_encode($subCat));
 
+} elseif(   isset($_POST['title']) &&
+            isset($_POST['price']) &&
+            isset($_POST['category']) &&
+            isset($_POST['subCat']) &&
+            isset($_POST['description']) &&
+            isset($_POST['used']) &&
+            isset($_POST['good']) &&
+            isset($_POST['mint']) &&
+            isset($_POST['img1']) &&
+            isset($_POST['img2']) &&
+            isset($_POST['img3']) &&
+            isset($_POST['img4']) &&
+            isset($_POST['hands']) &&
+            isset($_POST['delivery']) &&
+            isset($_POST['year']) &&
+            isset($_POST['saveNewListing'])){
+
+    $title = filter_var($_POST['title'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $price = filter_var($_POST['price'],FILTER_SANITIZE_NUMBER_FLOAT);
+    $category = filter_var($_POST['category'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $subCat = filter_var($_POST['subCat'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $description = filter_var($_POST['description'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $used = $_POST['used'];
+    $good = $_POST['good'];
+    $mint = $_POST['mint'];
+    $img1 = $_POST['img1'];
+    $img2 = $_POST['img2'];
+    $img3 = $_POST['img3'];
+    $img4 = $_POST['img4'];
+    $hands = $_POST['hands'];
+    $delivery = $_POST['delivery'];
+    $year = filter_var($_POST['year'],FILTER_SANITIZE_NUMBER_INT);
+
+    print_r((new Listing)->validateListing( $title, $price, $category, $subCat, $description, $used, $good, $mint, $img1, $img2, $img3, $img4, $hands, $delivery, $year ));
+    
 } else {
 
     require_once('Application/Controllers/Homepage.php');

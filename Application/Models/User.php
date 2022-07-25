@@ -66,7 +66,7 @@ Class User extends Database{
         $this->selectQuery($sql, $params);
     }
 
-    public function getAddress(mixed $id)
+    public function getAddress(mixed $id): bool|array
     {
         $sql = "SELECT address FROM users WHERE id = :id";
         $params = [':id' => $id ];
@@ -74,7 +74,7 @@ Class User extends Database{
         return $result->fetchAll();
     }
 
-    public function getAllInfosByid(mixed $id)
+    public function getAllInfosByid(mixed $id): bool|array
     {
         $sql = "SELECT * FROM users WHERE id = :id";
         $params = [':id' => $id ];

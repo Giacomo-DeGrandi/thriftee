@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded',function() {
     // SELECT my INS
     // ins sign up
 
+    let formNewListing = document.querySelector('#formNewListing');
+
     let title = document.querySelector('#title');
     let price = document.querySelector('#price');
     let cat = document.querySelector('#category');
@@ -16,11 +18,17 @@ document.addEventListener('DOMContentLoaded',function() {
     let smCond = document.querySelector('#smCond');
 
     let desc = document.querySelector('#description');
+
     let pic1 = document.querySelector('#add_pic_1');
     let pic2 = document.querySelector('#add_pic_2');
     let pic3 = document.querySelector('#add_pic_3');
     let pic4 = document.querySelector('#add_pic_4');
-    let shipping = document.querySelector('#shipping');
+    let imgListSmall = document.querySelector('#imgListSmall');
+
+    let hands = document.querySelector('#hands');
+    let delivery = document.querySelector('#delivery');
+    let smShip = document.querySelector('#smShip');
+
     let year = document.querySelector('#year');
     let save = document.querySelector('#saveListing');
 
@@ -35,8 +43,6 @@ document.addEventListener('DOMContentLoaded',function() {
 
         if(opCat !== ''){
 
-            subCat.style.display = 'inline-block'
-
             let subData = new FormData();
 
             subData.append('subId', opCat);
@@ -48,6 +54,8 @@ document.addEventListener('DOMContentLoaded',function() {
                 .then(r => r.json())
                 .then(d => {
 
+                    subCat.style.display = 'inline-block'
+
                     for( let i = 0; i < d.length ; i++ )
                     {
                         let options = document.createElement('option')
@@ -55,7 +63,6 @@ document.addEventListener('DOMContentLoaded',function() {
                             options.value = d[i].id
                             options.textContent = d[i].name
                             subCat.appendChild(options);
-
                     }
 
                 })
@@ -98,7 +105,7 @@ document.addEventListener('DOMContentLoaded',function() {
         // max num of chars
         let max = 30
         // take away spaces
-        let titleV = title.value.trim();
+        let titleV = title.value;
 
         // test if required function is valid else give an error
         if (!isRequired(titleV)) {
@@ -109,6 +116,30 @@ document.addEventListener('DOMContentLoaded',function() {
             // else validate the input
         } else {
             showValids(title)
+            isValid = true
+        }
+        return isValid
+    }
+
+    const testValidDesc = () => {
+        // initialise my valide condition to false to test the errors
+        let isValid = false
+        // min num of chars
+        let min = 10
+        // max num of chars
+        let max = 2500
+        // take away spaces
+        let descV = desc.value;
+
+        // test if required function is valid else give an error
+        if (!isRequired(descV)) {
+            showErrors(desc, 'Description can\'t be blank')
+            // test if the length is at least 3ch and the max is 15ch
+        } else if (!validateDesc(descV) ||!isBetween(descV.length, min, max)) {
+            showErrors(desc, 'Description has to be between 10 and 2500 characters')
+            // else validate the input
+        } else {
+            showValids(desc)
             isValid = true
         }
         return isValid
@@ -126,7 +157,7 @@ document.addEventListener('DOMContentLoaded',function() {
             showErrors(price, 'Price can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
         } else if (!validatePrice(priceV)) {
-            showErrors(price, 'Price can contain only numbers')
+            showErrors(price, 'Price can\'t be neither negative or 0')
             // else validate the input
         } else {
             showValids(price)
@@ -140,7 +171,7 @@ document.addEventListener('DOMContentLoaded',function() {
         let isValid = false
 
         // take away spaces
-        let catV = cat.value.trim();
+        let catV = cat.value;
 
         // test if required function is valid else give an error
         if (!isRequired(catV)) {
@@ -153,60 +184,68 @@ document.addEventListener('DOMContentLoaded',function() {
         return isValid
     }
 
-    const testValidZipCode = () => {
-
+    const testValidSubCategory = () => {
         // initialise my valide condition to false to test the errors
         let isValid = false
-        // min num of chars
-        let min = 2
-        // max num of chars
-        let max = 7
+
         // take away spaces
-        let zipCodeVal = zipCode.value.trim();
+        let subCatV = subCat.value;
 
         // test if required function is valid else give an error
-        if (!isRequired(zipCodeVal)) {
-            showErrors(zipCode, 'Zip code can\'t be blank')
+        if (!isRequired(subCatV)) {
+            showErrors(subCat, 'Sub Category can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
-        } else if (!validateZipCode(zipCodeVal) ||!isBetween(zipCodeVal.length, min, max)) {
-            showErrors(zipCode, 'Invalid Zip Code')
-            // else validate the input
         } else {
-            showValids(zipCode)
+            showValids(subCat)
             isValid = true
         }
         return isValid
     }
 
-    const testValidBios = () => {
+    const testValidShippingMethod = () => {
 
         // initialise my valide condition to false to test the errors
         let isValid = false
-        // min num of chars
-        let min = 0
-        // max num of chars
-        let max = 500
-        // take away spaces
-        let biosVal = bios.value.trim();
+
+        let handsV = hands.checked
+        let deliveryV = delivery.checked
+
+        if (!handsV && !deliveryV) {
+            smShip.textContent =  'You have to choose at least one shipping method. '
+        } else if(handsV && deliveryV){
+            smShip.textContent =  'You can choose at max one shipping method, you\'ll be able to discuss it later with the seller.'
+        } else {
+            smShip.textContent =  'Ok!'
+            isValid = true;
+        }
+        return isValid
+    }
+
+    const testValidYears = () => {
+
+        // initialise my valide condition to false to test the errors
+        let isValid = false
+
+        let yearV = year.value;
 
         // test if required function is valid else give an error
-        if (!validateBios(biosVal) || !isBetween(biosVal.length, min, max)) {
-            showErrors(bios, 'Bios can have max 500 characters and can contain only  .,_ \'?!-  , without quotes.')
+        if (!validateYear(yearV)) {
+            showErrors(year, 'You can\'t have a product that it\'s not out yet!')
             // else validate the input
         } else {
-            showValids(bios)
+            showValids(year)
             isValid = true
         }
         return isValid
     }
 
 
-    const testValidImage = () => {
+    const testValidImage = (pic) => {
 
         // initialise my valid condition to false to test the errors
         let isValid = false
 
-        let fileDetails = file.files[0];
+        let fileDetails = pic.files[0];
 
         // whitelist valid extensions
         let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif'];
@@ -216,18 +255,18 @@ document.addEventListener('DOMContentLoaded',function() {
         let fileType = fileDetails.type.replace('image/', '')
 
         if (!isRequired(fileDetails)) {
-            imgSmall.textContent = 'Choose a profile picture please'
+            imgListSmall.textContent = 'Choose a profile picture please'
             // test if the length is at least 3ch and the max is 15ch
         } else if (!found) {
-            imgSmall.textContent = 'Invalid file type'
+            imgListSmall.textContent = 'Invalid file type'
         } else if (!validExtensions.includes(fileType)) {
-            imgSmall.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\' are allowed '
+            imgListSmall.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\' are allowed '
         } else if (fileDetails.size === 0 || fileDetails.size > 1000000) {
-            imgSmall.textContent = '1MB is the max size allowed per picture'
+            imgListSmall.textContent = '1MB is the max size allowed per picture'
         } else {
             //uploadBtn.style.pointerEvents = "auto";
             //uploadBtn.style.backgroundColor = "#F1641E";
-            imgSmall.textContent = '✔ loaded';
+            imgListSmall.textContent = '✔ loaded';
 
             isValid = true
         }
@@ -235,7 +274,6 @@ document.addEventListener('DOMContentLoaded',function() {
         return isValid
 
     }
-
 
 
     const isRequired = (value) => {
@@ -258,9 +296,22 @@ document.addEventListener('DOMContentLoaded',function() {
 
     const validatePrice = (price) => {
         const re = /^[0-9.,]*$/
+        if(price==='0'){
+            return false;
+        }
         return re.test(price);
     }
 
+
+    const validateYear = (year) => {
+        const goodYear = new Date();
+        const nowY = goodYear.getFullYear();
+        if(year > nowY){
+            return false;
+        } else {
+            return true;
+        }
+    }
 
 
     // Validation showing function if is valid remove the invalid class and add is_valid
@@ -287,27 +338,59 @@ document.addEventListener('DOMContentLoaded',function() {
 
     // Listen to the inputs for callback
 
-    formDetails.addEventListener('input', function (e) {
+    formNewListing.addEventListener('input', function (e) {
 
         switch (e.target.id) {
-            case 'address':
-                testValidAddress();
+
+            case 'title':
+                testValidTitle();
                 break;
-            case 'city':
-                testValidCity();
+
+            case 'price':
+                testValidPrice();
                 break;
-            case 'zipCode':
-                testValidZipCode();
+
+            case 'category':
+                testValidCategory();
+                break
+
+            case 'subCat':
+                testValidSubCategory();
                 break;
-            case 'bios':
-                testValidBios();
+
+            case 'description':
+                testValidDesc();
                 break;
-            case 'sellerBox':
-            case 'buyerBox':
-                testValidBoxes();
+
+            case 'year':
+                testValidYears();
                 break;
-            case 'myFile':
-                testValidImage();
+
+            case 'hands':
+            case 'delivery':
+                testValidShippingMethod();
+                break;
+
+            case 'used':
+            case 'good':
+            case 'mint':
+                testValidCondition();
+                break;
+
+            case 'add_pic_1':
+                testValidImage(pic1);
+                break;
+
+            case 'add_pic_2':
+                testValidImage(pic2);
+                break;
+
+            case 'add_pic_3':
+                testValidImage(pic3);
+                break;
+
+            case 'add_pic_4':
+                testValidImage(pic4);
                 break;
         }
 
@@ -315,47 +398,55 @@ document.addEventListener('DOMContentLoaded',function() {
 
 
 
-    saveDetails.addEventListener('click', function (event) {
+    save.addEventListener('click', function (event) {
 
         event.preventDefault()
 
-        let addressV = testValidCity(),
-            cityV = testValidAddress(),
-            zipCodeV = testValidZipCode(),
-            biosV = testValidBios(),
-            sellerV = testValidBoxes(),
-            buyerV = testValidBoxes(),
-            myFileV = testValidImage();
+        let titleVal = testValidTitle(),
+            priceVal = testValidPrice(),
+            catVal = testValidCategory(),
+            subCatVal = testValidSubCategory(),
+            descVal = testValidDesc(),
+            yearVal = testValidYears(),
+            shipVal = testValidShippingMethod(),
+            imgVal1 = testValidImage(),
+            imgVal2 = testValidImage(),
+            imgVal3 = testValidImage(),
+            imgVal4 = testValidImage();
 
-        let isFormValid = addressV && cityV && zipCodeV && biosV && (sellerV || buyerV) && myFileV
 
-        let upData = new FormData();
+        let isListingValid = titleVal && priceVal && catVal && subCatVal
+                          && descVal && yearVal && shipVal && imgVal1
+                            && imgVal2 && imgVal3 && imgVal4;
 
-        upData.append('tokenD', token.value);
-        upData.append('address', address.value);
-        upData.append('city', city.value);
-        upData.append('zipCode', zipCode.value);
-        upData.append('bios', bios.value);
-        upData.append('seller', seller.checked);
-        upData.append('buyer', buyer.checked);
-        upData.append('upload',file.files[0]);
-        upData.append('saveDetails', 'true');
+        let newListData = new FormData();
 
-        if(isFormValid){
+        newListData.append('title', title.value);
+        newListData.append('price', price.value);
+        newListData.append('category', cat.value);
+        newListData.append('subCat', subCat.value);
+        newListData.append('description', desc.value);
+        newListData.append('used', used.checked);
+        newListData.append('good', good.checked);
+        newListData.append('mint',mint.checked);
+        newListData.append('img1', pic1.files[0]);
+        newListData.append('img2', pic2.files[0]);
+        newListData.append('img3', pic3.files[0]);
+        newListData.append('img4', pic4.files[0]);
+        newListData.append('hands',hands.checked);
+        newListData.append('delivery',delivery.checked)
+        newListData.append('year',year.value)
+        newListData.append('saveNewListing', 'true');
+
+        if(isListingValid){
 
             fetch("index.php", {
                 method: 'POST',
-                body: upData
+                body: newListData
             })
                 .then(r => r.json())
                 .then(d => {
-                    if (d === 'setted') {
-                        window.location = "index?profile";
-                    } else {
-                        console.log(d);
-                        let errors = document.querySelector('#errors');
-                        errors.textContent = 'Invalid , please reload the page and try again';
-                    }
+                    console.log(d);
                 })
         }
 
