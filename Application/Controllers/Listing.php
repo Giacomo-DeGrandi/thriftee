@@ -2,6 +2,8 @@
 
 namespace Application\Controllers\Listing;
 
+require_once('Application/Models/Listing.php');
+
 use Application\Controllers\Controller\Controller;
 use Application\Models\Listing\Listing as ListingModel;
 use Application\Controllers\User\User;
@@ -9,15 +11,13 @@ use Application\Controllers\User\User;
 class Listing extends Controller
 {
 
-    public function validateListing(mixed $title, mixed $price, mixed $category, mixed $subCat, mixed $description, mixed $year): bool|array
+    public function validateListing(mixed $title, mixed $price, mixed $category, mixed $subCat, mixed $description, mixed $year, array $errors): bool|array
     {
-        $errors = [];
-
         // check for errors in user inputs and count them
         if (empty($title)) {
             $errors[] = "Title is required";
         }
-        if (!preg_match('/^[a-zA-Z]*$/', $title)) {
+        if (!preg_match('/^[a-zA-Z0-9 ]*$/', $title)) {
             $errors[] = "You can't use special characters in title field";
         }
         if (strlen($title) < 3 || strlen($title) > 30) {
@@ -55,16 +55,16 @@ class Listing extends Controller
 
             unset($_SESSION["token"]);
             unset($_SESSION["token-expire"]);
-            return  true;
+            return  [$errors, true];
 
         } else {
-            return  false;
+            return  [$errors, false];
         }
 
     }
 
 
-    public function validateCondition(mixed $used, mixed $good, mixed $mint): array
+    public function validateCondition(mixed $used, mixed $good, mixed $mint, array $errors): array
     {
 
         if ($used === 'false' && $good === 'false' && $mint === 'false') {
@@ -94,7 +94,7 @@ class Listing extends Controller
         return [$errors, $cond];
     }
 
-    public function validateShipping(mixed $hands, mixed $delivery): array
+    public function validateShipping(mixed $hands, mixed $delivery, array $errors): array
     {
         if ($hands == 'false' && $delivery == 'false') {
             $errors [] = 'You have to chose at least one shipping method';
@@ -115,6 +115,11 @@ class Listing extends Controller
     public function registerListing(mixed $id, mixed $title, mixed $price, mixed $category, mixed $subCat, mixed $description, mixed $cond, mixed $ship, mixed $year, mixed $newFilepath1, mixed $newFilepath2, mixed $newFilepath3, mixed $newFilepath4)
     {
         (new ListingModel)->registerListing($id,$title,$price,$category,$subCat,$description,$cond,$ship,$year,$newFilepath1,$newFilepath2,$newFilepath3,$newFilepath4);
+    }
+
+    public function getAllListingByUser(mixed $id): bool|array
+    {
+        return (new ListingModel)->getAllListingByUser($id);
     }
 
 

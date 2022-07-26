@@ -50,7 +50,7 @@ $cat = array_merge(...array_values($cat));
                         <th class="col-4 h3 p-4 blue-font">Main Informations</th>
                     </tr>
                     <tr>
-                        <td class="col-8 h5 p-4 d-flex flex-row">
+                        <td class="col-8 h5 p-4 d-flex d-flex-column-mobile">
                             <div>
                                 <label for="title" class="p-2">Title</label>
                                 <input type="text" id="title" name="title" class="border border-1" > <br>
@@ -59,6 +59,16 @@ $cat = array_merge(...array_values($cat));
                             <div>
                                 <label for="price" class="p-2">Price</label>
                                 <input type="number" step="0.01" class="border border-1" id="price"> <br>
+                                <small></small>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-8 h5 p-4 d-flex flex-row">
+                            <div>
+                                <label for="description" class="p-2">Description</label><br>
+                                <textarea id="description" name="description" class="border border-1" ></textarea><br>
                                 <small></small>
                             </div>
 
@@ -74,36 +84,43 @@ $cat = array_merge(...array_values($cat));
 
                     <div class="d-flex flex-row d-flex-column-mobile">
 
-                        <div class="col">
+                        <div class="col p-1">
                             <label for="add_pic_1"  class="bg-white orange-font p-2 hover-underline-animation">
-                                add pic 1 +
+                                add #1 +
                                 <input type="file" id="add_pic_1" class="d-none" name="add_pic_1"/>
                             </label>
                         </div>
 
-                        <div class="col">
+                        <div class="col p-1">
                             <label for="add_pic_2"  class="bg-white orange-font p-2 hover-underline-animation">
-                                add pic 2 +
+                                add #2 +
                                 <input type="file" id="add_pic_2" class="d-none" name="add_pic_2"/>
                             </label>
                         </div>
 
-                        <div class="col">
+                        <div class="col p-1">
                             <label for="add_pic_3"  class="bg-white orange-font p-2 hover-underline-animation">
-                                add pic 3 +
+                                add #3 +
                                 <input type="file" id="add_pic_3" class="d-none" name="add_pic_3"/>
                             </label>
                         </div>
 
-                        <div class="col">
+                        <div class="col p-1">
                             <label for="add_pic_4"  class="bg-white orange-font p-2 hover-underline-animation">
-                                add pic 4 +
+                                add #4 +
                                 <input type="file" id="add_pic_4" class="d-none" name="add_pic_4"/>
                             </label>
                         </div>
 
                     </div>
-                    <small class="h6" id="imgListSmall"></small>
+
+                    <div class="d-flex flex-row d-flex-column-mobile">
+                        <small class="h6 col" id="imgListSmall1"></small>
+                        <small class="h6 col" id="imgListSmall2"></small>
+                        <small class="h6 col" id="imgListSmall3"></small>
+                        <small class="h6 col" id="imgListSmall4"></small>
+                    </div>
+
 
                 </div>
 
@@ -149,15 +166,17 @@ $cat = array_merge(...array_values($cat));
                     <tr class="h5 p-2">
 
                         <td class="d-flex flex-row d-flex-column-mobile">
-
+                            <label for="used" class="p-2">Used
                             <input type="checkbox" class="border border-0 ms-3 p-4" name="used" id="used">
-                            <label for="used" class="p-2">Used</label><br>
+                            </label><br>
 
+                            <label for="good" class="p-2" >Good
                             <input type="checkbox" class="border border-0 ms-3 p-4" name="good" id="good">
-                            <label for="good" class="p-2" >Good</label><br>
+                            </label><br>
 
+                            <label for="mint" class="p-2">Mint
                             <input type="checkbox" class="border border-0 ms-3 p-4" name="mint" id="mint">
-                            <label for="mint" class="p-2">Mint</label><br>
+                            </label><br>
 
                         </td>
 
@@ -177,7 +196,7 @@ $cat = array_merge(...array_values($cat));
 
                     <tr>
 
-                        <td class="col-4 h5 p-4">
+                        <td class="col-4 h5 p-4 d-flex-column-mobile">
                             <label for="shipping" class="p-2">Shipping Method</label>
 
                             <div class="row">
@@ -192,14 +211,11 @@ $cat = array_merge(...array_values($cat));
                                 </div>
 
                             </div>
-                            <small id="smShip"></small>
+                            <small id="smShip"></small><br>
 
-                        </td>
-                        <td  class="col-4 h5 p-4">
-
-                            <label for="year" class="p-2">Year</label>
-                            <input type="number" class="border border-1" id="year" name="year">
-
+                            <label for="year" class="p-2 mt-2">Year</label>
+                            <input type="number" class="border border-1" id="year" name="year"><br>
+                            <small></small>
                         </td>
 
                     </tr>

@@ -122,10 +122,10 @@ class User
         return [$errors, $rights];
     }
 
-    public function uploadImage(array $errors): array
+    public function uploadImage(array $errors, string $nameCmd): array
     {
         // FILE
-        $filepath = $_FILES['upload']['tmp_name'];
+        $filepath = $_FILES[$nameCmd]['tmp_name'];
         $fileSize = filesize($filepath);
         $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
         $filetype = finfo_file($fileinfo, $filepath);
@@ -137,7 +137,7 @@ class User
             $errors [] = 'Max size allowed 1MB';
         }
 
-        $allowedTypes = ['image/png' => 'png', 'image/jpeg' => 'jpg', 'image/svg+xml' => 'svg', 'image/gif' => 'gif'];
+        $allowedTypes = ['image/png' => 'png', 'image/jpeg' => 'jpg', 'image/svg+xml' => 'svg', 'image/gif' => 'gif', 'image/webp' => 'webp'];
 
         if (!in_array($filetype, array_keys($allowedTypes))) {
             $errors [] = "File not allowed.";

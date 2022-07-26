@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded',function() {
     let pic2 = document.querySelector('#add_pic_2');
     let pic3 = document.querySelector('#add_pic_3');
     let pic4 = document.querySelector('#add_pic_4');
-    let imgListSmall = document.querySelector('#imgListSmall');
+
 
     let hands = document.querySelector('#hands');
     let delivery = document.querySelector('#delivery');
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded',function() {
         } else if( mintV && goodV && usedV || mintV && usedV || usedV && goodV || mintV && goodV){
             smCond.innerHTML =  'You can choose at max one condition for this offer.'
         } else {
-            smCond.innerHTML =  'Good choice!'
+            smCond.innerHTML =  'Perfect!'
             isValid = true;
         }
         return isValid
@@ -247,33 +247,44 @@ document.addEventListener('DOMContentLoaded',function() {
     }
 
 
-    const testValidImage = (pic) => {
+    const testValidImage1 = () => {       // num is used to define the right id
+
 
         // initialise my valid condition to false to test the errors
         let isValid = false
 
-        let fileDetails = pic.files[0];
+        let fileDetails1 = pic1.files[0];
 
         // whitelist valid extensions
         let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif'];
         // check for type match
         let imgDef = 'image/';
-        const found = fileDetails.type.match(imgDef);
-        let fileType = fileDetails.type.replace('image/', '')
 
-        if (!isRequired(fileDetails)) {
-            imgListSmall.textContent = 'Choose a profile picture please'
+        const found1 = fileDetails1.type.match(imgDef);
+        let fileType1 = fileDetails1.type.replace('image/', '')
+        let imgListSmall1 = document.querySelector('#imgListSmall1');
+
+
+        if (!isRequired(fileDetails1)) {
+            imgListSmall1.textContent = 'Choose 4 offer pictures please'
             // test if the length is at least 3ch and the max is 15ch
-        } else if (!found) {
-            imgListSmall.textContent = 'Invalid file type'
-        } else if (!validExtensions.includes(fileType)) {
-            imgListSmall.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\' are allowed '
-        } else if (fileDetails.size === 0 || fileDetails.size > 1000000) {
-            imgListSmall.textContent = '1MB is the max size allowed per picture'
-        } else {
+
+        } else if (!found1) {
+            imgListSmall1.textContent = 'Invalid file type'
+
+        } else if (!validExtensions.includes(fileType1)) {
+
+            imgListSmall1.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\' are allowed '
+
+        } else if ( fileDetails1.size === 0 || fileDetails1.size > 1000000) {
+
+            imgListSmall1.textContent = '1MB is the max size allowed per picture'
+
+        }  else {
             //uploadBtn.style.pointerEvents = "auto";
             //uploadBtn.style.backgroundColor = "#F1641E";
-            imgListSmall.textContent = '✔ loaded';
+            imgListSmall1.textContent = '✔ loaded';
+
 
             isValid = true
         }
@@ -281,6 +292,147 @@ document.addEventListener('DOMContentLoaded',function() {
         return isValid
 
     }
+
+
+    const testValidImage2 = () => {       // num is used to define the right id
+
+
+        // initialise my valid condition to false to test the errors
+        let isValid = false
+
+        let fileDetails2 = pic2.files[0];
+
+
+        // whitelist valid extensions
+        let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif'];
+        // check for type match
+        let imgDef = 'image/';
+
+
+        const found2 = fileDetails2.type.match(imgDef);
+        let fileType2 = fileDetails2.type.replace('image/', '')
+        let imgListSmall2 = document.querySelector('#imgListSmall2');
+
+
+
+        if (!isRequired(fileDetails2)) {
+            imgListSmall2.textContent = 'Choose 4 offer pictures please'
+            // test if the length is at least 3ch and the max is 15ch
+
+        } else if (!found2) {
+            imgListSmall2.textContent = 'Invalid file type'
+
+        }  else if (!validExtensions.includes(fileType2)) {
+
+            imgListSmall2.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\' are allowed '
+
+        }  else if ( fileDetails2.size === 0 || fileDetails2.size > 1000000) {
+
+            imgListSmall2.textContent = '1MB is the max size allowed per picture'
+
+        }  else {
+
+
+            imgListSmall2.textContent = '✔ loaded';
+
+
+            isValid = true
+        }
+
+        return isValid
+
+    }
+
+    const testValidImage3 = () => {       // num is used to define the right id
+
+
+        // initialise my valid condition to false to test the errors
+        let isValid = false
+
+        let fileDetails3 = pic3.files[0];
+
+        // whitelist valid extensions
+        let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif'];
+        // check for type match
+        let imgDef = 'image/';
+
+        const found3 = fileDetails3.type.match(imgDef);
+        let fileType3 = fileDetails3.type.replace('image/', '')
+        let imgListSmall3 = document.querySelector('#imgListSmall3');
+
+
+        if (!isRequired(fileDetails3)) {
+            imgListSmall3.textContent = 'Choose 4 offer pictures please'
+            // test if the length is at least 3ch and the max is 15ch
+
+        } else if (!found3) {
+            imgListSmall3.textContent = 'Invalid file type'
+
+        } else if (!validExtensions.includes(fileType3)) {
+
+            imgListSmall3.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\' are allowed '
+
+        }  else if ( fileDetails3.size === 0 || fileDetails3.size > 1000000) {
+
+            imgListSmall3.textContent = '1MB is the max size allowed per picture'
+
+        } else {
+
+            imgListSmall3.textContent = '✔ loaded';
+
+
+            isValid = true
+        }
+
+        return isValid
+
+    }
+
+    const testValidImage4 = () => {       // num is used to define the right id
+
+
+        // initialise my valid condition to false to test the errors
+        let isValid = false
+
+        let fileDetails4 = pic4.files[0];
+
+        // whitelist valid extensions
+        let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif'];
+        // check for type match
+        let imgDef = 'image/';
+
+
+        const found4 = fileDetails4.type.match(imgDef);
+        let fileType4 = fileDetails4.type.replace('image/', '')
+        let imgListSmall4 = document.querySelector('#imgListSmall4');
+
+
+        if (!isRequired(fileDetails4)) {
+            imgListSmall4.textContent = 'Choose 4 offer pictures please'
+            // test if the length is at least 3ch and the max is 15ch
+
+        }  else if (!found4) {
+            imgListSmall4.textContent = 'Invalid file type'
+
+        } else if (!validExtensions.includes(fileType4)) {
+
+            imgListSmall4.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\' are allowed '
+
+        }  else if ( fileDetails4.size === 0 || fileDetails4.size > 1000000) {
+
+            imgListSmall4.textContent = '1MB is the max size allowed per picture'
+
+        } else {
+
+            imgListSmall4.textContent = '✔ loaded';
+
+            isValid = true
+        }
+
+        return isValid
+
+    }
+
 
 
     const isRequired = (value) => {
@@ -385,20 +537,18 @@ document.addEventListener('DOMContentLoaded',function() {
                 break;
 
             case 'add_pic_1':
-                testValidImage(pic1);
+                testValidImage1();
                 break;
-
             case 'add_pic_2':
-                testValidImage(pic2);
+                testValidImage2();
                 break;
-
             case 'add_pic_3':
-                testValidImage(pic3);
+                testValidImage3();
+                break;
+            case 'add_pic_4':
+                testValidImage4();
                 break;
 
-            case 'add_pic_4':
-                testValidImage(pic4);
-                break;
         }
 
     })
@@ -416,10 +566,10 @@ document.addEventListener('DOMContentLoaded',function() {
             descVal = testValidDesc(),
             yearVal = testValidYears(),
             shipVal = testValidShippingMethod(),
-            imgVal1 = testValidImage(),
-            imgVal2 = testValidImage(),
-            imgVal3 = testValidImage(),
-            imgVal4 = testValidImage();
+            imgVal1 = testValidImage1(),
+            imgVal2 = testValidImage2(),
+            imgVal3 = testValidImage3(),
+            imgVal4 = testValidImage4();
 
 
         let isListingValid = titleVal && priceVal && catVal && subCatVal
@@ -454,7 +604,7 @@ document.addEventListener('DOMContentLoaded',function() {
                 .then(r => r.json())
                 .then(d => {
                     if (d === 'setted') {
-                        window.location = "index?InfoListing";
+                        window.location = "index?InfoListings";
                     } else {
 
                         let mainError = document.querySelector('#mainError');

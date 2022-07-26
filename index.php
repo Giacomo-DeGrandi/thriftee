@@ -143,7 +143,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
             $errors = [];
 
-            $errors_newFilepath = (new User)->uploadImage($errors);
+            $errors_newFilepath = (new User)->uploadImage($errors,'upload');
             $errors = $errors_newFilepath[0];
             $newFilepath = $errors_newFilepath[1];
 
@@ -206,6 +206,8 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $_SESSION['token'] = (new Token)->generateToken();
         $_SESSION['token-expire'] = (new Token)->generateExpiration();
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+        $listingInfos = (new Listing)->getAllListingByUser($_SESSION['id']);
+        $userInfos = [$userInfos,$listingInfos];
         $profile->showInfo($userInfos,'InfoListings');
 
 } elseif(isset($_GET['infoProfile'])){           //    <----------- General Setting
@@ -238,17 +240,36 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
             isset($_POST['category']) &&
             isset($_POST['subCat']) &&
             isset($_POST['description']) &&
-            isset($_POST['used']) &&
-            isset($_POST['good']) &&
+            isset($_POST['used']) ||
+            isset($_POST['good']) ||
             isset($_POST['mint']) &&
-            isset($_POST['img1']) &&
-            isset($_POST['img2']) &&
-            isset($_POST['img3']) &&
-            isset($_POST['img4']) &&
-            isset($_POST['hands']) &&
+            isset($_FILES['img1']) &&
+            isset($_FILES['img2']) &&
+            isset($_FILES['img3']) &&
+            isset($_FILES['img4']) &&
+            isset($_POST['hands']) ||
             isset($_POST['delivery']) &&
             isset($_POST['year']) &&
             isset($_POST['saveNewListing'])){
+
+    /*
+    var_dump($_POST['title']);
+    var_dump($_POST['price']);
+    var_dump($_POST['category']);
+    var_dump($_POST['subCat']);
+    var_dump($_POST['description']);
+    var_dump($_POST['used']);
+    var_dump($_POST['good']);
+    var_dump($_POST['mint']);
+    var_dump($_FILES['img1']);
+    var_dump($_FILES['img2']);
+    var_dump($_FILES['img3']);
+    var_dump($_FILES['img4']);
+    var_dump($_POST['hands']);
+    var_dump($_POST['delivery']);
+    var_dump($_POST['year']);
+    var_dump($_POST['saveNewListing']);
+    */
 
     $title = filter_var($_POST['title'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $price = filter_var($_POST['price'],FILTER_SANITIZE_NUMBER_FLOAT);
@@ -258,45 +279,47 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     $used = $_POST['used'];
     $good = $_POST['good'];
     $mint = $_POST['mint'];
-    $img1 = $_POST['img1'];
-    $img2 = $_POST['img2'];
-    $img3 = $_POST['img3'];
-    $img4 = $_POST['img4'];
+    $img1 = $_FILES['img1'];
+    $img2 = $_FILES['img2'];
+    $img3 = $_FILES['img3'];
+    $img4 = $_FILES['img4'];
     $hands = $_POST['hands'];
     $delivery = $_POST['delivery'];
     $year = filter_var($_POST['year'],FILTER_SANITIZE_NUMBER_INT);
 
     $errors = [];
 
-    $errors_newFilepath1 =(new User)->uploadImage($img1);
+    $errors_newFilepath1 =(new User)->uploadImage($errors, nameCmd: 'img1');
     $errors1 = $errors_newFilepath1[0];
     $newFilepath1 = $errors_newFilepath1[1];
     $errors = array_merge(...$errors,...$errors1);
 
-    $errors_newFilepath2 =(new User)->uploadImage($img2);
+    $errors_newFilepath2 =(new User)->uploadImage($errors, nameCmd: 'img2');
     $errors2 = $errors_newFilepath2[0];
     $newFilepath2 = $errors_newFilepath2[1];
     $errors = array_merge(...$errors,...$errors2);
 
-    $errors_newFilepath3 =(new User)->uploadImage($img3);
+    $errors_newFilepath3 =(new User)->uploadImage($errors, nameCmd: 'img3');
     $errors3 = $errors_newFilepath3[0];
     $newFilepath3 = $errors_newFilepath3[1];
     $errors = array_merge(...$errors,...$errors3);
 
-    $errors_newFilepath4 =(new User)->uploadImage($img4);
+    $errors_newFilepath4 =(new User)->uploadImage($errors, nameCmd: 'img4');
     $errors4 = $errors_newFilepath4[0];
     $newFilepath4 = $errors_newFilepath4[1];
     $errors = array_merge(...$errors,...$errors4);
 
-    $errors_cond = (new Listing())->validateCondition($used, $good, $mint);
+    $errors_cond = (new Listing())->validateCondition($used, $good, $mint, $errors);
     $errors = array_merge(...$errors,...$errors_cond[0]);
     $cond = $errors_cond[1];
 
-    $errors_ship = (new Listing())->validateShipping($hands, $delivery);
+    $errors_ship = (new Listing())->validateShipping($hands, $delivery, $errors);
     $errors = array_merge(...$errors,...$errors_ship[0]);
     $ship = $errors_ship[1];
 
-    $valid = (new Listing)->validateListing( $title, $price, $category, $subCat, $description, $year );
+    $errors_valid = (new Listing)->validateListing( $title, $price, $category, $subCat, $description, $year, $errors );
+    $errors = array_merge($errors,$errors_valid[0]);
+    $valid = $errors_valid[1];
 
     if($valid)
     {
