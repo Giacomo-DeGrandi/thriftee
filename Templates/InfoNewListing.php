@@ -153,8 +153,8 @@ $cat = array_merge(...array_values($cat));
                             <input type="checkbox" class="border border-0 ms-3 p-4" name="used" id="used">
                             <label for="used" class="p-2">Used</label><br>
 
-                            <input type="checkbox" class="border border-0 ms-3 p-4" name="new" id="new">
-                            <label for="new" class="p-2" >Good</label><br>
+                            <input type="checkbox" class="border border-0 ms-3 p-4" name="good" id="good">
+                            <label for="good" class="p-2" >Good</label><br>
 
                             <input type="checkbox" class="border border-0 ms-3 p-4" name="mint" id="mint">
                             <label for="mint" class="p-2">Mint</label><br>
@@ -163,7 +163,7 @@ $cat = array_merge(...array_values($cat));
 
                     </tr>
                     <tr>
-                        <td class="h5 blue-font"><small id="smCond"></small></td>
+                        <td><small id="smCond"></small></td>
                     </tr>
                 </table>
 
@@ -213,6 +213,7 @@ $cat = array_merge(...array_values($cat));
                 </div>
 
             </form>
+            <small class="h4" id="mainError"></small>
 
         </div>
 

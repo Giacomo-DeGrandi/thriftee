@@ -18,9 +18,7 @@ Class User extends Database{
 
     public function signUp($name, $lastname, $username, $email, $password, $rights)
     {
-        $sql = "INSERT INTO `users` ( `name`, `lastname`, `username`, `email`, `password`, `id_rights`) 
-                VALUES ( :name, :lastname, :username, :email, :password, :rights)";
-
+        $sql = "INSERT INTO `users` ( `name`, `lastname`, `username`, `email`, `password`, `id_rights`) VALUES ( :name, :lastname, :username, :email, :password, :rights)";
         $password = password_hash($password, PASSWORD_ARGON2ID);
         $params = ([':name' => $name,':lastname' => $lastname,':username' => $username, ':email' => $email,
             ':password' => $password, ':rights' => $rights]);

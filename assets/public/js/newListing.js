@@ -85,13 +85,20 @@ document.addEventListener('DOMContentLoaded',function() {
         let goodV = good.checked
         let mintV = mint.checked
 
+        // no more probs like this
+        if(usedV||mintV||goodV){
+            used.style.pointerEvents = 'none'
+            good.style.pointerEvents = 'none'
+            mint.style.pointerEvents = 'none'
+        }
+
         // test if required function is valid else give an error
         if (!mintV && !goodV && !usedV ) {
-            smCond.textContent =  'You have to choose at least one role. '
+            smCond.innerHTML =  'You have to choose at least one condition for this offer. '
         } else if( mintV && goodV && usedV || mintV && usedV || usedV && goodV || mintV && goodV){
-            smCond.textContent =  'You can choose at max one role.'
+            smCond.innerHTML =  'You can choose at max one condition for this offer.'
         } else {
-            smCond.textContent =  'Good choice!'
+            smCond.innerHTML =  'Good choice!'
             isValid = true;
         }
         return isValid
@@ -285,7 +292,7 @@ document.addEventListener('DOMContentLoaded',function() {
     }
 
     const validateText = (bios) => {
-        const re = /^[a-zA-Z0-9.-]*$/
+        const re = /^[a-zA-Z0-9 .-]*$/
         return re.test(bios);
     }
 
@@ -446,7 +453,13 @@ document.addEventListener('DOMContentLoaded',function() {
             })
                 .then(r => r.json())
                 .then(d => {
-                    console.log(d);
+                    if (d === 'setted') {
+                        window.location = "index?InfoListing";
+                    } else {
+
+                        let mainError = document.querySelector('#mainError');
+                        mainError.innerHTML = d;
+                    }
                 })
         }
 

@@ -56,7 +56,7 @@ class User
         return (new Usermodel)->getAddress($id);
     }
 
-    public function validateDetails(mixed $address, mixed $city, mixed $zipCode, mixed $bios, mixed $newFilepath, mixed $errors, int $rights)
+    public function validateDetails(mixed $address, mixed $city, mixed $zipCode, mixed $bios, mixed $errors): bool|string
     {
         if (empty($address)) {
             $errors[] = "Address is required";
@@ -94,10 +94,9 @@ class User
 
         if (empty($errors)) {
 
-                (new User)->registerDetails($address, $city, $zipCode, $bios, $newFilepath, $_SESSION['id'], $rights);
                 unset($_SESSION["token"]);
                 unset($_SESSION["token-expire"]);
-                return  print_r(json_encode('setted'));
+                return  true;
 
         } else {
             return print_r(json_encode($errors));
@@ -159,7 +158,7 @@ class User
 
     }
 
-    public function getAllInfosByid(mixed $id)
+    public function getAllInfosByid(mixed $id): bool|array
     {
         return (new Usermodel)->getAllInfosByid($id);
     }

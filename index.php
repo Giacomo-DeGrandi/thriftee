@@ -23,6 +23,19 @@ use Application\Controllers\SubCategories;
 use Application\Controllers\User\User;
 use Application\Lib\Token\Token;
 
+foreach ($_POST as $key => $value) {
+    $_POST[$key] = htmlspecialchars((string)$value, ENT_NOQUOTES | ENT_HTML5 | ENT_SUBSTITUTE,
+        'UTF-8', /*double_encode*/false );
+}
+
+
+
+
+// filter every $_POST of user input with this controller
+
+$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+
 
 if (isset($_GET['index'])) {       //    <------------ INDEX
 
@@ -33,13 +46,13 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     $header = Header::execute();
     require_once($header);
 
-} elseif (isset($_GET['signup'])) {     //    <-----------  SIGN UP
+} elseif (isset($_GET['signup'])) {     //    <-----------  SIGN UP PAGE
 
     require_once('Application/Controllers/Signup.php');
     $signup = new Signup;
     $signup->showSignup();
 
-} elseif (isset($_GET['signin'])) {   //    <-----------  SIGN IN
+} elseif (isset($_GET['signin'])) {   //    <-----------  SIGN IN PAGE
 
     require_once('Application/Controllers/Signin.php');
     $signin = new Signin;
@@ -150,13 +163,16 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
             $zipCode = $_POST['zipCode'];
             $bios = $_POST['bios'];
 
-            (new User())->validateDetails($address,$city,$zipCode,$bios,$errors,$newFilepath,$rights);
-
+            if((new User())->validateDetails($address,$city,$zipCode,$bios,$errors))
+            {
+                (new User)->registerDetails($address, $city, $zipCode, $bios, $newFilepath, $_SESSION['id'], $rights);
+                print_r(json_encode('setted'));
+            }
 
     exit();
   // } elseif(){       <--------- add conditions 'routes' here
 
-} elseif(isset($_GET['profile'])||isset($_GET['infoPersonal'])){
+} elseif(isset($_GET['profile'])||isset($_GET['infoPersonal'])){         //    <-----------  PROFILE
 
     require_once('Application/Controllers/Profile.php');
     $profile = new Profile;
@@ -165,7 +181,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
     $profile->showProfile($_SESSION['id'],$userInfos);
 
-}  elseif(isset($_GET['infoPassword'])){
+}  elseif(isset($_GET['infoPassword'])){                 //    <-----------  Password
 
         require_once('Application/Controllers/Profile.php');
         $profile = new Profile;
@@ -174,7 +190,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
         $profile->showInfo($userInfos,'InfoPassword');
 
-} elseif(isset($_GET['infoAddress'])){
+} elseif(isset($_GET['infoAddress'])){       //    <-----------  Address
 
         require_once('Application/Controllers/Profile.php');
         $profile = new Profile;
@@ -183,7 +199,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
         $profile->showInfo($userInfos,'InfoAddress');
 
-} elseif(isset($_GET['infoListings'])){
+} elseif(isset($_GET['infoListings'])){              //    <----------- Listings
 
         require_once('Application/Controllers/Profile.php');
         $profile = new Profile;
@@ -192,7 +208,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
         $profile->showInfo($userInfos,'InfoListings');
 
-} elseif(isset($_GET['infoProfile'])){
+} elseif(isset($_GET['infoProfile'])){           //    <----------- General Setting
 
         require_once('Application/Controllers/Profile.php');
         $profile = new Profile;
@@ -201,7 +217,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
         $profile->showInfo($userInfos,'InfoProfile');
 
-}  elseif(isset($_GET['addNewListing'])){
+}  elseif(isset($_GET['addNewListing'])){            //    <----------- New Listing
 
         require_once('Application/Controllers/Profile.php');
         $profile = new Profile;
@@ -212,12 +228,12 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $infoCat = [$userInfos, $category];
         $profile->showInfo($infoCat,'InfoNewListing');
 
-}  elseif(isset($_POST['subId'])){
+}  elseif(isset($_POST['subId'])){           //    <----------- Sub Categories List
 
     $subCat = (new SubCategories)->getAllSubCategoriesByCat($_POST['subId']);
     print_r(json_encode($subCat));
 
-} elseif(   isset($_POST['title']) &&
+} elseif(   isset($_POST['title']) &&                //    <----------- LISTINGS
             isset($_POST['price']) &&
             isset($_POST['category']) &&
             isset($_POST['subCat']) &&
@@ -250,8 +266,48 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     $delivery = $_POST['delivery'];
     $year = filter_var($_POST['year'],FILTER_SANITIZE_NUMBER_INT);
 
-    print_r((new Listing)->validateListing( $title, $price, $category, $subCat, $description, $used, $good, $mint, $img1, $img2, $img3, $img4, $hands, $delivery, $year ));
-    
+    $errors = [];
+
+    $errors_newFilepath1 =(new User)->uploadImage($img1);
+    $errors1 = $errors_newFilepath1[0];
+    $newFilepath1 = $errors_newFilepath1[1];
+    $errors = array_merge(...$errors,...$errors1);
+
+    $errors_newFilepath2 =(new User)->uploadImage($img2);
+    $errors2 = $errors_newFilepath2[0];
+    $newFilepath2 = $errors_newFilepath2[1];
+    $errors = array_merge(...$errors,...$errors2);
+
+    $errors_newFilepath3 =(new User)->uploadImage($img3);
+    $errors3 = $errors_newFilepath3[0];
+    $newFilepath3 = $errors_newFilepath3[1];
+    $errors = array_merge(...$errors,...$errors3);
+
+    $errors_newFilepath4 =(new User)->uploadImage($img4);
+    $errors4 = $errors_newFilepath4[0];
+    $newFilepath4 = $errors_newFilepath4[1];
+    $errors = array_merge(...$errors,...$errors4);
+
+    $errors_cond = (new Listing())->validateCondition($used, $good, $mint);
+    $errors = array_merge(...$errors,...$errors_cond[0]);
+    $cond = $errors_cond[1];
+
+    $errors_ship = (new Listing())->validateShipping($hands, $delivery);
+    $errors = array_merge(...$errors,...$errors_ship[0]);
+    $ship = $errors_ship[1];
+
+    $valid = (new Listing)->validateListing( $title, $price, $category, $subCat, $description, $year );
+
+    if($valid)
+    {
+        (new Listing)->registerListing($_SESSION['id'], $title, $price, $category, $subCat, $description, $cond, $ship, $year, $newFilepath1, $newFilepath2, $newFilepath3, $newFilepath4);
+        print_r(json_encode('setted'));
+
+    } else {
+
+       print_r(json_encode($errors));
+    }
+
 } else {
 
     require_once('Application/Controllers/Homepage.php');
