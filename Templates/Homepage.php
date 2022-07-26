@@ -19,8 +19,8 @@
                 </p>
 
                 <form method="get" action="index.php?search=" class="p-4 d-flex">
-                    <input type="text" class="rounded-pill border w-100 border-1 border-secondary" placeholder="Search" aria-label=" Search" aria-describedby="basic-addon2" name="search">
-                    <button type="submit" class="input-group-text rounded-pill bg-white" value="1" id="basic-addon2" name="searchMain">🔎</button>
+                    <input type="text" class="rounded-pill border p-1 w-100 border-1 border-secondary" placeholder=" Search" aria-label=" Search" aria-describedby="basic-addon2" name="search">
+                    <button type="submit" class="input-group-text p-1 rounded-pill bg-orange" value="1" id="basic-addon2" name="searchMain">🔎</button>
                 </form>
 
             </div>

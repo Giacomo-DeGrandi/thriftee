@@ -18,9 +18,7 @@ Class User extends Database{
 
     public function signUp($name, $lastname, $username, $email, $password, $rights)
     {
-        $sql = "INSERT INTO `users` ( `name`, `lastname`, `username`, `email`, `password`, `id_rights`) 
-                VALUES ( :name, :lastname, :username, :email, :password, :rights)";
-
+        $sql = "INSERT INTO `users` ( `name`, `lastname`, `username`, `email`, `password`, `id_rights`) VALUES ( :name, :lastname, :username, :email, :password, :rights)";
         $password = password_hash($password, PASSWORD_ARGON2ID);
         $params = ([':name' => $name,':lastname' => $lastname,':username' => $username, ':email' => $email,
             ':password' => $password, ':rights' => $rights]);
@@ -66,7 +64,7 @@ Class User extends Database{
         $this->selectQuery($sql, $params);
     }
 
-    public function getAddress(mixed $id)
+    public function getAddress(mixed $id): bool|array
     {
         $sql = "SELECT address FROM users WHERE id = :id";
         $params = [':id' => $id ];
@@ -74,7 +72,7 @@ Class User extends Database{
         return $result->fetchAll();
     }
 
-    public function getAllInfosByid(mixed $id)
+    public function getAllInfosByid(mixed $id): bool|array
     {
         $sql = "SELECT * FROM users WHERE id = :id";
         $params = [':id' => $id ];
