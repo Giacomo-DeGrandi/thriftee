@@ -37,4 +37,12 @@ class Listing extends Database
         $check = $this->selectQuery($sql,$params);
         return $check->fetchAll();
     }
+
+    public function getListingsByUserAndState(mixed $id,int $state): bool|array
+    {
+        $sql= 'SELECT * FROM listings WHERE id_owner = :id_owner AND offer_state = :offer_state ;' ;
+        $params = [':id_owner' => $id , ':offer_state' => $state];
+        $check = $this->selectQuery($sql,$params);
+        return $check->fetchAll();
+    }
 }

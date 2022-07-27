@@ -122,5 +122,10 @@ class Listing extends Controller
         return (new ListingModel)->getAllListingByUser($id);
     }
 
+    public function getListingsByUserAndState(mixed $id, int $state): bool|array
+    {
+        return (new ListingModel)->getListingsByUserAndState($id,$state);
+    }
+
 
 }
