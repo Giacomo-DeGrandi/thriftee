@@ -11,9 +11,9 @@ use Application\Models\Categories\Categories as CatModel;
 class Categories extends Controller
 {
 
-    public function getAllCatsName(): bool|array
+    public function getAllCats(): bool|array
     {
-        return (new CatModel)->getAllCatsName();
+        return (new CatModel)->getAllCats();
     }
 
 

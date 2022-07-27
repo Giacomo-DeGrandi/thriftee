@@ -81,23 +81,21 @@ a {
 /*    PICS   */
 
 .img-wrapper {
-    width: 30vh!important;
-    height: 30vh!important;
-    overflow: hidden!important;
-    margin: 0!important;
+    width: auto !important;
+    height: auto !important;
+    overflow: hidden !important;
+    margin: 0 !important;
 }
 
 .img-card{
-    float: left!important;
-    width:  25vh!important;
-    height: 25vh!important;
-    object-fit: cover!important;
+    width:  30vh !important;
+    height: 30vh !important;
+    object-fit: cover !important;
 }
 
 .bg-main-img {
     background: url("../images/main.svg") no-repeat !important;
     background-size: 80% !important;
-
 }
 
 .signup-img {

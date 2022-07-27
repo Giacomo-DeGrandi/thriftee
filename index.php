@@ -11,10 +11,12 @@ require_once('Application/Controllers/SubCategories.php');
 require_once('Application/Controllers/Listing.php');
 require_once('Application/Controllers/State.php');
 require_once('Application/Controllers/Shipping.php');
+require_once('Application/Controllers/Condition.php');
 
 
 use Application\Controller\Shipping\Shipping;
 use Application\Controllers\Categories\Categories;
+use Application\Controllers\Condition\Condition;
 use Application\Controllers\Header\Header;
 use Application\Controllers\Homepage\Homepage;
 use Application\Controllers\Listing\Listing;
@@ -32,13 +34,9 @@ foreach ($_POST as $key => $value) {
         'UTF-8', /*double_encode*/false );
 }
 
-
-
-
 // filter every $_POST of user input with this controller
 
 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
 
 
 if (isset($_GET['index'])) {       //    <------------ INDEX
@@ -46,7 +44,8 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     require_once('Application/Controllers/Homepage.php');
     require_once('Application/Controllers/Header.php');
     $homepage = new Homepage;
-    $homepage->showHome();
+
+    $homepage->showHome($params);
     $header = Header::execute();
     require_once($header);
 
@@ -233,9 +232,11 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
         $listings = (new Listing)->getListingsByUserAndState($_SESSION['id'],$state);
         $stateName = (new State)->getNameByStateId($state);
-        $catName = (new Categories)->getAllCatsName();
+        $catName = (new Categories)->getAllCats();
+        $subCat = (new Subcategories)->getAllSubCats();
+        $allCond = (new Condition)->getAllCond();
         $shipName = (new Shipping)->getAllShipNames();
-        $userInfos = [$userInfos, $listings, $catName, $shipName];
+        $userInfos = [$userInfos, $listings, $catName, $shipName, $subCat, $allCond]; // keep same chunks orders
 
         $profile->showInfo($userInfos,('MyListings'.$stateName[0][0]));
 

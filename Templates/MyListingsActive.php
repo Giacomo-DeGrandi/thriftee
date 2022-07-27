@@ -3,14 +3,60 @@
 
 ob_start();
 
+
+
 $userInfos = $chunks[0];
 $stateListings = $chunks[1];
 $catName = $chunks[2];
 $shipName = $chunks[3];
+$subCat = $chunks[4];
+$allCond = $chunks[5];
 $stateListings = array_merge(...array_values($stateListings));
 $catName = array_merge(...array_values($catName));
 $shipName = array_merge(...array_values($shipName));
-var_dump($catName);
+$subCat = array_merge(...array_values($subCat));
+$allCond = array_merge(...array_values($allCond));
+
+for($j = 0 ;$j <=isset($stateListings[$j]); $j++){
+    for($k = 0 ; $k <= isset($catName[$k]); $k++){          // ----------> REPLACE CATNAMES
+        if($stateListings[$j]['id_categories'] === $catName[$k]['id']){
+            $stateListings[$j]['id_categories'] = $catName[$k]['name'];
+        }
+    }
+    for($k = 0 ; $k <= isset($shipName[$k]); $k++){          // ----------> REPLACE SHIPMETHOD
+        if($stateListings[$j]['shipping'] === $shipName[$k]['id']){
+            $stateListings[$j]['shipping'] = $shipName[$k]['name'];
+        }
+    }
+    for($k = 0 ; $k <= isset($subCat[$k]); $k++){          // ----------> REPLACE SUBCATS
+        if($stateListings[$j]['id_subcategories'] === $subCat[$k]['id']){
+            $stateListings[$j]['id_subcategories'] = $subCat[$k]['name'];
+        }
+    }
+    for($k = 0 ; $k <= isset($allCond[$k]); $k++){          // ----------> REPLACE COND
+        if($stateListings[$j]['obj_condition'] === $allCond[$k]['id']){
+            $stateListings[$j]['obj_condition'] = $allCond[$k]['name'];
+        }
+    }
+
+}
+
+/*
+function replace_arr_val_onedim(array $arr_to_replace, array $arr_with_values, string $search, string $select, string $replace){
+    for( $j = 0 ; $j <= isset($arr_to_replace[$j]) ; $j++){
+        for( $k = 0 ; $k <= isset($arr_with_values[$k]); $k++){
+            if( $arr_to_replace[$j][$search] === $arr_with_values[$k][$select] ){
+                $arr_to_replace[$j][$search] = $arr_with_values[$k][$replace];
+            }
+        }
+    }
+}
+
+replace_arr_val_onedim($stateListings, $catName,'id_categories','id','name');
+replace_arr_val_onedim($stateListings, $shipName,'shipping','id','name');
+
+*/
+
 
 ?>
 <div class="container">
@@ -52,7 +98,7 @@ var_dump($catName);
 
                     <div class="p-1">
 
-                        <a href="index?Listing=<?= $stateListings[$i]['id']?>" class="d-flex flex-column d-flex-column-mobile">
+                        <a href="index?Listing=<?= $stateListings[$i]['id']?>" class="d-flex flex-column text-black d-flex-column-mobile">
 
                             <div class="img-wrap-img d-flex flex-column align-items-center justify-content-center">
                                 <div class=" rounded-1 img-wrapper">
@@ -61,33 +107,32 @@ var_dump($catName);
                             </div>
 
 
-                                <div class="container row">
-                                    <div class="h3 blue-font p-1 cond-font rounded-1 ">
-                                        <?= ucfirst($stateListings[$i]['title']) ?>
+                                <div class="container row ">
+                                    <div class="h3 p-1 rounded-1 ">
+                                        <?= substr(ucfirst($stateListings[$i]['title']),0,14).'<small class="fw-lighter">...</small>' ?>
                                     </div>
-                                    <div class="h3 blue-font p-1 cond-font rounded-1 ">
-                                        €  <?= ucfirst($stateListings[$i]['price']) ?>
+                                    <div class="h3 fw-bold p-1 cond-font rounded-1 ">
+                                        <small class="h6 fw-lighter">price:</small> €  <?= $stateListings[$i]['price'] ?>
                                     </div>
                                 </div>
 
-                                <div class="p-1 rounded-1 bg-light text-black shadow-sm">
-                                    <small>
-                                        <?= substr(ucfirst($stateListings[$i]['description']),0,100).'...' ?>
-                                    </small>
-                                </div>
 
                                 <div class="row p-1">
-                                    <div class="col p-1">
-                                        <div class="flex-nowrap"><small>category:</small><?= $stateListings[$i]['id_categories'] ?></div>
-                                    </div>
-
-                                    <div class="col p-1">
-                                        <div><small>sub-category: </small><?= $stateListings[$i]['id_subcategories'] ?></div>
+                                    <div class="">
+                                        <div class="flex-nowrap">
+                                            <small class="small">category:</small>
+                                            <b class="me-1"><?= $stateListings[$i]['id_categories'] ?></b>
+                                            <small class="small"> > </small>
+                                            <b class="me-1"> <?= $stateListings[$i]['id_subcategories'] ?></b>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="p-1">
-                                    <?= ucfirst($stateListings[$i]['obj_condition']) ?>
+                                    <small class="small">condition: </small>
+                                    <b class="me-1">
+                                        <?= ucfirst($stateListings[$i]['obj_condition']) ?>
+                                    </b>
                                 </div>
 
 
