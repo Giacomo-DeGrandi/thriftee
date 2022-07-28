@@ -45,4 +45,11 @@ class Listing extends Database
         $check = $this->selectQuery($sql,$params);
         return $check->fetchAll();
     }
+
+    public function getMostViewd(): bool|array
+    {
+        $sql= 'SELECT * FROM listings ORDER BY views DESC LIMIT 3 ; ' ;
+        $check = $this->selectQuery($sql);
+        return $check->fetchAll();
+    }
 }

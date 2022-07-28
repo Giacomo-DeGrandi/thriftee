@@ -1,7 +1,56 @@
-<?php $title = "ThrifteeX"; ?>
+<?php
 
 
-<?php ob_start(); ?>
+$title = "ThrifteeX";
+
+ob_start();
+
+if(isset($_SESSION['id'])){
+    $userInfos = array_merge(...array_values($chunks[0]));
+    $mostViewd = array_merge(...array_values($chunks[1]));
+    $allState = array_merge(...array_values($chunks[2]));
+    $allCat = array_merge(...array_values($chunks[3]));
+    $allSubCat = array_merge(...array_values($chunks[4]));
+    $allCond = array_merge(...array_values($chunks[5]));
+    $allShip = array_merge(...array_values($chunks[6]));
+    $allUsers = array_merge(...array_values($chunks[7]));
+
+} else {
+    $mostViewd = array_merge(...array_values($chunks[0]));
+    $allState = array_merge(...array_values($chunks[1]));
+    $allCat = array_merge(...array_values($chunks[2]));
+    $allSubCat = array_merge(...array_values($chunks[3]));
+    $allCond = array_merge(...array_values($chunks[4]));
+    $allShip = array_merge(...array_values($chunks[5]));
+    $allUsers = array_merge(...array_values($chunks[6]));
+}
+
+
+for($j = 0 ;$j <=isset($mostViewd[$j]); $j++){
+    for($k = 0 ; $k <= isset($allCat[$k]); $k++){          // ----------> REPLACE CATNAMES
+        if($mostViewd[$j]['id_categories'] === $allCat[$k]['id']){
+            $mostViewd[$j]['id_categories'] = $allCat[$k]['name'];
+        }
+    }
+    for($k = 0 ; $k <= isset($allShip[$k]); $k++){          // ----------> REPLACE SHIPMETHOD
+        if($mostViewd[$j]['shipping'] === $allShip[$k]['id']){
+            $mostViewd[$j]['shipping'] = $allShip[$k]['name'];
+        }
+    }
+    for($k = 0 ; $k <= isset($allSubCat[$k]); $k++){          // ----------> REPLACE SUBCATS
+        if($mostViewd[$j]['id_subcategories'] === $allSubCat[$k]['id']){
+            $mostViewd[$j]['id_subcategories'] = $allSubCat[$k]['name'];
+        }
+    }
+    for($k = 0 ; $k <= isset($allCond[$k]); $k++){          // ----------> REPLACE COND
+        if($mostViewd[$j]['obj_condition'] === $allCond[$k]['id']){
+            $mostViewd[$j]['obj_condition'] = $allCond[$k]['name'];
+        }
+    }
+}
+
+
+?>
     <div class="container-fluid">
         <div class="row d-flex-column-mobile">
 
@@ -26,6 +75,100 @@
             </div>
 
         </div>
+
+
+        <div class="h2 p-3">Most View Offers</div>
+
+        <div class="container d-flex align-items-center justify-content-evenly d-flex-column-mobile p-5">
+
+            <?php for($i = 0; $i <= isset($mostViewd[$i]); $i++):  ?>
+
+                <div class="rounded-3 bg-white mb-3 shadow-sm text-black col-xl-3">
+
+                    <div class="p-1">
+
+                        <a href="index?Listing=<?= $mostViewd[$i]['id']?>" class="d-flex flex-column text-black d-flex-column-mobile">
+
+                            <div class="img-wrap-img d-flex flex-column align-items-center justify-content-center">
+                                <div class=" rounded-1 img-wrapper">
+                                    <img src="<?= $mostViewd[$i]['img_url_1'] ?>" class="img-card"  >
+                                </div>
+                                <div class="h3 fw-bold p-1 cond-font rounded-1 ">
+                                    €  <?= $mostViewd[$i]['price'] ?>
+                                </div>
+                            </div>
+
+
+                            <div class="container row ">
+                                <div class="h3 p-1 rounded-1 ">
+                                    <?= substr(ucfirst($mostViewd[$i]['title']),0,14).'<small class="fw-lighter">...</small>' ?>
+                                </div>
+
+                            </div>
+
+
+                            <div class="row p-1">
+                                <div class="">
+                                    <div class="flex-nowrap fw-lighter">
+                                        <b class="me-1"><?= $mostViewd[$i]['id_categories'] ?></b>
+                                        <small class="small"> > </small>
+                                        <b class="me-1"> <?= $mostViewd[$i]['id_subcategories'] ?></b>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-1">
+                                <small class="small">condition: </small>
+                                <b class="me-1">
+                                    <?= ucfirst($mostViewd[$i]['obj_condition']) ?>
+                                </b>
+                                <br>
+                                <small class="small">location: </small>
+                                <b class="me-1">
+                                    <?= ucfirst($mostViewd[$i]['shipping']) ?>
+                                </b>
+                            </div>
+
+
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            <?php endfor; ?>
+
+        </div>
+        <?php  var_dump($mostViewd[0]['id_categories']); var_dump($allCat[0]['name']);   ?>
+
+        <div>
+            <div class="h2 p-3 orange-font">Discover by Categories</div>
+
+            <div class="d-flex bg-orange justify-content-evenly d-flex-column-mobile overflow-scroll w-100">
+
+                <?php for($l = 0; $l <= isset($allCat[$l]); $l++): ?>
+
+                <div class="container bg-white p-4 col-xl-3">
+                    <div class="border border-0 p-5 shadow-sm rounded-1 text-center">
+                        <a href="" class=" text-black h1 p-4 mb-5"><?= $allCat[$l]['name'] ?></a><br>
+                            <div class="p-1">
+                                <?php  for($k = 0; $k <= isset($mostViewd[$k]); $k++): ?>
+                                    <?php if($mostViewd[$k]['id_categories'] === $allCat[$l]['name'] ): ?> <!-- check for same name category and extract last 10 most view titles -->
+                                        <a href="" class="h5 small border border-1 bg-orange p-1 rounded-pill shadow-sm">#<?= substr($mostViewd[$k]['title'],0,10) ?></a>
+                                    <?php endif; ?>
+                                <?php endfor; ?>
+                            </div>
+                    </div>
+                </div>
+
+                <?php endfor; ?>
+
+            </div>
+
+
+        </div>
+
     </div>
 <?php $content = ob_get_clean(); ?>
 

@@ -163,4 +163,9 @@ class User
         return (new Usermodel)->getAllInfosByid($id);
     }
 
+    public function getAllUsers(): bool|array
+    {
+        return (new Usermodel)-> getAllUsers();
+    }
+
 }

@@ -80,5 +80,12 @@ Class User extends Database{
         return $result->fetchAll();
     }
 
+    public function getAllUsers(): bool|array
+    {
+        $sql = "SELECT * FROM users ";
+        $result = $this->selectQuery($sql);
+        return $result->fetchAll();
+    }
+
 
 }

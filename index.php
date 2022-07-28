@@ -44,7 +44,18 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     require_once('Application/Controllers/Homepage.php');
     require_once('Application/Controllers/Header.php');
     $homepage = new Homepage;
-
+    $listings = (new Listing)->getMostViewd();
+    $allStates = (new State)->getAllStates();
+    $allCats = (new Categories)->getAllCats();
+    $allSubCat = (new Subcategories)->getAllSubCats();
+    $allCond = (new Condition)->getAllCond();
+    $shipName = (new Shipping)->getAllShipNames();
+    if(isset($_SESSION['id'])){
+        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+        $params = [$userInfos, $listings, $allStates, $allCats, $allSubCat, $allCond, $shipName]; // keep same chunks orders
+    } else {
+        $params = [$listings, $allStates, $allCats, $allSubCat, $allCond, $shipName]; // keep same chunks orders
+    }
     $homepage->showHome($params);
     $header = Header::execute();
     require_once($header);
@@ -237,7 +248,6 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $allCond = (new Condition)->getAllCond();
         $shipName = (new Shipping)->getAllShipNames();
         $userInfos = [$userInfos, $listings, $catName, $shipName, $subCat, $allCond]; // keep same chunks orders
-
         $profile->showInfo($userInfos,('MyListings'.$stateName[0][0]));
 
 } elseif(isset($_GET['addNewListing'])){            //    <----------- New Listing
@@ -247,7 +257,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $_SESSION['token'] = (new Token)->generateToken();
         $_SESSION['token-expire'] = (new Token)->generateExpiration();
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
-        $category = (new Categories)->getAllCatsName();
+        $category = (new Categories)->getAllCats();
         $infoCat = [$userInfos, $category];
         $profile->showInfo($infoCat,'InfoNewListing');
 
@@ -357,7 +367,21 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     require_once('Application/Controllers/Homepage.php');
     require_once('Application/Controllers/Header.php');
     $homepage = new Homepage;
-    $homepage->showHome();
+    $listings = (new Listing)->getMostViewd();
+    $allStates = (new State)->getAllStates();
+    $allCats = (new Categories)->getAllCats();
+    $allSubCat = (new Subcategories)->getAllSubCats();
+    $allCond = (new Condition)->getAllCond();
+    $shipName = (new Shipping)->getAllShipNames();
+    $allUsers = (new User)->getAllUsers();
+
+    if(isset($_SESSION['id'])){
+        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+        $params = [$userInfos, $listings, $allStates, $allCats, $allSubCat, $allCond, $shipName, $allUsers]; // keep same chunks orders
+    } else {
+        $params = [$listings, $allStates, $allCats, $allSubCat, $allCond, $shipName, $allUsers]; // keep same chunks orders
+    }
+    $homepage->showHome($params);
     $header = Header::execute();
     require_once($header);
 

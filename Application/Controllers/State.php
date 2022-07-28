@@ -14,4 +14,9 @@ class State extends Controller
         return (new StateModel)->getNameByStateId($id);
     }
 
+    public function getAllStates(): bool|array
+    {
+        return (new StateModel)->getAllStates();
+    }
+
 }

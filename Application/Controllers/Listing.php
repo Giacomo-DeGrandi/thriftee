@@ -127,5 +127,11 @@ class Listing extends Controller
         return (new ListingModel)->getListingsByUserAndState($id,$state);
     }
 
+    public function getMostViewd()
+    {
+        return (new ListingModel)->getMostViewd();
+
+    }
+
 
 }

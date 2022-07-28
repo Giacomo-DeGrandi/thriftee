@@ -93,6 +93,11 @@ a {
     object-fit: cover !important;
 }
 
+.logos {
+    width:  8vh !important;
+    height: 8vh !important;
+}
+
 .bg-main-img {
     background: url("../images/main.svg") no-repeat !important;
     background-size: 80% !important;

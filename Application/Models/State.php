@@ -15,4 +15,11 @@ class State extends Database
         $check = $this->selectQuery($sql,$params);
         return $check->fetchAll();
     }
+
+    public function getAllStates(): bool|array
+    {
+        $sql= 'SELECT * FROM state ; ' ;
+        $check = $this->selectQuery($sql);
+        return $check->fetchAll();
+    }
 }
