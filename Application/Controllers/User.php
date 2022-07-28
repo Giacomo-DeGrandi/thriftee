@@ -73,23 +73,23 @@ class User
         if (!preg_match('/^[a-zA-Z]*$/', $city)) {
             $errors[] = "You can use only letters in city field";
         }
-        if (strlen($city) < 2 || strlen($city) > 23) {
+        if (strlen($city) < 3 || strlen($city) > 30) {
             $errors[] = "City must be in between 3 and 30 characters";
         }
         if (empty($zipCode)) {
-            $errors[] = "zip Code is required";
+            $errors[] = "Zip Code is required";
         }
         if (!preg_match('/^[0-9]*$/', $zipCode)) {
             $errors[] = "You can use only numbers in zip code field";
         }
-        if (strlen($zipCode) < 2 || strlen($zipCode) > 23) {
+        if (strlen($zipCode) < 2 || strlen($zipCode) > 7) {
             $errors[] = "Zip Code must be in between 2 and 7 characters";
         }
         if (!preg_match("/^[a-zA-Z0-9.,_ '?!-]*$/", $bios)) {
             $errors[] = "You can use only numbers, letters and  .,_ '?!-  in bios field";
         }
         if (strlen($bios) < 0 || strlen($bios) > 500) {
-            $errors[] = "Zip Code must be in between 2 and 7 characters";
+            $errors[] = "Bios must be in between 0 and 500 characters";
         }
 
         if (empty($errors)) {

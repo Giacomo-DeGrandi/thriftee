@@ -10,7 +10,8 @@ use Application\Controllers\Header\Header;
 
 class Homepage extends Controller {
 
-    public function showHome($params){
-        self::renderParams('Homepage',$params);
+    public function showHome($params)
+    {
+        self::renderParams('Homepage', $params);
     }
 }

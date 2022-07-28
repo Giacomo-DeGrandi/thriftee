@@ -12,6 +12,10 @@ require_once('Application/Controllers/Listing.php');
 require_once('Application/Controllers/State.php');
 require_once('Application/Controllers/Shipping.php');
 require_once('Application/Controllers/Condition.php');
+require_once('Application/Controllers/Homepage.php');
+require_once('Application/Controllers/Header.php');
+require_once('Application/Controllers/Profile.php');
+
 
 
 use Application\Controller\Shipping\Shipping;
@@ -41,8 +45,6 @@ $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 if (isset($_GET['index'])) {       //    <------------ INDEX
 
-    require_once('Application/Controllers/Homepage.php');
-    require_once('Application/Controllers/Header.php');
     $homepage = new Homepage;
     $listings = (new Listing)->getMostViewd();
     $allStates = (new State)->getAllStates();
@@ -62,13 +64,11 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 } elseif (isset($_GET['signup'])) {     //    <-----------  SIGN UP PAGE
 
-    require_once('Application/Controllers/Signup.php');
     $signup = new Signup;
     $signup->showSignup();
 
 } elseif (isset($_GET['signin'])) {   //    <-----------  SIGN IN PAGE
 
-    require_once('Application/Controllers/Signin.php');
     $signin = new Signin;
     $_SESSION['token'] = (new Token)->generateToken();
     $_SESSION['token-expire'] = (new Token)->generateExpiration();
@@ -76,7 +76,6 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 } elseif (isset($_GET['details'])) {   //    <-----------  DETAILS
 
-    require_once('Application/Controllers/Details.php');
     $details = new Details;
     $_SESSION['token'] = (new Token)->generateToken();
     $_SESSION['token-expire'] = (new Token)->generateExpiration();
@@ -188,7 +187,6 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 } elseif(isset($_GET['profile'])||isset($_GET['infoPersonal'])){         //    <-----------  PROFILE
 
-    require_once('Application/Controllers/Profile.php');
     $profile = new Profile;
     $_SESSION['token'] = (new Token)->generateToken();
     $_SESSION['token-expire'] = (new Token)->generateExpiration();
@@ -206,7 +204,6 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 } elseif(isset($_GET['infoAddress'])){       //    <-----------  Address
 
-        require_once('Application/Controllers/Profile.php');
         $profile = new Profile;
         $_SESSION['token'] = (new Token)->generateToken();
         $_SESSION['token-expire'] = (new Token)->generateExpiration();
@@ -215,7 +212,6 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 } elseif(isset($_GET['infoListings'])){              //    <----------- Listings
 
-        require_once('Application/Controllers/Profile.php');
         $profile = new Profile;
         $_SESSION['token'] = (new Token)->generateToken();
         $_SESSION['token-expire'] = (new Token)->generateExpiration();
@@ -226,7 +222,6 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 } elseif(isset($_GET['infoProfile'])){           //    <----------- General Setting
 
-        require_once('Application/Controllers/Profile.php');
         $profile = new Profile;
         $_SESSION['token'] = (new Token)->generateToken();
         $_SESSION['token-expire'] = (new Token)->generateExpiration();
@@ -235,7 +230,6 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 } elseif(isset($_GET['myListings'])){           //    <----------- General Setting
 
-        require_once('Application/Controllers/Profile.php');
         $state = $_GET['myListings'];
         $profile = new Profile;
         $_SESSION['token'] = (new Token)->generateToken();
@@ -252,13 +246,24 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 } elseif(isset($_GET['addNewListing'])){            //    <----------- New Listing
 
-        require_once('Application/Controllers/Profile.php');
         $profile = new Profile;
         $_SESSION['token'] = (new Token)->generateToken();
         $_SESSION['token-expire'] = (new Token)->generateExpiration();
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
         $category = (new Categories)->getAllCats();
         $infoCat = [$userInfos, $category];
+        $profile->showInfo($infoCat,'InfoNewListing');
+
+} elseif(isset($_GET['ListingPage'])){            //    <-----------  Listings Page Element
+
+
+        $_SESSION['token'] = (new Token)->generateToken();
+        $_SESSION['token-expire'] = (new Token)->generateExpiration();
+        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+        $listingPage = (new ListingPage)->getAllInfosByid($_SESSION['id']);
+        $listing = htmlspecialchars($_GET['ListingPage']);
+
+        $infoCat = [$userInfos, $listing];
         $profile->showInfo($infoCat,'InfoNewListing');
 
 }  elseif(isset($_POST['subId'])){           //    <----------- Sub Categories List
@@ -364,8 +369,6 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 } else {
 
-    require_once('Application/Controllers/Homepage.php');
-    require_once('Application/Controllers/Header.php');
     $homepage = new Homepage;
     $listings = (new Listing)->getMostViewd();
     $allStates = (new State)->getAllStates();
