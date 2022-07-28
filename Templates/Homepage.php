@@ -97,7 +97,7 @@ for($j = 0 ;$j <=isset($mostViewd[$j]); $j++){
 
                         <div class="p-1">
 
-                            <a href="index?Listing=<?= $mostViewd[$i]['id']?>" class="d-flex flex-column text-black d-flex-column-mobile">
+                            <a href="index?ListingPage=<?= $mostViewd[$i]['id']?>" class="d-flex flex-column text-black d-flex-column-mobile">
 
                                 <div class="img-wrap-img d-flex flex-column align-items-center justify-content-center">
                                     <div class=" rounded-1 img-wrapper">
@@ -155,19 +155,18 @@ for($j = 0 ;$j <=isset($mostViewd[$j]); $j++){
             <div>
                 <div class="h2 p-3 orange-font">Discover by Categories</div>
 
-                <div class="d-flex bg-orange justify-content-evenly d-flex-column-mobile overflow-scroll w-100">
+                <div class="row bg-orange d-flex-column-mobile">
 
-                    <?php for($l = 0; $l <= isset($allCat[$l]); $l++): ?>
+                    <?php  for($l = 0; $l <= isset($allCat[$l]); $l++): ?>
 
-                    <div class="container bg-white p-4 col-xl-3">
-                        <div class="border border-0 p-5 shadow-sm rounded-1 text-center">
-                            <a href="" class=" text-black h1 p-4"><?= $allCat[$l]['name'] ?></a><br>
-                                <?php  for($k = 0; $k <= isset($allSubCat[$k]); $k++): ?>
-                                    <?php if($allCat[$l]['id'] === $allSubCat[$k]['id_categories'] ): ?> <!-- check for same name category and extract last 10 most view titles -->
-                                        <a href="" class="h5 small border border-1 bg-orange p-1 rounded-pill shadow-sm"> # <?= $allSubCat[$k]['name'] ?> </a>
-
-                                    <?php endif; ?>
-                                <?php endfor; ?>
+                    <div class="bg-white p-4">
+                        <div class="border border-1 p-5 rounded-1">
+                            <a href="<?= $allCat[$l]['id'] ?>" class=" class h1 p-2"><?= $allCat[$l]['name'] ?></a>
+                                <?php  for($k = 0; $k <= isset($allSubCat[$k]); $k++){ ?>
+                                    <?php if($allCat[$l]['id'] === $allSubCat[$k]['id_categories'] ){ ?> <!-- check for same name category and extract last 10 most view titles -->
+                                        <a href="index?SubCat=<?= $allSubCat[$k]['id'] ?>" class="h5 small border border-1 p-1 rounded-pill shadow-sm" > # <?= $allSubCat[$k]['name'] ?> </a>
+                                    <?php } ?>
+                                <?php  }  ?>
                         </div>
                     </div>
 

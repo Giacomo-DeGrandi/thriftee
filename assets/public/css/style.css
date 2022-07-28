@@ -129,6 +129,19 @@ a {
 }
 
 
+/*       EFFECTS       */
+
+.class {
+    color: black !important;
+    transition: 1s!important;
+}
+
+.class:hover {
+    color:var(--orange)!important;
+}
+
+
+
 
     /* ICONS   */
 
