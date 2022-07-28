@@ -15,4 +15,9 @@ class SubCategories extends Controller
     {
         return (new SubCat)->getAllSubCategoriesByCat($subCat);
     }
+
+    public function getAllSubCats(): bool|array
+    {
+        return (new SubCat)->getAllSubCats();
+    }
 }

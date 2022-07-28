@@ -11,8 +11,10 @@ use Application\Models\Categories\Categories as CatModel;
 class Categories extends Controller
 {
 
-    public function getAllCategories(): bool|array
+    public function getAllCats(): bool|array
     {
-        return (new CatModel)->getAllCategories();
+        return (new CatModel)->getAllCats();
     }
+
+
 }

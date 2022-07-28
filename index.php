@@ -9,9 +9,14 @@ require_once('Application/Controllers/Signin.php');
 require_once('Application/Controllers/Categories.php');
 require_once('Application/Controllers/SubCategories.php');
 require_once('Application/Controllers/Listing.php');
+require_once('Application/Controllers/State.php');
+require_once('Application/Controllers/Shipping.php');
+require_once('Application/Controllers/Condition.php');
 
 
+use Application\Controller\Shipping\Shipping;
 use Application\Controllers\Categories\Categories;
+use Application\Controllers\Condition\Condition;
 use Application\Controllers\Header\Header;
 use Application\Controllers\Homepage\Homepage;
 use Application\Controllers\Listing\Listing;
@@ -19,6 +24,7 @@ use Application\Controllers\Profile\Details;
 use Application\Controllers\Profile\Profile;
 use Application\Controllers\Signin\Signin;
 use Application\Controllers\Signup\Signup;
+use Application\Controllers\State\State;
 use Application\Controllers\SubCategories;
 use Application\Controllers\User\User;
 use Application\Lib\Token\Token;
@@ -28,13 +34,9 @@ foreach ($_POST as $key => $value) {
         'UTF-8', /*double_encode*/false );
 }
 
-
-
-
 // filter every $_POST of user input with this controller
 
 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
 
 
 if (isset($_GET['index'])) {       //    <------------ INDEX
@@ -42,7 +44,19 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     require_once('Application/Controllers/Homepage.php');
     require_once('Application/Controllers/Header.php');
     $homepage = new Homepage;
-    $homepage->showHome();
+    $listings = (new Listing)->getMostViewd();
+    $allStates = (new State)->getAllStates();
+    $allCats = (new Categories)->getAllCats();
+    $allSubCat = (new Subcategories)->getAllSubCats();
+    $allCond = (new Condition)->getAllCond();
+    $shipName = (new Shipping)->getAllShipNames();
+    if(isset($_SESSION['id'])){
+        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+        $params = [$userInfos, $listings, $allStates, $allCats, $allSubCat, $allCond, $shipName]; // keep same chunks orders
+    } else {
+        $params = [$listings, $allStates, $allCats, $allSubCat, $allCond, $shipName]; // keep same chunks orders
+    }
+    $homepage->showHome($params);
     $header = Header::execute();
     require_once($header);
 
@@ -219,14 +233,31 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
         $profile->showInfo($userInfos,'InfoProfile');
 
-}  elseif(isset($_GET['addNewListing'])){            //    <----------- New Listing
+} elseif(isset($_GET['myListings'])){           //    <----------- General Setting
+
+        require_once('Application/Controllers/Profile.php');
+        $state = $_GET['myListings'];
+        $profile = new Profile;
+        $_SESSION['token'] = (new Token)->generateToken();
+        $_SESSION['token-expire'] = (new Token)->generateExpiration();
+        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+        $listings = (new Listing)->getListingsByUserAndState($_SESSION['id'],$state);
+        $stateName = (new State)->getNameByStateId($state);
+        $catName = (new Categories)->getAllCats();
+        $subCat = (new Subcategories)->getAllSubCats();
+        $allCond = (new Condition)->getAllCond();
+        $shipName = (new Shipping)->getAllShipNames();
+        $userInfos = [$userInfos, $listings, $catName, $shipName, $subCat, $allCond]; // keep same chunks orders
+        $profile->showInfo($userInfos,('MyListings'.$stateName[0][0]));
+
+} elseif(isset($_GET['addNewListing'])){            //    <----------- New Listing
 
         require_once('Application/Controllers/Profile.php');
         $profile = new Profile;
         $_SESSION['token'] = (new Token)->generateToken();
         $_SESSION['token-expire'] = (new Token)->generateExpiration();
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
-        $category = (new Categories)->getAllCategories();
+        $category = (new Categories)->getAllCats();
         $infoCat = [$userInfos, $category];
         $profile->showInfo($infoCat,'InfoNewListing');
 
@@ -235,7 +266,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     $subCat = (new SubCategories)->getAllSubCategoriesByCat($_POST['subId']);
     print_r(json_encode($subCat));
 
-} elseif(   isset($_POST['title']) &&                //    <----------- LISTINGS
+} elseif(   isset($_POST['title']) &&                //    <----------- ADD NEW LISTINGS
             isset($_POST['price']) &&
             isset($_POST['category']) &&
             isset($_POST['subCat']) &&
@@ -336,7 +367,21 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     require_once('Application/Controllers/Homepage.php');
     require_once('Application/Controllers/Header.php');
     $homepage = new Homepage;
-    $homepage->showHome();
+    $listings = (new Listing)->getMostViewd();
+    $allStates = (new State)->getAllStates();
+    $allCats = (new Categories)->getAllCats();
+    $allSubCat = (new Subcategories)->getAllSubCats();
+    $allCond = (new Condition)->getAllCond();
+    $shipName = (new Shipping)->getAllShipNames();
+    $allUsers = (new User)->getAllUsers();
+
+    if(isset($_SESSION['id'])){
+        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+        $params = [$userInfos, $listings, $allStates, $allCats, $allSubCat, $allCond, $shipName, $allUsers]; // keep same chunks orders
+    } else {
+        $params = [$listings, $allStates, $allCats, $allSubCat, $allCond, $shipName, $allUsers]; // keep same chunks orders
+    }
+    $homepage->showHome($params);
     $header = Header::execute();
     require_once($header);
 

@@ -33,9 +33,10 @@ for($i = 0; $i <= isset($listingInfos[$i]); $i++){
 
         <div class="d-flex flex-row p-2 flex-wrap">
             <form method="get" action="index?" class="text-start">
-                <button type="submit" class="h5 p-1 px-4 bg-white blue-font rounded-pill border border-0" name="myAllListings">All Listings</button>
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="myActiveListings">Actives</button>
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="mySoldListings">Sold</button>
+                <button type="submit" class="h5 p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoListings">All Listings</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="myListings" value="1">Actives</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="myListings"  value="2">Sold</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="myListings"  value="3">Ended</button>
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border-blue ms-5 float-end" name="addNewListing">Add new listing</button>
             </form>
         </div>

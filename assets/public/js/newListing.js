@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded',function() {
         // min num of chars
         let min = 10
         // max num of chars
-        let max = 2500
+        let max = 5000
         // take away spaces
         let descV = desc.value;
 
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded',function() {
             showErrors(desc, 'Description can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
         } else if (!validateDesc(descV) ||!isBetween(descV.length, min, max)) {
-            showErrors(desc, 'Description has to be between 10 and 2500 characters')
+            showErrors(desc, 'Description has to be between 10 and 5000 characters')
             // else validate the input
         } else {
             showValids(desc)
@@ -300,8 +300,13 @@ document.addEventListener('DOMContentLoaded',function() {
         // initialise my valid condition to false to test the errors
         let isValid = false
 
-        let fileDetails2 = pic2.files[0];
+        if(pic2.files[0] === undefined){
+            return isValid
+        }
 
+        console.log(pic2.files[0])
+
+        let fileDetails2 = pic2.files[0];
 
         // whitelist valid extensions
         let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif'];
@@ -349,7 +354,12 @@ document.addEventListener('DOMContentLoaded',function() {
         // initialise my valid condition to false to test the errors
         let isValid = false
 
+        if(pic3.files[0] === undefined ){
+            return isValid
+        }
+
         let fileDetails3 = pic3.files[0];
+
 
         // whitelist valid extensions
         let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif'];
@@ -393,6 +403,10 @@ document.addEventListener('DOMContentLoaded',function() {
 
         // initialise my valid condition to false to test the errors
         let isValid = false
+
+        if(pic4.files[0] === undefined ){
+            return isValid
+        }
 
         let fileDetails4 = pic4.files[0];
 
@@ -444,12 +458,12 @@ document.addEventListener('DOMContentLoaded',function() {
     }
 
     const validateText = (bios) => {
-        const re = /^[a-zA-Z0-9 .-]*$/
+        const re = /^[a-zA-ZÀ-ÿ-. -]*$/
         return re.test(bios);
     }
 
     const validateDesc = (desc) => {
-        const re = /^[a-zA-Z0-9.,_ '?!-]*$/
+        const re = /^[a-zA-ZÀ-ÿ.,_ '?!-]*$/
         return re.test(desc);
     }
 
@@ -604,7 +618,7 @@ document.addEventListener('DOMContentLoaded',function() {
                 .then(r => r.json())
                 .then(d => {
                     if (d === 'setted') {
-                        window.location = "index?InfoListings";
+                        window.location = "index?InfoListings=";
                     } else {
 
                         let mainError = document.querySelector('#mainError');

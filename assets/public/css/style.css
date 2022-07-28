@@ -80,10 +80,27 @@ a {
 
 /*    PICS   */
 
+.img-wrapper {
+    width: auto !important;
+    height: auto !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+}
+
+.img-card{
+    width:  30vh !important;
+    height: 30vh !important;
+    object-fit: cover !important;
+}
+
+.logos {
+    width:  8vh !important;
+    height: 8vh !important;
+}
+
 .bg-main-img {
     background: url("../images/main.svg") no-repeat !important;
     background-size: 80% !important;
-
 }
 
 .signup-img {
@@ -95,6 +112,21 @@ a {
 }
 
 
+/*         SPACING   */
+
+.ten-ten {
+    max-width:200px!important;
+    max-height:200px!important;
+    width: auto!important;
+    height: auto!important;
+}
+
+.five-five {
+    max-width:100px!important;
+    max-height:100px!important;
+    width: auto!important;
+    height: auto!important;
+}
 
 
 
@@ -124,7 +156,7 @@ a {
     width:15vh!important;
 }
 
-/*  BORDER  */
+/*  BORDERS i don't like them  */
 
 .border-orange{
     border: solid 1px var(--orange)!important;
@@ -133,6 +165,14 @@ a {
 .border-blue{
     border: solid 1px var(--blueshop)!important;
 }
+
+.dashed-blue {
+    border-style: dashed solid !important;
+    border-color: var(--blueshop)!important;
+}
+
+
+
 
 
 /*  ALT HEADINGS  */

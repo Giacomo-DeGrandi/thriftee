@@ -31,10 +31,11 @@ $cat = array_merge(...array_values($cat));
 
         <div class="d-flex flex-row p-2 flex-wrap">
             <form method="get" action="index?" class="text-start">
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="myAllListings">All Listings</button>
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="myActiveListings">Actives</button>
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="mySoldListings">Sold</button>
-                <button type="submit" class="h5 p-1 px-4 bg-white blue-font rounded-pill border-blue ms-5 float-end" name="addNewListing">Add new listing</button>
+                <button type="submit" class="h5 p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoListings">All Listings</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="myListings" value="1">Actives</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="myListings"  value="2">Sold</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="myListings"  value="3">Ended</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border-blue ms-5 float-end" name="addNewListing">Add new listing</button>
             </form>
         </div>
 
@@ -47,10 +48,10 @@ $cat = array_merge(...array_values($cat));
 
                 <table class="table-borderless">
                     <tr>
-                        <th class="col-4 h3 p-4 blue-font">Main Informations</th>
+                        <th class="h3 p-4 blue-font">Main Informations</th>
                     </tr>
                     <tr>
-                        <td class="col-8 h5 p-4 d-flex d-flex-column-mobile">
+                        <td class="h5 p-4 d-flex d-flex-column-mobile">
                             <div>
                                 <label for="title" class="p-2">Title</label>
                                 <input type="text" id="title" name="title" class="border border-1" > <br>
@@ -65,7 +66,7 @@ $cat = array_merge(...array_values($cat));
                         </td>
                     </tr>
                     <tr>
-                        <td class="col-8 h5 p-4 d-flex flex-row">
+                        <td class="h5 p-4 d-flex flex-row">
                             <div>
                                 <label for="description" class="p-2">Description</label><br>
                                 <textarea id="description" name="description" class="border border-1" ></textarea><br>

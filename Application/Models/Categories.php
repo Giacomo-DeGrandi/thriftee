@@ -9,7 +9,7 @@ use Application\Models\Database\Database;
 class Categories extends Database
 {
 
-    public function getAllCategories(): bool|array
+    public function getAllCats(): bool|array
     {
         $sql = "SELECT * FROM categories";
         $result = $this->selectQuery($sql);
