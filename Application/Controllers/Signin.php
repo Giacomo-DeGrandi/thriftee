@@ -49,15 +49,16 @@ class Signin extends Controller{
         $cpw = (new User)->getPw($email);
 
         if (!password_verify($password, $cpw[0]['password'])) {
-            $errors[] = "Wrong password";
             print_r(json_encode('Wrong password'));
 
             exit();
         }
 
         if (empty($errors)) {
+
             //  Token Validation --->
-            if ($token_session == $token) {
+            if ($token_session === $token) {
+
                 // expired?
                 if (time() >= $token_expire) {
 
@@ -75,6 +76,9 @@ class Signin extends Controller{
 
                 }
             }
+        } else {
+
+            return print_r(json_encode($errors));
         }
     }
 
