@@ -38,11 +38,11 @@ class Listing extends Controller
         if (empty($description)) {
             $errors[] = "Description is required";
         }
-        if (!preg_match('/^[a-zA-Z0-9.,_ \'?!-]*$/', $description)) {
+        if (!preg_match('/^[a-zA-ZÀ-ÿ0-9.,_ \'?!-]*$/', $description)) {
             $errors[] = "You can't use special characters but .,_ \'?!- in description field";
         }
-        if (strlen($description) < 10 || strlen($description) > 2500) {
-            $errors[] = "Title must be in between 10 and 2500 characters";
+        if (strlen($description) < 0 || strlen($description) > 5000) {
+            $errors[] = "Description must be in between 0 and 5000 characters";
         }
 
         $ytest = intval(date("Y"));
@@ -112,9 +112,9 @@ class Listing extends Controller
 
     }
 
-    public function registerListing(mixed $id, mixed $title, mixed $price, mixed $category, mixed $subCat, mixed $description, mixed $cond, mixed $ship, mixed $year, mixed $newFilepath1, mixed $newFilepath2, mixed $newFilepath3, mixed $newFilepath4)
+    public function registerListing(mixed $id, mixed $title, mixed $price, mixed $category, mixed $subCat, mixed $description, mixed $cond, mixed $ship, mixed $year, mixed $newFilepath1, mixed $newFilepath2, mixed $newFilepath3, mixed $newFilepath4): bool|array
     {
-        (new ListingModel)->registerListing($id,$title,$price,$category,$subCat,$description,$cond,$ship,$year,$newFilepath1,$newFilepath2,$newFilepath3,$newFilepath4);
+        return (new ListingModel)->registerListing($id,$title,$price,$category,$subCat,$description,$cond,$ship,$year,$newFilepath1,$newFilepath2,$newFilepath3,$newFilepath4);
     }
 
     public function getAllListingByUser(mixed $id): bool|array
@@ -127,10 +127,21 @@ class Listing extends Controller
         return (new ListingModel)->getListingsByUserAndState($id,$state);
     }
 
-    public function getMostViewd()
+    public function getMostViewd(): bool|array
     {
         return (new ListingModel)->getMostViewd();
 
+    }
+
+    public function getListInfo(string $id_listing): bool|array
+    {
+        return (new ListingModel)->getListInfo($id_listing);
+
+    }
+
+    public function getAllListingByCat(mixed $id_categories): bool|array
+    {
+        return (new ListingModel)->getListInfoByCat($id_categories);
     }
 
 

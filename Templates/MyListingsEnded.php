@@ -92,7 +92,7 @@ if(isset($chunks)){
 
                         <div class="p-1">
 
-                            <a href="index?Listing=<?= $stateListings[$i]['id']?>" class="d-flex flex-column text-black d-flex-column-mobile">
+                            <div class="d-flex flex-column text-black d-flex-column-mobile">
 
                                 <div class="img-wrap-img d-flex flex-column align-items-center justify-content-center">
                                     <div class=" rounded-1 img-wrapper">
@@ -130,7 +130,7 @@ if(isset($chunks)){
                                 </div>
 
 
-                            </a>
+                            </div>
 
                         </div>
 

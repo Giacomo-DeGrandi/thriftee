@@ -92,62 +92,64 @@ for($j = 0 ;$j <=isset($mostViewd[$j]); $j++){
             <div class="container d-flex align-items-center justify-content-evenly d-flex-column-mobile p-5">
 
                 <?php for($i = 0; $i <= isset($mostViewd[$i]); $i++):  ?>
+                    <?php if($mostViewd[$i]['offer_state'] === '1'):  ?>
 
-                    <div class="rounded-3 bg-white mb-3 shadow-sm text-black col-xl-3">
+                        <div class="rounded-3 bg-white mb-3 shadow-sm text-black col-xl-3">
 
-                        <div class="p-1">
+                            <div class="p-1">
 
-                            <a href="index?ListingPage=<?= $mostViewd[$i]['id']?>" class="d-flex flex-column text-black d-flex-column-mobile">
+                                <a href="index?ListingPage=<?= $mostViewd[$i]['id']?>" class="d-flex flex-column text-black d-flex-column-mobile">
 
-                                <div class="img-wrap-img d-flex flex-column align-items-center justify-content-center">
-                                    <div class=" rounded-1 img-wrapper">
-                                        <img src="<?= $mostViewd[$i]['img_url_1'] ?>" class="img-card"  >
-                                    </div>
-                                    <div class="h3 fw-bold p-1 cond-font rounded-1 ">
-                                        €  <?= $mostViewd[$i]['price'] ?>
-                                    </div>
-                                </div>
-
-
-                                <div class="container row ">
-                                    <div class="h3 p-1 rounded-1 ">
-                                        <?= substr(ucfirst($mostViewd[$i]['title']),0,14).'<small class="fw-lighter">...</small>' ?>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="row p-1">
-                                    <div class="">
-                                        <div class="flex-nowrap fw-lighter">
-                                            <b class="me-1"><?= $mostViewd[$i]['id_categories'] ?></b>
-                                            <small class="small"> > </small>
-                                            <b class="me-1"> <?= $mostViewd[$i]['id_subcategories'] ?></b>
+                                    <div class="img-wrap-img d-flex flex-column align-items-center justify-content-center">
+                                        <div class=" rounded-1 img-wrapper">
+                                            <img src="<?= $mostViewd[$i]['img_url_1'] ?>" class="img-card"  >
+                                        </div>
+                                        <div class="h3 fw-bold p-1 cond-font rounded-1 ">
+                                            €  <?= $mostViewd[$i]['price'] ?>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="p-1">
-                                    <small class="small">condition: </small>
-                                    <b class="me-1">
-                                        <?= ucfirst($mostViewd[$i]['obj_condition']) ?>
-                                    </b>
-                                    <br>
-                                    <small class="small">location: </small>
-                                    <b class="me-1 orange-font">
-                                        <?= ucfirst($mostViewd[$i]['city']) ?>
-                                        <?= ucfirst($mostViewd[$i]['zipCode']) ?>
-                                    </b>
-                                </div>
 
 
+                                    <div class="container row ">
+                                        <div class="h3 p-1 rounded-1 ">
+                                            <?= substr(ucfirst($mostViewd[$i]['title']),0,14).'<small class="fw-lighter">...</small>' ?>
+                                        </div>
 
-                            </a>
+                                    </div>
+
+
+                                    <div class="row p-1">
+                                        <div class="">
+                                            <div class="flex-nowrap fw-lighter">
+                                                <b class="me-1"><?= $mostViewd[$i]['id_categories'] ?></b>
+                                                <small class="small"> > </small>
+                                                <b class="me-1"> <?= $mostViewd[$i]['id_subcategories'] ?></b>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-1">
+                                        <small class="small">condition: </small>
+                                        <b class="me-1">
+                                            <?= ucfirst($mostViewd[$i]['obj_condition']) ?>
+                                        </b>
+                                        <br>
+                                        <small class="small">location: </small>
+                                        <b class="me-1 orange-font">
+                                            <?= ucfirst($mostViewd[$i]['city']) ?>
+                                            <?= ucfirst($mostViewd[$i]['zipCode']) ?>
+                                        </b>
+                                    </div>
+
+
+
+                                </a>
+
+                            </div>
 
                         </div>
 
-                    </div>
-
+                    <?php endif; ?>
                 <?php endfor; ?>
 
             </div>

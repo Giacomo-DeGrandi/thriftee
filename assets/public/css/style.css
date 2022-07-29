@@ -93,6 +93,19 @@ a {
     object-fit: cover !important;
 }
 
+.img-wrapper-medium {
+    width: auto !important;
+    height: auto !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+}
+
+.img-card-medium {
+    width:  60vh !important;
+    height: 60vh !important;
+    object-fit: contain !important;
+}
+
 .logos {
     width:  8vh !important;
     height: 8vh !important;
@@ -140,7 +153,28 @@ a {
     color:var(--orange)!important;
 }
 
+.contact-shop:hover {
+    color:var(--blueshop)!important;
+}
+.contact-shop {
+    transition:1s!important;
+}
 
+.img-email-fx:hover{
+    background-color: var(--blueshop)!important;
+}
+
+
+
+
+
+/* RANGE    */
+
+input[type='range'] {
+    overflow: hidden!important;
+    -webkit-appearance: none!important;
+    background-color: var(--orange)!important;
+}
 
 
     /* ICONS   */
@@ -172,7 +206,7 @@ a {
 /*  BORDERS i don't like them  */
 
 .border-orange{
-    border: solid 1px var(--orange)!important;
+    border: solid 1px  var(--orange)!important;
 }
 
 .border-blue{
@@ -183,8 +217,6 @@ a {
     border-style: dashed solid !important;
     border-color: var(--blueshop)!important;
 }
-
-
 
 
 

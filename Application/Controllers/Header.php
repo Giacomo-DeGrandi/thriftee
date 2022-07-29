@@ -8,4 +8,9 @@ class Header
     {
         return 'Templates/Header.php';
     }
+
+    public static function executeParams(mixed $params): string
+    {
+        return 'Templates/Header.php';
+    }
 }
