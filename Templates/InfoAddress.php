@@ -3,6 +3,9 @@
 
 
 ob_start();
+
+$address = $chunks[0][0][0];
+
 ?>
     <div class="container">
 
@@ -30,11 +33,11 @@ ob_start();
                     <tr>
                         <td class="col-8 h5 p-4">
                             <label for="address" class="p-2">Address</label>
-                            <input type="text" name="address" placeholder="address..." class="border border-1" > <br class="d-none-desktop">
+                            <input type="text" name="address" placeholder="address..." value="<?= $address['address']  ?>" class="border border-1" > <br class="d-none-desktop">
                             <label for="zipCode" class="p-2">Zip Code</label>
-                            <input type="text" name="zipCode" placeholder="zip code..." class="border border-1" >
+                            <input type="text" name="zipCode" placeholder="zip code..." value="<?= $address['zip_code']  ?>" class="border border-1" >
                             <label for="city" class="p-2">City</label>
-                            <input type="text" name="city" placeholder="city..." class="border border-1" >
+                            <input type="text" name="city" placeholder="city..."  value="<?= $address['city']  ?>" class="border border-1" >
                         </td>
                     </tr>
                 </table>

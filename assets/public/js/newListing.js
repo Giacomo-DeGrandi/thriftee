@@ -118,7 +118,10 @@ document.addEventListener('DOMContentLoaded',function() {
         if (!isRequired(titleV)) {
             showErrors(title, 'Title can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
-        } else if (!validateText(titleV) ||!isBetween(titleV.length, min, max)) {
+        } else if (!validateText(titleV)) {
+            showErrors(title, 'Invalid Title')
+            // else validate the input
+        } else if (!isBetween(titleV.length, min, max)) {
             showErrors(title, 'Title has to be between 3 and 30 characters')
             // else validate the input
         } else {
@@ -136,16 +139,20 @@ document.addEventListener('DOMContentLoaded',function() {
         // max num of chars
         let max = 5000
         // take away spaces
-        let descV = desc.value;
+        let descV = desc.value.trim();
 
         // test if required function is valid else give an error
         if (!isRequired(descV)) {
             showErrors(desc, 'Description can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
-        } else if (!validateDesc(descV) ||!isBetween(descV.length, min, max)) {
+        } else if (!validateDesc(descV)) {
+            showErrors(desc, 'Description can contain only .,_ \'?!- and alphanumeric characters ')
+            // else validate the input
+        } else if ( descV.length < min || descV.length > max) {
             showErrors(desc, 'Description has to be between 10 and 5000 characters')
             // else validate the input
         } else {
+
             showValids(desc)
             isValid = true
         }
@@ -164,7 +171,7 @@ document.addEventListener('DOMContentLoaded',function() {
             showErrors(price, 'Price can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
         } else if (!validatePrice(priceV)) {
-            showErrors(price, 'Price can\'t be neither negative or 0')
+            showErrors(price, 'Price is invalid')
             // else validate the input
         } else {
             showValids(price)
@@ -255,8 +262,12 @@ document.addEventListener('DOMContentLoaded',function() {
 
         let fileDetails1 = pic1.files[0];
 
+        if(fileDetails1 === undefined){
+            imgListSmall1.textContent = 'Choose 4 offer pictures please'
+        }
+
         // whitelist valid extensions
-        let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif'];
+        let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif','webp'];
         // check for type match
         let imgDef = 'image/';
 
@@ -274,7 +285,7 @@ document.addEventListener('DOMContentLoaded',function() {
 
         } else if (!validExtensions.includes(fileType1)) {
 
-            imgListSmall1.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\' are allowed '
+            imgListSmall1.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\',\'webp\' are allowed '
 
         } else if ( fileDetails1.size === 0 || fileDetails1.size > 1000000) {
 
@@ -300,16 +311,15 @@ document.addEventListener('DOMContentLoaded',function() {
         // initialise my valid condition to false to test the errors
         let isValid = false
 
-        if(pic2.files[0] === undefined){
-            return isValid
-        }
-
-        console.log(pic2.files[0])
 
         let fileDetails2 = pic2.files[0];
 
+        if(fileDetails2 === undefined){
+            imgListSmall2.textContent = 'Choose 4 offer pictures please'
+        }
+
         // whitelist valid extensions
-        let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif'];
+        let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif','webp'];
         // check for type match
         let imgDef = 'image/';
 
@@ -329,7 +339,7 @@ document.addEventListener('DOMContentLoaded',function() {
 
         }  else if (!validExtensions.includes(fileType2)) {
 
-            imgListSmall2.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\' are allowed '
+            imgListSmall2.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\',\'webp\' are allowed '
 
         }  else if ( fileDetails2.size === 0 || fileDetails2.size > 1000000) {
 
@@ -354,15 +364,16 @@ document.addEventListener('DOMContentLoaded',function() {
         // initialise my valid condition to false to test the errors
         let isValid = false
 
-        if(pic3.files[0] === undefined ){
-            return isValid
-        }
 
         let fileDetails3 = pic3.files[0];
 
+        if(fileDetails3 === undefined){
+            imgListSmall3.textContent = 'Choose 4 offer pictures please'
+        }
+
 
         // whitelist valid extensions
-        let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif'];
+        let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif','webp'];
         // check for type match
         let imgDef = 'image/';
 
@@ -380,7 +391,7 @@ document.addEventListener('DOMContentLoaded',function() {
 
         } else if (!validExtensions.includes(fileType3)) {
 
-            imgListSmall3.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\' are allowed '
+            imgListSmall3.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\',\'webp\' are allowed '
 
         }  else if ( fileDetails3.size === 0 || fileDetails3.size > 1000000) {
 
@@ -404,21 +415,25 @@ document.addEventListener('DOMContentLoaded',function() {
         // initialise my valid condition to false to test the errors
         let isValid = false
 
-        if(pic4.files[0] === undefined ){
-            return isValid
-        }
 
         let fileDetails4 = pic4.files[0];
 
+        let imgListSmall4 = document.querySelector('#imgListSmall4');
+
+
+        if(fileDetails4 === undefined){
+            imgListSmall4.textContent = 'Choose 4 offer pictures please'
+        }
+
+
         // whitelist valid extensions
-        let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif'];
+        let validExtensions = ['jpeg', 'jpg', 'png', 'svg', 'gif','webp'];
         // check for type match
         let imgDef = 'image/';
 
 
         const found4 = fileDetails4.type.match(imgDef);
         let fileType4 = fileDetails4.type.replace('image/', '')
-        let imgListSmall4 = document.querySelector('#imgListSmall4');
 
 
         if (!isRequired(fileDetails4)) {
@@ -430,7 +445,7 @@ document.addEventListener('DOMContentLoaded',function() {
 
         } else if (!validExtensions.includes(fileType4)) {
 
-            imgListSmall4.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\' are allowed '
+            imgListSmall4.textContent = 'Invalid file extensions, only:  \'jpeg\',\'jpg\',\'png\',\'svg\',\'gif\',\'webp\' are allowed '
 
         }  else if ( fileDetails4.size === 0 || fileDetails4.size > 1000000) {
 
@@ -458,32 +473,27 @@ document.addEventListener('DOMContentLoaded',function() {
     }
 
     const validateText = (bios) => {
-        const re = /^[a-zA-ZÀ-ÿ-. -]*$/
+        const re = /^[a-zA-ZÀ-ÿ0-9. -]*$/
         return re.test(bios);
     }
 
     const validateDesc = (desc) => {
-        const re = /^[a-zA-ZÀ-ÿ.,_ '?!-]*$/
+        const re = /^[a-zA-ZÀ-ÿ0-9.,_ '?!-]*$/
         return re.test(desc);
     }
 
     const validatePrice = (price) => {
-        const re = /^[0-9.,]*$/
-        if(price==='0'){
-            return false;
+        const re = /[0-9]*$/
+        if(re.test(price) && price !== '0'){
+            return true;
         }
-        return re.test(price);
     }
 
 
     const validateYear = (year) => {
         const goodYear = new Date();
         const nowY = goodYear.getFullYear();
-        if(year > nowY){
-            return false;
-        } else {
-            return true;
-        }
+        return year <= nowY;
     }
 
 
@@ -568,8 +578,7 @@ document.addEventListener('DOMContentLoaded',function() {
     })
 
 
-
-    save.addEventListener('click', function (event) {
+        save.addEventListener('click', function (event) {
 
         event.preventDefault()
 
@@ -617,8 +626,14 @@ document.addEventListener('DOMContentLoaded',function() {
             })
                 .then(r => r.json())
                 .then(d => {
-                    if (d === 'setted') {
-                        window.location = "index?InfoListings=";
+
+                    let id = Object.values(d)
+                    id = id[0]
+                    const re = /^[0-9]*$/
+
+                    if(re.test(id.id)){
+                        window.location = "index?ListingPage=" + id.id ;
+
                     } else {
 
                         let mainError = document.querySelector('#mainError');

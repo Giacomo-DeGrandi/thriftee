@@ -114,10 +114,10 @@ class User
             $errors [] = 'You can chose at max one role.';
         }
         if($seller === 'false' && $buyer === 'true'){
-            $rights = 2;
+            $rights = 3;
         }
         if($seller === 'true' && $buyer === 'false'){
-            $rights = 3;
+            $rights = 2;
         }
         return [$errors, $rights];
     }
@@ -166,6 +166,12 @@ class User
     public function getAllUsers(): bool|array
     {
         return (new Usermodel)-> getAllUsers();
+    }
+
+    public function getUserMailById(mixed $idOwner)
+    {
+        return (new Usermodel)-> getUserMailById($idOwner);
+
     }
 
 }

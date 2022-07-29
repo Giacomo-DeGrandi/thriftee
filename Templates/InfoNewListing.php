@@ -66,10 +66,10 @@ $cat = array_merge(...array_values($cat));
                         </td>
                     </tr>
                     <tr>
-                        <td class="h5 p-4 d-flex flex-row">
+                        <td class="h5 p-4 row">
                             <div>
                                 <label for="description" class="p-2">Description</label><br>
-                                <textarea id="description" name="description" class="border border-1" ></textarea><br>
+                                <textarea id="description" name="description" class="w-100 h-75 border border-1" ></textarea><br>
                                 <small></small>
                             </div>
 

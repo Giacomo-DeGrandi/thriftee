@@ -87,5 +87,13 @@ Class User extends Database{
         return $result->fetchAll();
     }
 
+    public function getUserMailById(mixed $idOwner)
+    {
+        $sql = "SELECT email FROM users WHERE id = :id";
+        $params = [':id' => $idOwner ];
+        $result = $this->selectQuery($sql,  $params);
+        return $result->fetchAll();
+    }
+
 
 }

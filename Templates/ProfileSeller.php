@@ -1,8 +1,9 @@
 <?php
 
 
-
 ob_start();
+
+$requested= $chunks[0][0][0];
 ?>
     <div class="container">
 
@@ -30,9 +31,9 @@ ob_start();
                     <tr>
                         <td class="col-8 h5 p-4">
                             <label for="name" class="p-2">Name</label>
-                            <input type="text" name="name" class="border border-1" value="<?= $requested[0]['name'] ?>"> <br class="d-none-desktop">
+                            <input type="text" name="name" class="border border-1" value="<?= $requested['name'] ?>"> <br class="d-none-desktop">
                             <label for="name" class="p-2">Lastname</label>
-                            <input type="text" name="lastname" class="border border-1" value="<?= $requested[0]['lastname'] ?>">
+                            <input type="text" name="lastname" class="border border-1" value="<?= $requested['lastname'] ?>">
                         </td>
                     </tr>
                 </table>
@@ -43,8 +44,8 @@ ob_start();
                         <div class="d-flex flex-column">
 
                             <div class="p-2 h3 blue-font">Profile Picture</div>
-                            <a href="<?= $requested[0]['img_profile'] ?>">
-                                <img src="<?= $requested[0]['img_profile'] ?>" class="w-50" alt="profilepic">
+                            <a href="<?= $requested['img_profile'] ?>">
+                                <img src="<?= $requested['img_profile'] ?>" class="w-50" alt="profilepic">
                             </a>
                             <label for="myFile"  class="bg-white orange-font p-2 hover-underline-animation">
                                 change
@@ -55,7 +56,7 @@ ob_start();
 
                         <div class="h3 p-4 row">
                             <div class="p-2 h3 blue-font">Bios</div>
-                            <textarea id="bios" name="bios" class="border h5 border-1"> <?= $requested[0]['bios'] ?> </textarea>
+                            <textarea id="bios" name="bios" class="border h5 border-1"> <?= $requested['bios'] ?> </textarea>
                         </div>
 
                     </div>

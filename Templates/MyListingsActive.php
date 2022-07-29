@@ -4,7 +4,6 @@
 ob_start();
 
 
-
 if(isset($chunks)){
     $userInfos = $chunks[0];
     $stateListings = $chunks[1];
@@ -110,7 +109,7 @@ replace_arr_val_onedim($stateListings, $shipName,'shipping','id','name');
 
                         <div class="p-1">
 
-                            <a href="index?Listing=<?= $stateListings[$i]['id']?>" class="d-flex flex-column text-black d-flex-column-mobile">
+                            <a href="index?ListingPage=<?= $stateListings[$i]['id']?>" class="d-flex flex-column text-black d-flex-column-mobile">
 
                                 <div class="img-wrap-img d-flex flex-column align-items-center justify-content-center">
                                     <div class=" rounded-1 img-wrapper">

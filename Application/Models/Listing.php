@@ -28,6 +28,10 @@ class Listing extends Database
             ':description' => $description, ':price' => $price, ':added_on' => $datenow, ':views' => 0 , ':offer_state' => 1]); // state 1 = ACTIVE
 
         $this->selectQuery($sql, $params);
+        $sql= 'SELECT id FROM listings WHERE title = :title AND id_owner = :id_owner ; ' ;
+        $params = [':title' => $title,   ':id_owner' => $id ];
+        $check = $this->selectQuery($sql,$params);
+        return $check->fetchAll();
     }
 
     public function getAllListingByUser(mixed $id): bool|array
@@ -48,8 +52,24 @@ class Listing extends Database
 
     public function getMostViewd(): bool|array
     {
-        $sql= 'SELECT * FROM listings ORDER BY views DESC LIMIT 3 ; ' ;
+        $sql= 'SELECT * FROM listings WHERE offer_state = 1 ORDER BY views DESC LIMIT 3 ; ' ;
         $check = $this->selectQuery($sql);
+        return $check->fetchAll();
+    }
+
+    public function getListInfo($id): bool|array
+    {
+        $sql= 'SELECT * FROM listings WHERE id = :id ; ' ;
+        $params = [':id' => $id ];
+        $check = $this->selectQuery($sql,$params);
+        return $check->fetchAll();
+    }
+
+    public function getListInfoByCat(mixed $id_categories)
+    {
+        $sql= 'SELECT * FROM listings WHERE id_categories = :id_categories ; ' ;
+        $params = [':id_categories' => $id_categories ];
+        $check = $this->selectQuery($sql,$params);
         return $check->fetchAll();
     }
 }

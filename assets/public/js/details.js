@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 .then(r => r.json())
                 .then(d => {
                     if (d === 'setted') {
-                        window.location = "index?profile";
+                       window.location = "index?profile";
                     } else {
                         console.log(d);
                         let errors = document.querySelector('#errors');

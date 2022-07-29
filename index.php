@@ -5,6 +5,7 @@ session_start();
 
 require_once('Application/Lib/Token.php');
 require_once('Application/Controllers/Signup.php');
+require_once('Application/Controllers/Details.php');
 require_once('Application/Controllers/Signin.php');
 require_once('Application/Controllers/Categories.php');
 require_once('Application/Controllers/SubCategories.php');
@@ -15,6 +16,9 @@ require_once('Application/Controllers/Condition.php');
 require_once('Application/Controllers/Homepage.php');
 require_once('Application/Controllers/Header.php');
 require_once('Application/Controllers/Profile.php');
+require_once('Application/Controllers/ListingPage.php');
+require_once('Application/Controllers/Rights.php');
+
 
 
 
@@ -24,8 +28,10 @@ use Application\Controllers\Condition\Condition;
 use Application\Controllers\Header\Header;
 use Application\Controllers\Homepage\Homepage;
 use Application\Controllers\Listing\Listing;
+use Application\Controllers\ListingPage\ListingPage;
 use Application\Controllers\Profile\Details;
 use Application\Controllers\Profile\Profile;
+use Application\Controllers\Rights\Rights;
 use Application\Controllers\Signin\Signin;
 use Application\Controllers\Signup\Signup;
 use Application\Controllers\State\State;
@@ -43,24 +49,53 @@ foreach ($_POST as $key => $value) {
 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 
+$_SESSION['token'] = (new Token)->generateToken();
+$_SESSION['token-expire'] = (new Token)->generateExpiration();
+$mostViewd = (new Listing)->getMostViewd();
+$allStates = (new State)->getAllStates();
+$allCats = (new Categories)->getAllCats();
+$allSubCat = (new Subcategories)->getAllSubCats();
+$allCond = (new Condition)->getAllCond();
+$shipName = (new Shipping)->getAllShipNames();
+$allUsers = (new User)->getAllUsers();
+
+
+$x=0;
+
+for($i=0; $i<= isset($allUsers);$i++){
+    
+}
+
+if(isset($_SESSION['id'])) {
+
+    $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+    $rights = $userInfos[0]['id_rights'];
+    $rightsName = (new Rights)->getRightsName($rights); // Rights will always be at the end of the arrays
+
+} else {
+
+    $rightsName = 'visitor';
+}
+
+
+
+
 if (isset($_GET['index'])) {       //    <------------ INDEX
 
+
     $homepage = new Homepage;
-    $listings = (new Listing)->getMostViewd();
-    $allStates = (new State)->getAllStates();
-    $allCats = (new Categories)->getAllCats();
-    $allSubCat = (new Subcategories)->getAllSubCats();
-    $allCond = (new Condition)->getAllCond();
-    $shipName = (new Shipping)->getAllShipNames();
+
     if(isset($_SESSION['id'])){
-        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
-        $params = [$userInfos, $listings, $allStates, $allCats, $allSubCat, $allCond, $shipName]; // keep same chunks orders
+
+        $params = [$userInfos, $mostViewd, $allStates, $allCats, $allSubCat, $allCond, $shipName, $allUsers, $rightsName]; // keep same chunks orders
+
     } else {
-        $params = [$listings, $allStates, $allCats, $allSubCat, $allCond, $shipName]; // keep same chunks orders
+        $params = [$mostViewd, $allStates, $allCats, $allSubCat, $allCond, $shipName, $allUsers, $rightsName]; // keep same chunks orders
+
     }
+
     $homepage->showHome($params);
-    $header = Header::execute();
-    require_once($header);
+
 
 } elseif (isset($_GET['signup'])) {     //    <-----------  SIGN UP PAGE
 
@@ -70,15 +105,11 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 } elseif (isset($_GET['signin'])) {   //    <-----------  SIGN IN PAGE
 
     $signin = new Signin;
-    $_SESSION['token'] = (new Token)->generateToken();
-    $_SESSION['token-expire'] = (new Token)->generateExpiration();
     $signin->showSignin();
 
 } elseif (isset($_GET['details'])) {   //    <-----------  DETAILS
 
     $details = new Details;
-    $_SESSION['token'] = (new Token)->generateToken();
-    $_SESSION['token-expire'] = (new Token)->generateExpiration();
     $details->showDetails();
 
 }  elseif (isset($_POST['emailExists'])) {    //    <-----------  EMAILS EXISTS
@@ -180,91 +211,91 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
             {
                 (new User)->registerDetails($address, $city, $zipCode, $bios, $newFilepath, $_SESSION['id'], $rights);
                 print_r(json_encode('setted'));
+                $_SESSION['subs'] = 1;
             }
 
     exit();
   // } elseif(){       <--------- add conditions 'routes' here
 
+} elseif (isset($_SESSION['subs'])&&$_SESSION['subs']===1){             // <------   SESSIONS VALIDATION  !!!!!!!!!!!!!
+
+
+    header('location: index?profile');
+    $_SESSION['subs']=0;
+
+    exit();
+
 } elseif(isset($_GET['profile'])||isset($_GET['infoPersonal'])){         //    <-----------  PROFILE
 
     $profile = new Profile;
-    $_SESSION['token'] = (new Token)->generateToken();
-    $_SESSION['token-expire'] = (new Token)->generateExpiration();
-    $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+    if($rights){
+        $rightsName = (new Rights)->getRightsName($rights); // Rights will always be at the end of the arrays
+        $userInfos= [$userInfos,$rightsName];
+    }
     $profile->showProfile($_SESSION['id'],$userInfos);
 
 }  elseif(isset($_GET['infoPassword'])){                 //    <-----------  Password
 
-        require_once('Application/Controllers/Profile.php');
         $profile = new Profile;
-        $_SESSION['token'] = (new Token)->generateToken();
-        $_SESSION['token-expire'] = (new Token)->generateExpiration();
-        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
-        $profile->showInfo($userInfos,'InfoPassword');
+    $userInfos = [$userInfos,$rightsName];
+    $profile->showInfo($userInfos,'InfoPassword');
 
 } elseif(isset($_GET['infoAddress'])){       //    <-----------  Address
 
-        $profile = new Profile;
-        $_SESSION['token'] = (new Token)->generateToken();
-        $_SESSION['token-expire'] = (new Token)->generateExpiration();
-        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
-        $profile->showInfo($userInfos,'InfoAddress');
+    $profile = new Profile;
+    $userInfos = [$userInfos,$rightsName];
+    $profile->showInfo($userInfos,'InfoAddress');
 
 } elseif(isset($_GET['infoListings'])){              //    <----------- Listings
 
         $profile = new Profile;
-        $_SESSION['token'] = (new Token)->generateToken();
-        $_SESSION['token-expire'] = (new Token)->generateExpiration();
-        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
         $listingInfos = (new Listing)->getAllListingByUser($_SESSION['id']);
-        $userInfos = [$userInfos,$listingInfos];
+        $userInfos = [$userInfos,$listingInfos,$rightsName];
         $profile->showInfo($userInfos,'InfoListings');
 
 } elseif(isset($_GET['infoProfile'])){           //    <----------- General Setting
 
         $profile = new Profile;
-        $_SESSION['token'] = (new Token)->generateToken();
-        $_SESSION['token-expire'] = (new Token)->generateExpiration();
-        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
-        $profile->showInfo($userInfos,'InfoProfile');
+    $userInfos = [$userInfos,$rightsName];
+    $profile->showInfo($userInfos,'InfoProfile');
 
 } elseif(isset($_GET['myListings'])){           //    <----------- General Setting
 
         $state = $_GET['myListings'];
         $profile = new Profile;
-        $_SESSION['token'] = (new Token)->generateToken();
-        $_SESSION['token-expire'] = (new Token)->generateExpiration();
-        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
-        $listings = (new Listing)->getListingsByUserAndState($_SESSION['id'],$state);
+        $listingByState = (new Listing)->getListingsByUserAndState($_SESSION['id'],$state);
         $stateName = (new State)->getNameByStateId($state);
         $catName = (new Categories)->getAllCats();
         $subCat = (new Subcategories)->getAllSubCats();
         $allCond = (new Condition)->getAllCond();
         $shipName = (new Shipping)->getAllShipNames();
-        $userInfos = [$userInfos, $listings, $catName, $shipName, $subCat, $allCond]; // keep same chunks orders
+        $userInfos = [$userInfos, $listingByState, $catName, $shipName, $subCat, $allCond, $rightsName]; // keep same chunks orders
         $profile->showInfo($userInfos,('MyListings'.$stateName[0][0]));
 
 } elseif(isset($_GET['addNewListing'])){            //    <----------- New Listing
 
         $profile = new Profile;
-        $_SESSION['token'] = (new Token)->generateToken();
-        $_SESSION['token-expire'] = (new Token)->generateExpiration();
-        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
         $category = (new Categories)->getAllCats();
-        $infoCat = [$userInfos, $category];
+        $infoCat = [$userInfos, $category, $rightsName];
         $profile->showInfo($infoCat,'InfoNewListing');
 
 } elseif(isset($_GET['ListingPage'])){            //    <-----------  Listings Page Element
 
+        $listingPage = (new ListingPage);
+        $id_listing = htmlspecialchars($_GET['ListingPage']);
+        $list = new Listing;
+        $listInfo = $list->getListInfo($id_listing);
+        $allListingsCat = (new Listing)->getAllListingByCat($listInfo[0]['id_categories']);
+        $idOwner = $listInfo[0]['id_owner'];
+        $mailOwner  = (new User)->getUserMailById($idOwner);
+        if(isset($_SESSION['id'])){
+            $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+            $params = [$userInfos, $listInfo, $allListingsCat, $allCats, $allSubCat, $mailOwner, $rightsName ];
+        } else {
+            $params = [$listInfo, $allListingsCat , $allCats,  $allSubCat, $mailOwner, $rightsName];
+        }
 
-        $_SESSION['token'] = (new Token)->generateToken();
-        $_SESSION['token-expire'] = (new Token)->generateExpiration();
-        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
-        $listingPage = (new ListingPage)->getAllInfosByid($_SESSION['id']);
-        $listing = htmlspecialchars($_GET['ListingPage']);
-
-        $infoCat = [$userInfos, $listing];
-        $profile->showInfo($infoCat,'InfoNewListing');
+        $listingPage->showListingPage($params,'ListingPage');
 
 }  elseif(isset($_POST['subId'])){           //    <----------- Sub Categories List
 
@@ -287,25 +318,6 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
             isset($_POST['delivery']) &&
             isset($_POST['year']) &&
             isset($_POST['saveNewListing'])){
-
-    /*
-    var_dump($_POST['title']);
-    var_dump($_POST['price']);
-    var_dump($_POST['category']);
-    var_dump($_POST['subCat']);
-    var_dump($_POST['description']);
-    var_dump($_POST['used']);
-    var_dump($_POST['good']);
-    var_dump($_POST['mint']);
-    var_dump($_FILES['img1']);
-    var_dump($_FILES['img2']);
-    var_dump($_FILES['img3']);
-    var_dump($_FILES['img4']);
-    var_dump($_POST['hands']);
-    var_dump($_POST['delivery']);
-    var_dump($_POST['year']);
-    var_dump($_POST['saveNewListing']);
-    */
 
     $title = filter_var($_POST['title'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $price = filter_var($_POST['price'],FILTER_SANITIZE_NUMBER_FLOAT);
@@ -359,8 +371,8 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
     if($valid)
     {
-        (new Listing)->registerListing($_SESSION['id'], $title, $price, $category, $subCat, $description, $cond, $ship, $year, $newFilepath1, $newFilepath2, $newFilepath3, $newFilepath4);
-        print_r(json_encode('setted'));
+        $id = (new Listing)->registerListing($_SESSION['id'], $title, $price, $category, $subCat, $description, $cond, $ship, $year, $newFilepath1, $newFilepath2, $newFilepath3, $newFilepath4);
+        print_r(json_encode($id));
 
     } else {
 
@@ -369,8 +381,8 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 } else {
 
+
     $homepage = new Homepage;
-    $listings = (new Listing)->getMostViewd();
     $allStates = (new State)->getAllStates();
     $allCats = (new Categories)->getAllCats();
     $allSubCat = (new Subcategories)->getAllSubCats();
@@ -379,13 +391,39 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     $allUsers = (new User)->getAllUsers();
 
     if(isset($_SESSION['id'])){
+
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
-        $params = [$userInfos, $listings, $allStates, $allCats, $allSubCat, $allCond, $shipName, $allUsers]; // keep same chunks orders
+        $rights  = $userInfos[0]['id_rights'];
+        $rightsName = (new Rights)->getRightsName($rights); // Rights will always be at the end of the arrays
+        $params = [$userInfos, $mostViewd, $allStates, $allCats, $allSubCat, $allCond, $shipName, $allUsers, $rightsName]; // keep same chunks orders
+
     } else {
-        $params = [$listings, $allStates, $allCats, $allSubCat, $allCond, $shipName, $allUsers]; // keep same chunks orders
+
+        $rightsName = 'visitor';
+        $params = [$mostViewd, $allStates, $allCats, $allSubCat, $allCond, $shipName, $allUsers, $rightsName]; // keep same chunks orders
+
     }
+
     $homepage->showHome($params);
-    $header = Header::execute();
-    require_once($header);
 
 }
+
+/*
+var_dump($_POST['title']);
+var_dump($_POST['price']);
+var_dump($_POST['category']);
+var_dump($_POST['subCat']);
+var_dump($_POST['description']);
+var_dump($_POST['used']);
+var_dump($_POST['good']);
+var_dump($_POST['mint']);
+var_dump($_FILES['img1']);
+var_dump($_FILES['img2']);
+var_dump($_FILES['img3']);
+var_dump($_FILES['img4']);
+var_dump($_POST['hands']);
+var_dump($_POST['delivery']);
+var_dump($_POST['year']);
+var_dump($_POST['saveNewListing']);
+*/
+
