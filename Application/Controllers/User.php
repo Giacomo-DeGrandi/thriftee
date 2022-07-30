@@ -10,6 +10,7 @@ use Application\Models\User\User as Usermodel;
 
 class User
 {
+
     public function emailExists($email): string
     {
         $exist = (new Usermodel)->checkExists($email);
@@ -127,8 +128,12 @@ class User
         // FILE
         $filepath = $_FILES[$nameCmd]['tmp_name'];
         $fileSize = filesize($filepath);
-        $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
-        $filetype = finfo_file($fileinfo, $filepath);
+        if(finfo_open(FILEINFO_MIME_TYPE) !== null){
+            $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+            $filetype = finfo_file($fileinfo, $filepath);
+        } else {
+            $errors [] = 'Invalid MIME type';
+        }
 
         if ($fileSize === 0) {
             $errors [] = 'This file is empty';
@@ -137,13 +142,14 @@ class User
             $errors [] = 'Max size allowed 1MB';
         }
 
+
         $allowedTypes = ['image/png' => 'png', 'image/jpeg' => 'jpg', 'image/svg+xml' => 'svg', 'image/gif' => 'gif', 'image/webp' => 'webp'];
 
         if (!in_array($filetype, array_keys($allowedTypes))) {
             $errors [] = "File not allowed.";
         }
 
-        $filename = basename($filepath); // I'm using the original name here, but you can also change the name of the file here
+        $filename = basename($filepath); // I'm using the original name here, but you can also change the name of the file in this position
         $extension = $allowedTypes[$filetype];
         $targetDirectory = 'assets/uploads';
         $newFilepath = $targetDirectory . "/" . $filename . "." . $extension;
@@ -158,6 +164,12 @@ class User
 
     }
 
+    private static function registerNewImage(mixed $filePaths, mixed $id): bool|array
+    {
+        return (new Usermodel)->registerNewImage( $filePaths, $id);
+    }
+
+
     public function getAllInfosByid(mixed $id): bool|array
     {
         return (new Usermodel)->getAllInfosByid($id);
@@ -168,10 +180,46 @@ class User
         return (new Usermodel)-> getAllUsers();
     }
 
-    public function getUserMailById(mixed $idOwner)
+    public function getUserMailById(mixed $idOwner): bool|array
     {
         return (new Usermodel)-> getUserMailById($idOwner);
 
     }
+
+    public function updateInfoPerso(mixed $id, mixed $filePath, mixed $name, mixed $lastname): bool|array
+    {
+        if (empty($name)) {
+            $errors[] = "Name is required";
+        }
+        if (!preg_match('/^[a-zA-Z]*$/', $name)) {
+            $errors[] = "You can't use special characters in name field";
+        }
+        if (strlen($name) < 2 || strlen($name) > 23) {
+            $errors[] = "Name must be in between 2 and 23 characters";
+        }
+        if (empty($lastname)) {
+            $errors[] = "Lastname is required";
+        }
+        if (!preg_match('/^[a-zA-Z]*$/', $lastname)) {
+            $errors[] = "You can't use special characters in lastname field";
+        }
+        if (strlen($lastname) < 2 || strlen($lastname) > 23) {
+            $errors[] = "Lastname must be in between 2 and 23 characters";
+        }
+
+        if (empty($errors)) {
+
+            (new Usermodel())->updatePersonalInfo($id,$name,$lastname,$filePath);
+            unset($_SESSION["token"]);
+            unset($_SESSION["token-expire"]);
+            return  true;
+
+        } else {
+
+            return $errors;
+        }
+
+    }
+
 
 }

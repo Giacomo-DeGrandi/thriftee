@@ -49,8 +49,6 @@ foreach ($_POST as $key => $value) {
 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 
-$_SESSION['token'] = (new Token)->generateToken();
-$_SESSION['token-expire'] = (new Token)->generateExpiration();
 $mostViewd = (new Listing)->getMostViewd();
 $allStates = (new State)->getAllStates();
 $allCats = (new Categories)->getAllCats();
@@ -59,12 +57,6 @@ $allCond = (new Condition)->getAllCond();
 $shipName = (new Shipping)->getAllShipNames();
 $allUsers = (new User)->getAllUsers();
 
-
-$x=0;
-
-for($i=0; $i<= isset($allUsers);$i++){
-    
-}
 
 if(isset($_SESSION['id'])) {
 
@@ -84,7 +76,6 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 
     $homepage = new Homepage;
-
     if(isset($_SESSION['id'])){
 
         $params = [$userInfos, $mostViewd, $allStates, $allCats, $allSubCat, $allCond, $shipName, $allUsers, $rightsName]; // keep same chunks orders
@@ -104,6 +95,8 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 } elseif (isset($_GET['signin'])) {   //    <-----------  SIGN IN PAGE
 
+    $_SESSION['token'] = (new Token)->generateToken();
+    $_SESSION['token-expire'] = (new Token)->generateExpiration();
     $signin = new Signin;
     $signin->showSignin();
 
@@ -147,11 +140,20 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
          isset($_SESSION['token'])&&
          isset($_POST['token'])) {
 
+    /*
+        var_dump($_POST['emailIn']);
+        var_dump($_POST['passwordIn']);
+        var_dump($_POST['submitLog']);
+        var_dump($_SESSION['token-expire']);
+        var_dump($_SESSION['token']);
+        var_dump($_POST['token']);*/
+
             $emailIn = filter_var($_POST['emailIn'],FILTER_SANITIZE_EMAIL);
             $passwordIn = filter_var($_POST['passwordIn'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $token = filter_var($_POST['token'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $token_session = $_SESSION['token'];
             $token_expire = $_SESSION['token-expire'];
+
 
             print_r((new Signin)->signIn($emailIn,$passwordIn,$token,$token_session,$token_expire));
 
@@ -217,7 +219,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     exit();
   // } elseif(){       <--------- add conditions 'routes' here
 
-} elseif (isset($_SESSION['subs'])&&$_SESSION['subs']===1){             // <------   SESSIONS VALIDATION  !!!!!!!!!!!!!
+} elseif (isset($_SESSION['subs'])&&$_SESSION['subs'] === 1 ){             // <------   SESSIONS VALIDATION  !!!!!!!!!!!!!
 
 
     header('location: index?profile');
@@ -234,9 +236,31 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     }
     $profile->showProfile($_SESSION['id'],$userInfos);
 
+} elseif(   isset($_FILES['myPic'])  &&
+            isset($_POST['name']) &&
+            isset($_POST['lastname']) &&
+            isset($_POST['info1'])){         //    <-----------  PROFILE update NAme Etc
+
+    $errors = [];
+
+    $profile = new Profile;
+
+    $errors_newFilepath = (new User)->uploadImage($errors,'myPic');
+    $errors = $errors_newFilepath[0];
+    $newFilepath = $errors_newFilepath[1];
+    $user = (new User)->updateInfoPerso($_SESSION['id'], $newFilepath,  $_POST['name'], $_POST['lastname']);
+    if(is_array($user)){
+        $errors [] = $user;
+    }
+    var_dump($errors);
+    $rightsName = (new Rights)->getRightsName($rights); // Rights will always be at the end of the arrays
+    $userInfos= [$userInfos, $errors, $rightsName];
+
+    $profile->showProfile($_SESSION['id'],$userInfos);
+
 }  elseif(isset($_GET['infoPassword'])){                 //    <-----------  Password
 
-        $profile = new Profile;
+    $profile = new Profile;
     $userInfos = [$userInfos,$rightsName];
     $profile->showInfo($userInfos,'InfoPassword');
 
@@ -338,7 +362,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     $errors = [];
 
     $errors_newFilepath1 =(new User)->uploadImage($errors, nameCmd: 'img1');
-    $errors1 = $errors_newFilepath1[0];
+    $errors1 = $errors_newFilepmath1[0];
     $newFilepath1 = $errors_newFilepath1[1];
     $errors = array_merge(...$errors,...$errors1);
 
@@ -379,6 +403,31 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
        print_r(json_encode($errors));
     }
 
+} elseif(isset($_GET['owner'])){
+
+
+    $arr = explode(',', base64_decode(base64_decode($_GET['owner'])));
+    $email = $arr[0];
+    $title = $arr[1];
+
+
+    for($i=0;$i<=isset($allUsers[$i]);$i++){
+        if($email === $allUsers[$i]['email']){
+            header('location: mailto:'.$email.'?subject=Thriftee: '.$title);
+        }
+    }
+   // if($email[0] === .)
+    //<a href="mailto:email@example.com">Send Email</a>
+
+    $form = ob_get_clean();
+
+} elseif(isset($_GET['logout'])){
+
+    session_destroy();
+    setcookie("connected", 0, time() - 3600000 * 240);
+    setcookie("id", 0, time() - 3600000 * 240);
+    header('location: index');
+
 } else {
 
 
@@ -389,6 +438,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     $allCond = (new Condition)->getAllCond();
     $shipName = (new Shipping)->getAllShipNames();
     $allUsers = (new User)->getAllUsers();
+
 
     if(isset($_SESSION['id'])){
 
@@ -403,6 +453,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $params = [$mostViewd, $allStates, $allCats, $allSubCat, $allCond, $shipName, $allUsers, $rightsName]; // keep same chunks orders
 
     }
+
 
     $homepage->showHome($params);
 

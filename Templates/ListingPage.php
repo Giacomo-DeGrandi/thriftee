@@ -45,6 +45,8 @@ if(isset($chunks)){
         }
     }
 
+
+
 } else {
     header('location: index');
 }
@@ -139,9 +141,22 @@ if(isset($chunks)){
                 <div class="p-4">
 
                     <div class="img-wrap-medium d-flex flex-column align-items-center justify-content-center">
-                        <div class=" rounded-1 img-wrapper-medium">
+                        <a href="<?= $listingInfo['img_url_1'] ?>" class=" rounded-1 img-wrapper-medium">
                             <img src="<?= $listingInfo['img_url_1'] ?>" class="img-card-medium"  >
-                        </div>
+                        </a>
+                    </div>
+
+                    <div class="img-wrap-img d-flex d-flex-column-mobile align-items-center justify-content-center">
+                        <a href="<?= $listingInfo['img_url_2'] ?>" class=" rounded-1 img-wrapper-sm">
+                            <img src="<?= $listingInfo['img_url_2'] ?>" class="img-card-sm"  >
+                        </a>
+                        <a href="<?= $listingInfo['img_url_3'] ?>" class=" rounded-1  img-wrapper-sm">
+                            <img src="<?= $listingInfo['img_url_3'] ?>" class="img-card-sm"  >
+                        </a>
+                        <a href="<?= $listingInfo['img_url_4'] ?>" class=" rounded-1  img-wrapper-sm">
+                            <img src="<?= $listingInfo['img_url_4'] ?>" class="img-card-sm"  >
+                        </a>
+
                     </div>
 
                 </div>
@@ -156,10 +171,10 @@ if(isset($chunks)){
 
                         </div>
 
-                        <?php if($listingInfo['offer_state'] === '1'): ?>
+                        <?php if( $listingInfo['offer_state'] === '1' && (isset($_SESSION['id']) && $listingInfo['id_owner'] !== $_SESSION['id']) ) : ?>
 
                             <div class="p-3 text-end">
-                                <a href="<?= base64_encode(base64_encode($emailOwner[0][0]['email'])) ?>" class="h6 contact-shop">Contact the Shop directly from your mail<div class="flex-nowrap"><img class="img-email-fx " src="assets/public/icons/email.svg" ></div></a>
+                                <a href="index?owner=<?= base64_encode(base64_encode($emailOwner[0][0]['email'].','.$listingInfo['title'])) ?>" class="h6 contact-shop" rel="noopener noreferrer">Contact the Shop directly from your mail<div class="flex-nowrap"><img class="img-email-fx " src="assets/public/icons/email.svg" ></div></a>
                             </div>
 
                         <?php endif; ?>
@@ -193,23 +208,26 @@ if(isset($chunks)){
             <div class="h2 p-3">Other items from the same Category</div>
             <div class="d-flex d-flex-column-mobile overflow-scroll justify-content-evenly">
 
-                <?php  for ($i = 0 ; $i<=isset($allListCat[$i]); $i++):  ?>
+                <?php for ($i = 0 ; $i<=isset($allListCat[$i]); $i++):  ?>
+                    <?php if( $allListCat[$i]['offer_state'] === '1') :?>
 
-                    <a href="index?ListingPage=<?= $allListCat[$i]['id'] ?>" class="p-2 rounded-1 border-orange">
+                        <a href="index?ListingPage=<?= $allListCat[$i]['id'] ?>" class="p-2 rounded-1 border-orange">
 
-                        <div class="h5 p-1"> <?= $allListCat[$i]['title'] ?> </div>
-                        <div class="img-wrap-img d-flex flex-column align-items-center justify-content-center">
-                            <div class=" rounded-1 img-wrapper">
-                                <img src="<?= $allListCat[$i]['img_url_1'] ?>" class="img-card"  >
+                            <div class="h5 p-1"> <?= $allListCat[$i]['title'] ?> </div>
+                            <div class="img-wrap-img d-flex flex-column align-items-center justify-content-center">
+                                <div class=" rounded-1 img-wrapper">
+                                    <img src="<?= $allListCat[$i]['img_url_1'] ?>" class="img-card"  >
+                                </div>
                             </div>
-                        </div>
-                        <hr>
+                            <hr>
 
-                        <div class="d-flex">
-                            <div class="h5 p-1">  € <?= $allListCat[$i]['price'] ?> </div>
-                        </div>
+                            <div class="d-flex">
+                                <div class="h5 p-1">  € <?= $allListCat[$i]['price'] ?> </div>
+                            </div>
 
-                    </a>
+                        </a>
+
+                    <?php endif; ?>
                 <?php endfor; ?>
 
             </div>

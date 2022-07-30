@@ -21,12 +21,12 @@ $requested= $chunks[0][0][0];
         <hr>
 
         <!-- MODIFY  -->
-        <div class="container row p-4">
+        <div class="container row p-2">
             <form method="post" enctype="multipart/form-data">
 
                 <table class="table">
                     <tr>
-                        <th class="col-4 h3 p-4 blue-font">Name</th>
+                        <th class="col-4 h3 p-1 blue-font">Name</th>
                     </tr>
                     <tr>
                         <td class="col-8 h5 p-4">

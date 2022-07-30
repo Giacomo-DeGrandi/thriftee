@@ -5,6 +5,7 @@ namespace Application\Models\User;
 require_once('Database.php');
 
 use Application\Models\Database\Database;
+use Application\Models\User\User as Usermodel;
 
 Class User extends Database{
 
@@ -95,5 +96,30 @@ Class User extends Database{
         return $result->fetchAll();
     }
 
+    public function registerNewImage(mixed $filePaths, mixed $id): bool|array
+    {
+        $sql = "UPDATE users SET img_profile = :img_profile WHERE id = :id;";
+        $params = [':img_profile' => $filePaths, ':id' => $id];
+        $result = $this->selectQuery($sql, $params);
+        return $result->fetchAll();
+    }
+
+    public function updatePersonalInfo(mixed $id, mixed $name, mixed $lastname, mixed $filePath): bool|array
+    {
+        $sql = "UPDATE users SET name = :name, lastname = :lastname, img_profile = :img_profile  WHERE id = :id;";
+        $params = [':name' => $name, ':lastname' => $lastname ,':img_profile' => $filePath, ':id' => $id];
+        $result = $this->selectQuery($sql, $params);
+        return $result->fetchAll();
+    }
 
 }
+
+
+
+
+
+
+
+
+
+

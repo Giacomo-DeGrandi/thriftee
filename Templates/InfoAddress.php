@@ -15,7 +15,9 @@ $address = $chunks[0][0][0];
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPersonal">Personal Information</button>
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPassword">Password</button>
                 <button type="submit" class="h5 p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoAddress">Address</button>
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoListings">Listings</button>
+                <?php if($rights[0] === 'Buyer'): ?>
+                    <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoListings">Listings</button>
+                <?php  endif;  ?>
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoProfile">Public Profile</button>
             </form>
         </div>
@@ -23,7 +25,7 @@ $address = $chunks[0][0][0];
         <hr>
 
         <!-- MODIFY  -->
-        <div class="container row p-4">
+        <div class="container row p-1">
             <form method="post" enctype="multipart/form-data">
 
                 <table class="table">
