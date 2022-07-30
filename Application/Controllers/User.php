@@ -4,7 +4,9 @@ namespace Application\Controllers\User;
 
 require_once ('Application/Models/User.php');
 require_once ('Application/Lib/Token.php');
+require_once ('Signup.php');
 
+use Application\Controllers\Signup\Signup;
 use Application\Lib\Token\Token;
 use Application\Models\User\User as Usermodel;
 
@@ -89,8 +91,8 @@ class User
         if (!preg_match("/^[a-zA-Z0-9.,_ '?!-]*$/", $bios)) {
             $errors[] = "You can use only numbers, letters and  .,_ '?!-  in bios field";
         }
-        if (strlen($bios) < 0 || strlen($bios) > 500) {
-            $errors[] = "Bios must be in between 0 and 500 characters";
+        if (strlen($bios) < 0 || strlen($bios) > 1000) {
+            $errors[] = "Bios must be in between 0 and 1000 characters";
         }
 
         if (empty($errors)) {
@@ -128,12 +130,8 @@ class User
         // FILE
         $filepath = $_FILES[$nameCmd]['tmp_name'];
         $fileSize = filesize($filepath);
-        if(finfo_open(FILEINFO_MIME_TYPE) !== null){
-            $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
-            $filetype = finfo_file($fileinfo, $filepath);
-        } else {
-            $errors [] = 'Invalid MIME type';
-        }
+        $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+        $filetype = finfo_file($fileinfo, $filepath);
 
         if ($fileSize === 0) {
             $errors [] = 'This file is empty';
@@ -141,6 +139,7 @@ class User
         if ($fileSize > 1000000) {
             $errors [] = 'Max size allowed 1MB';
         }
+
 
 
         $allowedTypes = ['image/png' => 'png', 'image/jpeg' => 'jpg', 'image/svg+xml' => 'svg', 'image/gif' => 'gif', 'image/webp' => 'webp'];
@@ -186,7 +185,7 @@ class User
 
     }
 
-    public function updateInfoPerso(mixed $id, mixed $filePath, mixed $name, mixed $lastname): bool|array
+    public function updateInfoPerso(mixed $id, mixed $filePath, mixed $name, mixed $lastname, mixed $bios, mixed $email): bool|array
     {
         if (empty($name)) {
             $errors[] = "Name is required";
@@ -206,10 +205,29 @@ class User
         if (strlen($lastname) < 2 || strlen($lastname) > 23) {
             $errors[] = "Lastname must be in between 2 and 23 characters";
         }
+        if (!preg_match("/^[a-zA-Z0-9.,_ '?!-]*$/", $bios)) {
+            $errors[] = "You can use only numbers, letters and  .,_ '?!-  in bios field";
+        }
+        if (strlen($bios) < 0 || strlen($bios) > 1000) {
+            $errors[] = "Bios must be in between 0 and 1000 characters";
+        }
+        if (empty($email)) {
+            $errors[] = "Email is required";
+        }
+        if (!preg_match('/^[a-z0-9._-]+[@]+[a-zA-Z0-9._-]+[.]+[a-z]{2,3}$/', $email)) {
+            $errors[] = "Email format is wrong";
+        }
+
+        //check if user exists
+        $chkExists = (new Signup)->emailTestReceiverUpdate($_POST['email'], $id);
+
+        if (!empty($chkExists)) {
+            $errors[] = "This email is already registered please log in or choose another email";
+        }
 
         if (empty($errors)) {
 
-            (new Usermodel())->updatePersonalInfo($id,$name,$lastname,$filePath);
+            (new Usermodel())->updatePersonalInfo($id, $name, $lastname, $filePath, $bios, $email);
             unset($_SESSION["token"]);
             unset($_SESSION["token-expire"]);
             return  true;
@@ -219,6 +237,16 @@ class User
             return $errors;
         }
 
+    }
+
+    public function getProPicPath(mixed $id): bool|array
+    {
+        return (new Usermodel())->getProPicPath($id);
+    }
+
+    public function emailExistsUpdate($email, $id): bool|array
+    {
+        return (new Usermodel())->emailExistsUpdate($email, $id);
     }
 
 

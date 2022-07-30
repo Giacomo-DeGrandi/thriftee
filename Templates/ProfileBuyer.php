@@ -2,10 +2,24 @@
 
 
 ob_start();
+?>
+    <script src="assets/public/js/infoProfile.js"></script>
+<?php
+$script = ob_get_clean();
+
+
+ob_start();
+//var_dump($_POST);
+//var_dump($_SESSION);
 
 $requested= $chunks[0][0][0];
+if(isset($chunks[1][0][0])){
+    $errors = $chunks[1][0][0];
+} else {
+    $errors = $chunks[1][0];
+}
+$rightsName = $chunks[2][0][0];
 
-var_dump($chunks[2]);
 ?>
     <div class="container">
 
@@ -21,9 +35,22 @@ var_dump($chunks[2]);
 
         <hr>
 
+        <div class="d-flex align-items-center justify-content-center h5 orange-font p-1"><?php if(isset($errors) && !empty($errors)){ for($i=0;$i<=isset($errors[$i]);$i++){ echo $errors[$i]; }  } ?></div>
+
+
         <!-- MODIFY  -->
         <div class="container p-1">
-            <form method="post" enctype="multipart/form-data" action="index?updateInfo" class="container">
+            <form method="post" enctype="multipart/form-data"  class="container" action="index?updateInfo">
+
+                <table class="table">
+                    <tr>
+                        <th class="h3 p-1 blue-font">Email</th>
+                        <th class="h5 p-4">
+                            <label for="email" class="p-2">Email</label>
+                            <input type="email" name="email" class="border border-1" value="<?= $requested['email'] ?>">
+                        </th>
+                    </tr>
+                </table>
 
                 <table class="table">
                     <tr>
@@ -45,15 +72,16 @@ var_dump($chunks[2]);
                         <div class="col d-flex flex-column d-flex-column-mobile">
 
                             <div class="p-2 h3 blue-font">Profile Picture</div>
-                            <div class="img-wrapper-medium">
+                            <div class="img-wrapper-sm">
                                 <a href="<?= $requested['img_profile'] ?>">
-                                    <img src="<?= $requested['img_profile'] ?>" class="img-card-medium" alt="profilepic">
+                                    <img src="<?= $requested['img_profile'] ?>" class="img-card-sm" alt="profilepic">
                                 </a>
                             </div>
-                            <label for="myFile"  class="bg-white orange-font p-2 hover-underline-animation">
+                            <label for="myPic"  class="bg-white border border-0 orange-font p-2 hover-underline-animation">
                                 change
                                 <input type="file" id="myPic" class="d-none" name="myPic"/>
                             </label>
+                            <div class="h5" id="imgProLoad"></div>
 
                         </div>
 
@@ -68,8 +96,12 @@ var_dump($chunks[2]);
 
                 <hr>
 
+                <!-- CSRF Token  -->
+                <input type="hidden" name="token" id="token" value="<?= $_SESSION["token"] ?>"/>
+
+
                 <div class="d-flex align-items-center justify-content-center">
-                    <button type="submit" class="bg-blue border border-0 rounded-1" name="info1">Save</button>
+                    <button type="submit" class="bg-blue border border-0 rounded-1" id="info1" name="info1">Save</button>
                 </div>
             </form>
 
@@ -84,3 +116,15 @@ var_dump($chunks[2]);
 
 <?php
 $content = ob_get_clean();
+
+
+
+
+
+
+
+
+
+
+
+

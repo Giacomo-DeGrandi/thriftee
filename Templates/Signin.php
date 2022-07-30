@@ -21,14 +21,14 @@ ob_start();
                     <div class="form-outline mb-4">
                         <input type="email" id="emailIn" name="emailIn" class="form-control" />
                         <label class="form-label" for="email">Email address</label>
-                        <small></small>
+                        <small class="orange-font"></small>
                     </div>
 
                     <!-- Password input -->
                     <div class="form-outline mb-4">
                         <input type="password" id="passwordIn" name="passwordIn" class="form-control" />
                         <label class="form-label" for="password">Password</label>
-                        <small></small>
+                        <small class="orange-font"></small>
                     </div>
 
                     <!-- Submit button -->

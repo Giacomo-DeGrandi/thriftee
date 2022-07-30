@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function(){
                                 if(d === 'details'){
                                     window.location = "index?details";
                                 } else if(d === 'profile') {
-                                    window.location = "index?profile";
+                                    window.location = "index?infoPersonal";
                                 } else {
                                     showErrors(pwLog, 'Something went wrong, please contact the administrator')
 

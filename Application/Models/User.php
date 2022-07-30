@@ -104,12 +104,28 @@ Class User extends Database{
         return $result->fetchAll();
     }
 
-    public function updatePersonalInfo(mixed $id, mixed $name, mixed $lastname, mixed $filePath): bool|array
+    public function updatePersonalInfo(mixed $id, mixed $name, mixed $lastname, mixed $filePath, mixed $bios, mixed $email): bool|array
     {
-        $sql = "UPDATE users SET name = :name, lastname = :lastname, img_profile = :img_profile  WHERE id = :id;";
-        $params = [':name' => $name, ':lastname' => $lastname ,':img_profile' => $filePath, ':id' => $id];
+        $sql = "UPDATE users SET name = :name, email = :email, lastname = :lastname, img_profile = :img_profile, bios = :bios  WHERE id = :id;";
+        $params = [':name' => $name, ':email' => $email, ':lastname' => $lastname ,':img_profile' => $filePath, ':bios' => $bios, ':id' => $id];
         $result = $this->selectQuery($sql, $params);
         return $result->fetchAll();
+    }
+
+    public function getProPicPath(mixed $id): bool|array
+    {
+        $sql = "SELECT `img_profile` FROM `users` WHERE id = :id";
+        $params = [':id' => intval($id) ];
+        $result = $this->selectQuery($sql,  $params);
+        return $result->fetchAll();
+    }
+
+    public function emailExistsUpdate($email, $id): bool|array
+    {
+        $sql= 'SELECT * FROM users WHERE email = :email AND id != :id ' ;
+        $params = [':email' => $email, ':id' => intval($id) ];
+        $check = $this->selectQuery($sql,$params);
+        return $check->fetchAll();
     }
 
 }

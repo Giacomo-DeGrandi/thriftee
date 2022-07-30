@@ -48,6 +48,7 @@ class Signin extends Controller{
 
         $cpw = (new User)->getPw($email);
 
+
         if (!password_verify($password, $cpw[0]['password'])) {
             print_r(json_encode('Wrong password'));
 

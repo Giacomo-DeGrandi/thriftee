@@ -11,7 +11,7 @@ ob_start();
                 </div>
             </form>
             <div class="col-2 text-center h5">
-                <a href="index?profile" class="text-center hover-underline-animation">Your Account</a>
+                <a href="index?infoPersonal" class="text-center hover-underline-animation">Your Account</a>
             </div>
             <div class="col-2 text-center h5">
                 <a href="index?logout" class="text-center hover-underline-animation text-nowrap">Logout</a>

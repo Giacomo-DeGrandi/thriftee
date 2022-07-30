@@ -1,9 +1,16 @@
 <?php
 
 
-$title = "ThrifteeX";
 
 ob_start();
+
+$title = "ThrifteeX";
+
+
+//var_dump($_SESSION);
+//var_dump($_POST);
+//var_dump($_GET);
+//var_dump($_FILES);
 
 if(isset($_SESSION['id'])){
     $userInfos = array_merge(...array_values($chunks[0]));
@@ -24,6 +31,8 @@ if(isset($_SESSION['id'])){
     $allShip = array_merge(...array_values($chunks[5]));
     $allUsers = array_merge(...array_values($chunks[6]));
 }
+
+
 
 
 for($j = 0 ;$j <=isset($mostViewd[$j]); $j++){

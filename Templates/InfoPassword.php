@@ -23,7 +23,7 @@ ob_start();
 
         <!-- MODIFY  -->
         <div class="container row p-1">
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" action="index?infoPassword=">
 
                 <table class="table">
                     <tr>
@@ -42,7 +42,7 @@ ob_start();
                 <hr>
 
                 <div class="d-flex align-items-center justify-content-center">
-                    <button type="submit" class="bg-blue border border-0 rounded-1" name="info1">Save</button>
+                    <button type="submit" class="bg-blue border border-0 rounded-1" name="infoPass">Save</button>
                 </div>
             </form>
 

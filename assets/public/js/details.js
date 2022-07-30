@@ -127,13 +127,13 @@ document.addEventListener('DOMContentLoaded', function(){
         // min num of chars
         let min = 0
         // max num of chars
-        let max = 500
+        let max = 1000
         // take away spaces
         let biosVal = bios.value.trim();
 
         // test if required function is valid else give an error
         if (!validateBios(biosVal) || !isBetween(biosVal.length, min, max)) {
-            showErrors(bios, 'Bios can have max 500 characters and can contain only  .,_ \'?!-  , without quotes.')
+            showErrors(bios, 'Bios can have max 1000 characters and can contain only  .,_ \'?!-  , without quotes.')
             // else validate the input
         } else {
             showValids(bios)

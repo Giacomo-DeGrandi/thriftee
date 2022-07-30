@@ -21,6 +21,11 @@ class Signup extends Controller{
         return (new User)->emailExists($email);
     }
 
+    public function emailTestReceiverUpdate($email,$id): bool|array
+    {
+        return (new User)->emailExistsUpdate($email, $id);
+    }
+
     public function signUp( mixed $name, mixed $lastname, mixed $username, mixed $email, mixed $pw, int $rights )
     {
         (new User)->signUp( $name, $lastname, $username, $email, $pw, $rights );

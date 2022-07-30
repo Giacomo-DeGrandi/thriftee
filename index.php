@@ -227,36 +227,72 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
     exit();
 
-} elseif(isset($_GET['profile'])||isset($_GET['infoPersonal'])){         //    <-----------  PROFILE
+} elseif(isset($_GET['infoPersonal'])) {         //    <-----------  PROFILE
 
+    $token = $_SESSION['token'] = (new Token)->generateToken();
+    $tokenExp = $_SESSION['token-expire'] = (new Token)->generateExpiration();
     $profile = new Profile;
-    if($rights){
+    $errors = [];
+    $token = [$token, $tokenExp];
+    if ($rights) {
         $rightsName = (new Rights)->getRightsName($rights); // Rights will always be at the end of the arrays
-        $userInfos= [$userInfos,$rightsName];
+        $userInfos = [$userInfos, $errors, $token, $rightsName];
     }
-    $profile->showProfile($_SESSION['id'],$userInfos);
+    $profile->showProfile($_SESSION['id'], $userInfos);
 
-} elseif(   isset($_FILES['myPic'])  &&
+}elseif(    isset($_GET['updateInfo'])  &&
+            isset($_SESSION['token'])  &&
+            isset($_SESSION['token-expire'])  &&
+            isset($_FILES['myPic']) &&
             isset($_POST['name']) &&
             isset($_POST['lastname']) &&
-            isset($_POST['info1'])){         //    <-----------  PROFILE update NAme Etc
+            isset($_POST['bios']) &&
+            isset($_POST['token']) &&
+            isset($_POST['email']) &&
+            isset($_POST['info1']) ) {         //    <-----------  PROFILE update NAme Etc
 
-    $errors = [];
 
-    $profile = new Profile;
+        // $errors = [];
 
-    $errors_newFilepath = (new User)->uploadImage($errors,'myPic');
-    $errors = $errors_newFilepath[0];
-    $newFilepath = $errors_newFilepath[1];
-    $user = (new User)->updateInfoPerso($_SESSION['id'], $newFilepath,  $_POST['name'], $_POST['lastname']);
-    if(is_array($user)){
-        $errors [] = $user;
-    }
-    var_dump($errors);
-    $rightsName = (new Rights)->getRightsName($rights); // Rights will always be at the end of the arrays
-    $userInfos= [$userInfos, $errors, $rightsName];
+        // var_dump($_POST['token']);
 
-    $profile->showProfile($_SESSION['id'],$userInfos);
+        // var_dump($_SESSION['token']);
+
+
+        $profile = new Profile;
+
+        if ($_SESSION['token'] !== $_POST['token']) {
+            $errors [] = 'Invalid Token, please try again or contact the Administrator if the error persist';
+        }
+
+        $oldPath = (new User)->getProPicPath($_SESSION['id']);
+        $oldPath = $oldPath[0]['img_profile'];
+        if ($_FILES['myPic']['name'] === '') {
+
+            $user = (new User)->updateInfoPerso($_SESSION['id'], $oldPath, $_POST['name'], $_POST['lastname'], $_POST['bios'], $_POST['email']);
+
+        } else {
+
+            $errors_newFilepath = (new User)->uploadImage($errors, 'myPic');
+            $errors = $errors_newFilepath[0];
+            $newFilepath = $errors_newFilepath[1];
+            $user = (new User)->updateInfoPerso($_SESSION['id'], $newFilepath, $_POST['name'], $_POST['lastname'], $_POST['bios'], $_POST['email']);
+
+        }
+
+        if (is_array($user)) {
+            $errors [] = $user;
+        }
+
+        if (empty($errors)) {
+            header('location: index?infoPersonal');
+        }
+        $rightsName = (new Rights)->getRightsName($rights); // Rights will always be at the end of the arrays
+        $userInfos = [$userInfos, $errors, $rightsName];
+        $profile->showProfile($_SESSION['id'], $userInfos);
+
+
+
 
 }  elseif(isset($_GET['infoPassword'])){                 //    <-----------  Password
 
@@ -279,8 +315,9 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 } elseif(isset($_GET['infoProfile'])){           //    <----------- General Setting
 
-        $profile = new Profile;
-    $userInfos = [$userInfos,$rightsName];
+    $errors = [];
+    $profile = new Profile;
+    $userInfos = [$userInfos, $errors, $rightsName];
     $profile->showInfo($userInfos,'InfoProfile');
 
 } elseif(isset($_GET['myListings'])){           //    <----------- General Setting
@@ -362,7 +399,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     $errors = [];
 
     $errors_newFilepath1 =(new User)->uploadImage($errors, nameCmd: 'img1');
-    $errors1 = $errors_newFilepmath1[0];
+    $errors1 = $errors_newFilepath1[0];
     $newFilepath1 = $errors_newFilepath1[1];
     $errors = array_merge(...$errors,...$errors1);
 

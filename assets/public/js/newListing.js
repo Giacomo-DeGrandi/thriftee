@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded',function() {
 
 
         if (!isRequired(fileDetails2)) {
-            imgListSmall2.textContent = 'Choose 4 offer pictures please'
+            imgListSmall2.textContent = 'Choose at least 4 offer pictures please'
             // test if the length is at least 3ch and the max is 15ch
 
         } else if (!found2) {
@@ -368,7 +368,7 @@ document.addEventListener('DOMContentLoaded',function() {
         let fileDetails3 = pic3.files[0];
 
         if(fileDetails3 === undefined){
-            imgListSmall3.textContent = 'Choose 4 offer pictures please'
+            imgListSmall3.textContent = 'Choose at least 4 offer pictures please'
         }
 
 
@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded',function() {
 
 
         if (!isRequired(fileDetails3)) {
-            imgListSmall3.textContent = 'Choose 4 offer pictures please'
+            imgListSmall3.textContent = 'Choose at least 4 offer pictures please'
             // test if the length is at least 3ch and the max is 15ch
 
         } else if (!found3) {
@@ -422,7 +422,7 @@ document.addEventListener('DOMContentLoaded',function() {
 
 
         if(fileDetails4 === undefined){
-            imgListSmall4.textContent = 'Choose 4 offer pictures please'
+            imgListSmall4.textContent = 'Choose at least 4 offer pictures please'
         }
 
 
