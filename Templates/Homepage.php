@@ -150,6 +150,7 @@ for($j = 0 ;$j <=isset($mostViewd[$j]); $j++){
                         </div>
 
                     <?php endif; ?>
+
                 <?php endfor; ?>
 
             </div>
