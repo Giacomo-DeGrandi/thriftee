@@ -11,7 +11,7 @@ class Listing extends Database
 
     public function registerListing(mixed $id, mixed $title, mixed $price, mixed $category, mixed $subCat,
                                     mixed $description, mixed $cond, mixed $ship, mixed $year, mixed $newFilepath1,
-                                    mixed $newFilepath2, mixed $newFilepath3, mixed $newFilepath4)
+                                    mixed $newFilepath2, mixed $newFilepath3, mixed $newFilepath4): bool|array
     {
         $datenow = date('Y-m-d H:i:s');
 
@@ -65,11 +65,18 @@ class Listing extends Database
         return $check->fetchAll();
     }
 
-    public function getListInfoByCat(mixed $id_categories)
+    public function getListInfoByCat(mixed $id_categories): bool|array
     {
         $sql= 'SELECT * FROM listings WHERE id_categories = :id_categories ; ' ;
         $params = [':id_categories' => $id_categories ];
         $check = $this->selectQuery($sql,$params);
+        return $check->fetchAll();
+    }
+
+    public function getAllPrices(): bool|array
+    {
+        $sql= 'SELECT price FROM listings ORDER BY price ASC ; ' ;
+        $check = $this->selectQuery($sql);
         return $check->fetchAll();
     }
 }

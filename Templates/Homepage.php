@@ -7,6 +7,8 @@ ob_start();
 $title = "ThrifteeX";
 
 
+
+
 //var_dump($_SESSION);
 //var_dump($_POST);
 //var_dump($_GET);
@@ -100,67 +102,72 @@ for($j = 0 ;$j <=isset($mostViewd[$j]); $j++){
 
             <div class="container d-flex align-items-center justify-content-evenly d-flex-column-mobile p-5">
 
-                <?php for($i = 0; $i <= isset($mostViewd[$i]); $i++):  ?>
-                    <?php if($mostViewd[$i]['offer_state'] === '1'):  ?>
+                <?php if(isset($mostViewd) && !empty($mostViewd)):?>
 
-                        <div class="rounded-3 bg-white mb-3 shadow-sm text-black col-xl-3">
+                    <?php for($i = 0; $i <= isset($mostViewd[$i]); $i++):  ?>
+                        <?php if($mostViewd[$i]['offer_state'] === '1'):  ?>
 
-                            <div class="p-1">
+                            <div class="rounded-3 bg-white mb-3 shadow-sm text-black col-xl-3">
 
-                                <a href="index?ListingPage=<?= $mostViewd[$i]['id']?>" class="d-flex flex-column text-black d-flex-column-mobile">
+                                <div class="p-1">
 
-                                    <div class="img-wrap-img d-flex flex-column align-items-center justify-content-center">
-                                        <div class=" rounded-1 img-wrapper">
-                                            <img src="<?= $mostViewd[$i]['img_url_1'] ?>" class="img-card"  >
-                                        </div>
-                                        <div class="h3 fw-bold p-1 cond-font rounded-1 ">
-                                            €  <?= $mostViewd[$i]['price'] ?>
-                                        </div>
-                                    </div>
+                                    <a href="index?ListingPage=<?= $mostViewd[$i]['id']?>" class="d-flex flex-column text-black d-flex-column-mobile">
 
-
-                                    <div class="container row ">
-                                        <div class="h3 p-1 rounded-1 ">
-                                            <?= substr(ucfirst($mostViewd[$i]['title']),0,14).'<small class="fw-lighter">...</small>' ?>
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="row p-1">
-                                        <div class="">
-                                            <div class="flex-nowrap fw-lighter">
-                                                <b class="me-1"><?= $mostViewd[$i]['id_categories'] ?></b>
-                                                <small class="small"> > </small>
-                                                <b class="me-1"> <?= $mostViewd[$i]['id_subcategories'] ?></b>
+                                        <div class="img-wrap-img d-flex flex-column align-items-center justify-content-center">
+                                            <div class=" rounded-1 img-wrapper">
+                                                <img src="<?= $mostViewd[$i]['img_url_1'] ?>" class="img-card"  >
+                                            </div>
+                                            <div class="h3 fw-bold p-1 cond-font rounded-1 ">
+                                                €  <?= $mostViewd[$i]['price'] ?>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="p-1">
-                                        <small class="small">condition: </small>
-                                        <b class="me-1">
-                                            <?= ucfirst($mostViewd[$i]['obj_condition']) ?>
-                                        </b>
-                                        <br>
-                                        <small class="small">location: </small>
-                                        <b class="me-1 orange-font">
-                                            <?= ucfirst($mostViewd[$i]['city']) ?>
-                                            <?= ucfirst($mostViewd[$i]['zipCode']) ?>
-                                        </b>
-                                    </div>
 
 
+                                        <div class="container row ">
+                                            <div class="h3 p-1 rounded-1 ">
+                                                <?= substr(ucfirst($mostViewd[$i]['title']),0,14).'<small class="fw-lighter">...</small>' ?>
+                                            </div>
 
-                                </a>
+                                        </div>
+
+
+                                        <div class="row p-1">
+                                            <div class="">
+                                                <div class="flex-nowrap fw-lighter">
+                                                    <b class="me-1"><?= $mostViewd[$i]['id_categories'] ?></b>
+                                                    <small class="small"> > </small>
+                                                    <b class="me-1"> <?= $mostViewd[$i]['id_subcategories'] ?></b>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="p-1">
+                                            <small class="small">condition: </small>
+                                            <b class="me-1">
+                                                <?= ucfirst($mostViewd[$i]['obj_condition']) ?>
+                                            </b>
+                                            <br>
+                                            <small class="small">location: </small>
+                                            <b class="me-1 orange-font">
+                                                <?= ucfirst($mostViewd[$i]['city']) ?>
+                                                <?= ucfirst($mostViewd[$i]['zipCode']) ?>
+                                            </b>
+                                        </div>
+
+
+
+                                    </a>
+
+                                </div>
 
                             </div>
 
-                        </div>
+                        <?php endif; ?>
 
-                    <?php endif; ?>
+                    <?php endfor; ?>
 
-                <?php endfor; ?>
+                <?php endif; ?>
+
 
             </div>
 
@@ -169,20 +176,24 @@ for($j = 0 ;$j <=isset($mostViewd[$j]); $j++){
 
                 <div class="row bg-orange d-flex-column-mobile">
 
-                    <?php  for($l = 0; $l <= isset($allCat[$l]); $l++): ?>
+                    <?php if(isset($allCat) && !empty($allCat)):?>
 
-                    <div class="bg-white p-4">
-                        <div class="border border-1 p-5 rounded-1">
-                            <a href="<?= $allCat[$l]['id'] ?>" class=" class h1 p-2"><?= $allCat[$l]['name'] ?></a>
-                                <?php  for($k = 0; $k <= isset($allSubCat[$k]); $k++){ ?>
-                                    <?php if($allCat[$l]['id'] === $allSubCat[$k]['id_categories'] ){ ?> <!-- check for same name category and extract last 10 most view titles -->
-                                        <a href="index?SubCat=<?= $allSubCat[$k]['id'] ?>" class="h5 small border border-1 p-1 rounded-pill shadow-sm" > # <?= $allSubCat[$k]['name'] ?> </a>
-                                    <?php } ?>
-                                <?php  }  ?>
+                        <?php  for($l = 0; $l <= isset($allCat[$l]); $l++): ?>
+
+                        <div class="bg-white p-4">
+                            <div class="border border-1 p-5 rounded-1">
+                                <a href="<?= $allCat[$l]['id'] ?>" class=" class h1 p-2"><?= $allCat[$l]['name'] ?></a>
+                                    <?php  for($k = 0; $k <= isset($allSubCat[$k]); $k++){ ?>
+                                        <?php if($allCat[$l]['id'] === $allSubCat[$k]['id_categories'] ){ ?> <!-- check for same name category and extract last 10 most view titles -->
+                                            <a href="index?SubCat=<?= $allSubCat[$k]['id'] ?>" class="h5 small bg-orange border border-1 p-1 rounded-pill shadow-sm" > # <?= $allSubCat[$k]['name'] ?> </a>
+                                        <?php } ?>
+                                    <?php  }  ?>
+                            </div>
                         </div>
-                    </div>
 
-                    <?php endfor; ?>
+                        <?php endfor; ?>
+
+                    <?php endif;  ?>
 
                 </div>
             </div>

@@ -13,6 +13,7 @@ ob_start();
 $infoUser = $chunks[0];
 $cat = $chunks[1];
 $cat = array_merge(...array_values($cat));
+$rightsName = $chunks[2];
 ?>
     <div class="container">
 
@@ -22,7 +23,9 @@ $cat = array_merge(...array_values($cat));
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPersonal">Personal Information</button>
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPassword">Password</button>
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoAddress">Address</button>
-                <button type="submit" class="h5 p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoListings">Listings</button>
+                <?php  if($rightsName[0] !== 'Buyer'): ?>
+                    <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoListings">Listings</button>
+                <?php  endif;  ?>
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoProfile">Public Profile</button>
             </form>
         </div>

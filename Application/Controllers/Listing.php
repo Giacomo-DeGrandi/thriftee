@@ -144,5 +144,11 @@ class Listing extends Controller
         return (new ListingModel)->getListInfoByCat($id_categories);
     }
 
+    public function getAllPrices(): bool|array
+    {
+        return (new ListingModel)->getAllPrices();
+
+    }
+
 
 }

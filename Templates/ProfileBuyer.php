@@ -26,10 +26,10 @@ $rightsName = $chunks[2][0][0];
         <!-- CRUMBLES  -->
         <div class="d-flex p-4 flex-wrap">
             <form method="get" action="index?" class="text-start">
-                <button type="submit" class="h5 p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPersonal">Personal Information</button>
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPassword">Password</button>
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoAddress">Address</button>
-                <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPublicProfile">Public Profile</button>
+                <button type="submit" class="h5 p-1 px-4 bg-white orange-font rounded-pill border border-0" name="infoPersonal">Personal Information</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white orange-font rounded-pill border border-0" name="infoPassword">Password</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white orange-font rounded-pill border border-0" name="infoAddress">Address</button>
+                <button type="submit" class="h5 fw-light p-1 px-4 bg-white orange-font rounded-pill border border-0" name="infoPublicProfile">Public Profile</button>
             </form>
         </div>
 
@@ -44,7 +44,7 @@ $rightsName = $chunks[2][0][0];
 
                 <table class="table">
                     <tr>
-                        <th class="h3 p-1 blue-font">Email</th>
+                        <th class="h3 p-1 orange-font">Email</th>
                         <th class="h5 p-4">
                             <label for="email" class="p-2">Email</label>
                             <input type="email" name="email" class="border border-1" value="<?= $requested['email'] ?>">
@@ -54,10 +54,10 @@ $rightsName = $chunks[2][0][0];
 
                 <table class="table">
                     <tr>
-                        <th class=" h3 p-2 blue-font">Name</th>
+                        <th class=" h3 p-2 orange-font">Name</th>
                     </tr>
                     <tr>
-                        <td class=" h5 p-4">
+                        <td class=" h5 orange-font p-4">
                             <label for="name" class="p-2">Name</label>
                             <input type="text" name="name" class="border border-1" value="<?= $requested['name'] ?>"> <br class="d-none-desktop">
                             <label for="name" class="p-2">Lastname</label>
@@ -71,7 +71,7 @@ $rightsName = $chunks[2][0][0];
 
                         <div class="col d-flex flex-column d-flex-column-mobile">
 
-                            <div class="p-2 h3 blue-font">Profile Picture</div>
+                            <div class="p-2 h3 orange-font">Profile Picture</div>
                             <div class="img-wrapper-sm">
                                 <a href="<?= $requested['img_profile'] ?>">
                                     <img src="<?= $requested['img_profile'] ?>" class="img-card-sm" alt="profilepic">
@@ -86,7 +86,7 @@ $rightsName = $chunks[2][0][0];
                         </div>
 
                         <div class=" h3 p-2 col-4">
-                            <div class="p-2 h3 blue-font">Bios</div>
+                            <div class="p-2 h3 orange-font">Bios</div>
                             <textarea id="bios" name="bios" cols="22" rows="8" class="border h5 border-1"> <?= $requested['bios'] ?> </textarea>
                         </div>
 
@@ -101,7 +101,7 @@ $rightsName = $chunks[2][0][0];
 
 
                 <div class="d-flex align-items-center justify-content-center">
-                    <button type="submit" class="bg-blue border border-0 rounded-1" id="info1" name="info1">Save</button>
+                    <button type="submit" class="bg-orange border border-0 rounded-1" id="info1" name="info1">Save</button>
                 </div>
             </form>
 

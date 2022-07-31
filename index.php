@@ -18,6 +18,7 @@ require_once('Application/Controllers/Header.php');
 require_once('Application/Controllers/Profile.php');
 require_once('Application/Controllers/ListingPage.php');
 require_once('Application/Controllers/Rights.php');
+require_once('Application/Controllers/Search.php');
 
 
 
@@ -32,6 +33,7 @@ use Application\Controllers\ListingPage\ListingPage;
 use Application\Controllers\Profile\Details;
 use Application\Controllers\Profile\Profile;
 use Application\Controllers\Rights\Rights;
+use Application\Controllers\Search\Search;
 use Application\Controllers\Signin\Signin;
 use Application\Controllers\Signup\Signup;
 use Application\Controllers\State\State;
@@ -103,7 +105,12 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 } elseif (isset($_GET['details'])) {   //    <-----------  DETAILS
 
     $details = new Details;
-    $details->showDetails();
+    if(isset($_SESSION['subs'])&&$_SESSION['subs'] === 1){
+        header( 'location: index?infoPersonal');
+    } else {
+        $details->showDetails();
+
+    }
 
 }  elseif (isset($_POST['emailExists'])) {    //    <-----------  EMAILS EXISTS
 
@@ -186,7 +193,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
           isset($_POST['buyer'])||isset($_POST['seller'])&&
           isset($_POST['upload'])&&
           isset($_POST['saveDetails'])){
-
+    if(!isset($_SESSION['token'])&&$_SESSION['token'] === $_POST['tokenD']){  header('location: index?');  }
             $errors = [];
 
             $errors_newFilepath = (new User)->uploadImage($errors,'upload');
@@ -222,12 +229,14 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 } elseif (isset($_SESSION['subs'])&&$_SESSION['subs'] === 1 ){             // <------   SESSIONS VALIDATION  !!!!!!!!!!!!!
 
 
-    header('location: index?profile');
+    header('location: index?infoPersonal');
     $_SESSION['subs']=0;
 
     exit();
 
 } elseif(isset($_GET['infoPersonal'])) {         //    <-----------  PROFILE
+
+    if(!isset($_SESSION['id'])||!isset($_SESSION['rights'])||!isset($_COOKIE['id'])){  header('location: index?');  }
 
     $token = $_SESSION['token'] = (new Token)->generateToken();
     $tokenExp = $_SESSION['token-expire'] = (new Token)->generateExpiration();
@@ -264,6 +273,9 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         if ($_SESSION['token'] !== $_POST['token']) {
             $errors [] = 'Invalid Token, please try again or contact the Administrator if the error persist';
         }
+        if(time() >= $_SESSION['token-expire']){
+            $errors [] = "Token expired. Please reload form.";
+        }
 
         $oldPath = (new User)->getProPicPath($_SESSION['id']);
         $oldPath = $oldPath[0]['img_profile'];
@@ -292,18 +304,112 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $profile->showProfile($_SESSION['id'], $userInfos);
 
 
-
-
-}  elseif(isset($_GET['infoPassword'])){                 //    <-----------  Password
+}  elseif(isset($_GET['infoPassword'])) {                 //    <-----------  Password
 
     $profile = new Profile;
-    $userInfos = [$userInfos,$rightsName];
-    $profile->showInfo($userInfos,'InfoPassword');
+
+    $token = $_SESSION['token'] = (new Token)->generateToken();
+    $tokenExp = $_SESSION['token-expire'] = (new Token)->generateExpiration();
+    $profile = new Profile;
+    $userInfos = [$userInfos, $rightsName];
+    $profile->showInfo($userInfos, 'InfoPassword');
+
+}  elseif( isset($_GET['updatePassword']) &&
+           isset($_POST['password']) &&
+           isset($_POST['infoPass']) &&
+           isset($_SESSION['token']) &&
+           isset($_SESSION['id']) &&
+           isset($_SESSION['token-expire']) &&
+           isset($_POST['token']) &&
+           isset($_POST['passwordConf']) ){                 //    <-----------  Password UPDATE
+
+    $profile = new Profile;
+
+    $errors = [];
+
+    if ($_SESSION['token'] !== $_POST['token']) {
+        $errors [] = 'Invalid Token, please try again or contact the Administrator if the error persist';
+    }
+    if(time() >= $_SESSION['token-expire']){
+        $errors [] = "Token expired. Please reload form.";
+    }
+
+    if(empty($errors)){
+
+
+        $user = (new User)->updatePassword($_POST['password'], $_POST['passwordConf'], $_SESSION['id']);
+
+        if(empty($user)) {
+
+            header('location: index?infoPassword');
+
+        } else {
+
+            $errors = $user;
+            $userInfos = [$userInfos,$errors, $rightsName];
+            $profile->showInfo($userInfos, 'InfoPassword');
+
+        }
+
+    } elseif($errors) {
+
+        $userInfos = [$userInfos,$errors, $rightsName];
+        $profile->showInfo($userInfos, 'InfoPassword');
+
+    }
+
 
 } elseif(isset($_GET['infoAddress'])){       //    <-----------  Address
 
+    $token = $_SESSION['token'] = (new Token)->generateToken();
+    $tokenExp = $_SESSION['token-expire'] = (new Token)->generateExpiration();
     $profile = new Profile;
     $userInfos = [$userInfos,$rightsName];
+    $profile->showInfo($userInfos,'InfoAddress');
+
+} elseif(   isset($_POST['address']) &&
+            isset($_POST['zipCode'])  &&
+            isset($_POST['city'])  &&
+            isset($_POST['token'])  &&
+            isset($_POST['infoAddress']) &&
+            isset($_SESSION['token']) &&
+            isset($_SESSION['id']) &&
+            isset($_SESSION['token-expire']) ){       //    <-----------  Address
+
+    $profile = new Profile;
+
+    $errors = [];
+
+    if ($_SESSION['token'] !== $_POST['token']) {
+        $errors [] = 'Invalid Token, please try again or contact the Administrator if the error persist';
+    }
+    if(time() >= $_SESSION['token-expire']){
+        $errors [] = "Token expired. Please reload form.";
+    }
+
+    if(empty($errors)){
+
+        $user = (new User)->updateAddress($_POST['address'], $_POST['city'], $_POST['zipCode'], $_SESSION['id']);
+
+        if(empty($user)) {
+
+            header('location: index?infoAddress');
+
+        } else {
+
+            $errors = $user;
+            $userInfos = [$userInfos, $errors, $rightsName];
+            $profile->showInfo($userInfos, 'InfoAddress');
+        }
+
+    } else {
+
+        $userInfos = [$userInfos, $errors, $rightsName];
+        $profile->showInfo($userInfos, 'InfoAddress');
+
+    }
+
+    $userInfos = [$userInfos, $errors, $rightsName];
     $profile->showInfo($userInfos,'InfoAddress');
 
 } elseif(isset($_GET['infoListings'])){              //    <----------- Listings
@@ -342,21 +448,104 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
 
 } elseif(isset($_GET['ListingPage'])){            //    <-----------  Listings Page Element
 
+        $allCond = (new Condition)->getAllCond();
+        $allPrices = (new Listing)->getAllPrices();
+        $allShip = (new Shipping)->getAllShipNames();
+        $allUsers = (new User)->getAllUsers();
+        $token = $_SESSION['token'] = (new Token)->generateToken();
+        $tokenExp = $_SESSION['token-expire'] = (new Token)->generateExpiration();
         $listingPage = (new ListingPage);
         $id_listing = htmlspecialchars($_GET['ListingPage']);
-        $list = new Listing;
-        $listInfo = $list->getListInfo($id_listing);
+        $listInfo = (new Listing)->getListInfo($id_listing);
         $allListingsCat = (new Listing)->getAllListingByCat($listInfo[0]['id_categories']);
         $idOwner = $listInfo[0]['id_owner'];
         $mailOwner  = (new User)->getUserMailById($idOwner);
         if(isset($_SESSION['id'])){
             $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
-            $params = [$userInfos, $listInfo, $allListingsCat, $allCats, $allSubCat, $mailOwner, $rightsName ];
+            $params = [$userInfos, $listInfo, $allListingsCat, $allCats, $allSubCat, $mailOwner, $allCond, $allShip, $allPrices, $allUsers,  $rightsName ];
         } else {
-            $params = [$listInfo, $allListingsCat , $allCats,  $allSubCat, $mailOwner, $rightsName];
+            $params = [$listInfo, $allListingsCat , $allCats,  $allSubCat, $mailOwner, $allCond, $allShip, $allPrices, $allUsers, $rightsName];
         }
 
         $listingPage->showListingPage($params,'ListingPage');
+
+} elseif(isset($_GET['SearchPage']) && isset($_POST['searchNav'])){     // <------------  SEARCH NAVBAR RECEIVER
+
+
+
+    $url = '';
+
+    if(isset($_POST['searchTitle'])) {
+        $url .= '&title='. $_POST['searchTitle'];
+    }
+    if(isset($_POST['searchCategory'])) {
+        $url .= '&category='. $_POST['searchCategory'];
+    }
+    if(isset($_POST['rangeMin'])) {
+        $url .= '&rangeMin='. $_POST['priceRange'];
+    }
+    if(isset($_POST['rangeMax'])) {
+        $url .= '&rangeMax='. $_POST['priceRange'];
+    }
+    if(isset($_POST['condSearch'])) {
+        $url .= '&cond='. $_POST['condSearch'];
+    }
+    if(isset($_POST['yearSearch'])) {
+        $url .= '&year='. $_POST['yearSearch'];
+    }
+    if(isset($_POST['shipSearch'])) {
+        $url .= '&ship='. $_POST['shipSearch'];
+    }
+
+    header('location: index?SearchPage'.$url);
+
+
+} elseif( isset($_GET['searchTitle']) &&
+          isset($_GET['searchCategory']) &&
+          isset($_GET['rangeMin']) &&
+          isset($_GET['rangeMax']) &&
+          isset($_GET['condSearch']) &&
+          isset($_GET['yearSearch']) &&
+          isset($_GET['shipSearch']) &&
+          isset($_GET['searchNav'])) {           //    <----------- SEARCH NAV BAR SEARCH PAGE !!
+
+
+    $searchedListings = [];
+
+
+    $title = $_GET['searchTitle'];
+    $cat = $_GET['searchCategory'];
+    $min = $_GET['rangeMin'];
+    $max = $_GET['rangeMax'];
+    $cond = $_GET['condSearch'];
+    $year = $_GET['yearSearch'];
+    $ship = $_GET['shipSearch'];
+
+
+    $newSearchInstr = (new Search)->searchAll( $title, $cat, $min, $max, $cond, $year, $ship );
+    $newSearchLikeFirst = (new Search)->searchAllLikeFirst( $title, $cat, $min, $max, $cond, $year, $ship );
+    $newSearchLikeAll = (new Search)->searchAllLikeAll( $title, $cat, $min, $max, $cond, $year, $ship );
+
+
+    $arr = array_merge($newSearchLikeFirst, $newSearchLikeAll);
+    $searchResults = array_merge($arr, $newSearchInstr);
+
+    $searchResults = array_unique($searchResults,SORT_REGULAR);
+
+    $allPrices = (new Listing)->getAllPrices();
+    $mostViewd = (new Listing)->getMostViewd();
+    $allShip = (new Shipping)->getAllShipNames();
+    $allUsers = (new User)->getAllUsers();
+    $allSubCat = (new SubCategories)->getAllSubCats();
+
+    if(isset($_SESSION['id'])){
+        $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
+        $params = [$userInfos, $searchResults, $allCats, $allCond, $allShip, $allPrices, $allUsers, $allSubCat, $mostViewd,  $rightsName];
+    } else {
+        $params = [$searchResults, $allCats, $allCond, $allShip, $allPrices, $allUsers,  $allSubCat, $mostViewd, $rightsName];
+    }
+
+    (new Search)->showSearchPage( $params , 'Search');
 
 }  elseif(isset($_POST['subId'])){           //    <----------- Sub Categories List
 

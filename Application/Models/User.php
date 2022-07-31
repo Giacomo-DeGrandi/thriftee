@@ -128,6 +128,23 @@ Class User extends Database{
         return $check->fetchAll();
     }
 
+    public function updatePassword(mixed $password, mixed $id): bool|array
+    {
+        $password = password_hash($password,PASSWORD_ARGON2ID);
+        $sql = "UPDATE users SET password = :password WHERE id = :id;";
+        $params = [':password' => $password, ':id' => $id];
+        $result = $this->selectQuery($sql, $params);
+        return $result->fetchAll();
+    }
+
+    public function updateAddress(mixed $address, mixed $zipCode, mixed $city, mixed $id): bool|array
+    {
+        $sql = "UPDATE users SET address = :address, zip_code = :zipCode, city = :city WHERE id = :id;";
+        $params = [':address' => $address, ':zipCode' => $zipCode, ':city' => $city , ':id' => $id];
+        $result = $this->selectQuery($sql, $params);
+        return $result->fetchAll();
+    }
+
 }
 
 

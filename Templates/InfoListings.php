@@ -4,6 +4,7 @@
 
 ob_start();
 
+
 if(isset($chunks)){
 
     $infoUser = $chunks[0];
@@ -24,6 +25,7 @@ if(isset($chunks)){
         }
 
     }
+    $rightsName = $chunks[2][0][0];
 }
 
 
@@ -36,7 +38,9 @@ if(isset($chunks)){
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPersonal">Personal Information</button>
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPassword">Password</button>
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoAddress">Address</button>
-                <button type="submit" class="h5 p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoListings">Listings</button>
+                <?php  if($rightsName[0] !== 'Buyer'): ?>
+                    <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoListings">Listings</button>
+                <?php  endif;  ?>
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoProfile">Public Profile</button>
             </form>
         </div>

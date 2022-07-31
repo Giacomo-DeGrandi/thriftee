@@ -249,5 +249,73 @@ class User
         return (new Usermodel())->emailExistsUpdate($email, $id);
     }
 
+    public function updatePassword(mixed $password, mixed $passwordConf, mixed $id): bool|array
+    {
+        if (empty($password)) {
+            $errors[] = "Password is required";
+        }
+        if (empty($passwordConf)) {
+            $errors[] = "Password Confirmation is required";
+        }
+        if ($password !== $passwordConf) {
+            $errors[] = "The two passwords do not match";
+        }
+        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/', $password)) {
+            $errors[] = "Password format is wrong, minimum 8 characters";
+        }
+
+        if(empty($errors)){
+
+            return (new Usermodel())->updatePassword($password, $id);
+
+        } else {
+            return $errors;
+
+        }
+
+    }
+
+    public function updateAddress(mixed $address, mixed $city, mixed $zipCode, mixed $id): bool|array
+    {
+        if (empty($address)) {
+            $errors[] = "Address is required";
+        }
+        if (!preg_match('/^[a-zA-Z0-9_ -]*$/', $address)) {
+            $errors[] = "You can use only letters and numbers in address field";
+        }
+        if (strlen($address) < 3 || strlen($address) > 30) {
+            $errors[] = "Address must be in between 2 and 23 characters";
+        }
+        if (empty($city)) {
+            $errors[] = "City is required";
+        }
+        if (!preg_match('/^[a-zA-Z]*$/', $city)) {
+            $errors[] = "You can use only letters in city field";
+        }
+        if (strlen($city) < 3 || strlen($city) > 30) {
+            $errors[] = "City must be in between 3 and 30 characters";
+        }
+        if (empty($zipCode)) {
+            $errors[] = "Zip Code is required";
+        }
+        if (!preg_match('/^[0-9]*$/', $zipCode)) {
+            $errors[] = "You can use only numbers in zip code field";
+        }
+        if (strlen($zipCode) < 2 || strlen($zipCode) > 7) {
+            $errors[] = "Zip Code must be in between 2 and 7 characters";
+        }
+
+        if(empty($errors)){
+
+            return (new Usermodel())->updateAddress($address, $zipCode, $city,  $id);
+
+        } else {
+            return $errors;
+
+        }
+
+
+    }
+
 
 }
