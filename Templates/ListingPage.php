@@ -12,7 +12,7 @@ ob_start();
 
 if(isset($chunks)){
 
-    if(count($chunks) === 10){
+    if(count($chunks) === 11){
 
         $userInfos = $chunks[0][0][0];
         $listingInfo = $chunks[1][0][0];
@@ -23,7 +23,8 @@ if(isset($chunks)){
         $allCond = $chunks[6][0];
         $allShip = $chunks[7][0];
         $allPrices = $chunks[8][0];
-        $rightsName = $chunks[9][0][0];
+        $allUsers = $chunks[9][0];
+        $rightsName = $chunks[10][0][0];
 
     } else {
 
@@ -35,7 +36,8 @@ if(isset($chunks)){
         $allCond = $chunks[5][0];
         $allShip = $chunks[6][0];
         $allPrices = $chunks[7][0];
-        $rightsName = $chunks[8][0][0];
+        $allUsers = $chunks[8][0];
+        $rightsName = $chunks[9][0][0];
 
     }
 
@@ -43,18 +45,51 @@ if(isset($chunks)){
     $crumble = [];
     $id = [];
 
-    for( $m = 0; $m <= isset($allSubCat[$m]); $m++){
-        for( $k = 0; $k <= isset($allCats[$k]); $k++){
-            if($listingInfo['id_categories'] === $allCats[$k]['id']){
+    for( $m = 0; $m <= isset($allSubCat[$m]); $m++) {
+        for ($k = 0; $k <= isset($allCats[$k]); $k++) {
+            if ($listingInfo['id_categories'] === $allCats[$k]['id']) {
                 $crumble [] = $allCats[$k]['name'];
                 $id [] = $allCats[$k]['id'];
             }
-            if($listingInfo['id_subcategories'] === $allSubCat[$m]['id']){
+            if ($listingInfo['id_subcategories'] === $allSubCat[$m]['id']) {
                 $crumble [] = $allSubCat[$m]['name'];
                 $id [] = $allSubCat[$m]['name'];
             }
-            if(count($crumble) === 2){
+            if (count($crumble) === 2) {
                 break;
+            }
+        }
+
+    }
+
+
+
+    for($j = 0 ;$j <=isset($allListCat[$j]); $j++){
+        for($k = 0 ; $k <= isset($allCat[$k]); $k++){          // ----------> REPLACE CATNAMES
+            if($allListCat[$j]['id_categories'] === $allCats[$k]['id']){
+                $allListCat[$j]['id_categories'] = $allCats[$k]['name'];
+            }
+        }
+        for($k = 0 ; $k <= isset($allShip[$k]); $k++){          // ----------> REPLACE SHIPMETHOD
+            if($allListCat[$j]['shipping'] === $allShip[$k]['id']){
+                $allListCat[$j]['shipping'] = $allShip[$k]['name'];
+            }
+        }
+        for($k = 0 ; $k <= isset($allSubCat[$k]); $k++){          // ----------> REPLACE SUBCATS
+            if($allListCat[$j]['id_subcategories'] === $allSubCat[$k]['id']){
+                $allListCat[$j]['id_subcategories'] = $allSubCat[$k]['name'];
+            }
+        }
+        for($k = 0 ; $k <= isset($allCond[$k]); $k++){          // ----------> REPLACE COND
+            if($allListCat[$j]['obj_condition'] === $allCond[$k]['id']){
+                $allListCat[$j]['obj_condition'] = $allCond[$k]['name'];
+            }
+        }
+        for($k = 0 ; $k <= isset($allUsers[$k]); $k++){          // ----------> USER NAME COND
+            if($allListCat[$j]['id_owner'] === $allUsers[$k]['id']){
+                $allListCat[$j]['id_owner'] = $allUsers[$k]['name'];
+                $allListCat[$j]['city'] = $allUsers[$k]['city'];
+                $allListCat[$j]['zipCode'] = $allUsers[$k]['zip_code'];
             }
         }
     }
@@ -163,12 +198,12 @@ if(isset($chunks)){
             <?php endfor;  ?>
         </div>
 
-            <div class="container d-flex justify-content-evenly d-flex-column-mobile p-4">
+            <div class="container text-black d-flex justify-content-evenly d-flex-column-mobile p-4">
 
                 <div class="p-4">
 
                     <div class="img-wrap-medium d-flex flex-column align-items-center justify-content-center">
-                        <a href="<?= $listingInfo['img_url_1'] ?>" class=" rounded-1 img-wrapper-medium">
+                        <a href="<?= $listingInfo['img_url_1'] ?>" class=" rounded-1 text-black img-wrapper-medium">
                             <img src="<?= $listingInfo['img_url_1'] ?>" class="img-card-medium"  >
                         </a>
                     </div>
@@ -233,14 +268,14 @@ if(isset($chunks)){
         <div>
 
             <div class="h2 p-3">Other items from the same Category</div>
-            <div class="d-flex d-flex-column-mobile overflow-scroll justify-content-evenly">
+            <div class="d-flex d-flex-column-mobile overflow-scroll justify-content-evenly p-3">
 
                 <?php for ($i = 0 ; $i<=isset($allListCat[$i]); $i++):  ?>
                     <?php if( $allListCat[$i]['offer_state'] === '1') :?>
 
-                        <a href="index?ListingPage=<?= $allListCat[$i]['id'] ?>" class="p-2 rounded-1 border-orange">
+                        <a href="index?ListingPage=<?= $allListCat[$i]['id'] ?>" class="p-2 rounded-1 text-black border border-0 shadow-sm">
 
-                            <div class="h5 p-1"> <?= $allListCat[$i]['title'] ?> </div>
+                            <div class="h5 fw-bold p-1"> <?= $allListCat[$i]['title'] ?> </div>
                             <div class="img-wrap-img d-flex flex-column align-items-center justify-content-center">
                                 <div class=" rounded-1 img-wrapper">
                                     <img src="<?= $allListCat[$i]['img_url_1'] ?>" class="img-card"  >
@@ -250,6 +285,7 @@ if(isset($chunks)){
 
                             <div class="d-flex">
                                 <div class="h5 p-1">  € <?= $allListCat[$i]['price'] ?> </div>
+                                <div class="h5 fw-lighter p-1">  <?= $allListCat[$i]['city'] ?> </div>
                             </div>
 
                         </a>

@@ -193,7 +193,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
           isset($_POST['buyer'])||isset($_POST['seller'])&&
           isset($_POST['upload'])&&
           isset($_POST['saveDetails'])){
-
+    if(!isset($_SESSION['token'])&&$_SESSION['token'] === $_POST['tokenD']){  header('location: index?');  }
             $errors = [];
 
             $errors_newFilepath = (new User)->uploadImage($errors,'upload');
@@ -235,6 +235,8 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     exit();
 
 } elseif(isset($_GET['infoPersonal'])) {         //    <-----------  PROFILE
+
+    if(!isset($_SESSION['id'])||!isset($_SESSION['rights'])||!isset($_COOKIE['id'])){  header('location: index?');  }
 
     $token = $_SESSION['token'] = (new Token)->generateToken();
     $tokenExp = $_SESSION['token-expire'] = (new Token)->generateExpiration();
@@ -449,6 +451,7 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $allCond = (new Condition)->getAllCond();
         $allPrices = (new Listing)->getAllPrices();
         $allShip = (new Shipping)->getAllShipNames();
+        $allUsers = (new User)->getAllUsers();
         $token = $_SESSION['token'] = (new Token)->generateToken();
         $tokenExp = $_SESSION['token-expire'] = (new Token)->generateExpiration();
         $listingPage = (new ListingPage);
@@ -459,9 +462,9 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
         $mailOwner  = (new User)->getUserMailById($idOwner);
         if(isset($_SESSION['id'])){
             $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
-            $params = [$userInfos, $listInfo, $allListingsCat, $allCats, $allSubCat, $mailOwner, $allCond, $allShip, $allPrices,  $rightsName ];
+            $params = [$userInfos, $listInfo, $allListingsCat, $allCats, $allSubCat, $mailOwner, $allCond, $allShip, $allPrices, $allUsers,  $rightsName ];
         } else {
-            $params = [$listInfo, $allListingsCat , $allCats,  $allSubCat, $mailOwner, $allCond, $allShip, $allPrices, $rightsName];
+            $params = [$listInfo, $allListingsCat , $allCats,  $allSubCat, $mailOwner, $allCond, $allShip, $allPrices, $allUsers, $rightsName];
         }
 
         $listingPage->showListingPage($params,'ListingPage');
@@ -530,15 +533,16 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     $searchResults = array_unique($searchResults,SORT_REGULAR);
 
     $allPrices = (new Listing)->getAllPrices();
+    $mostViewd = (new Listing)->getMostViewd();
     $allShip = (new Shipping)->getAllShipNames();
-
-
+    $allUsers = (new User)->getAllUsers();
+    $allSubCat = (new SubCategories)->getAllSubCats();
 
     if(isset($_SESSION['id'])){
         $userInfos = (new User)->getAllInfosByid($_SESSION['id']);
-        $params = [$userInfos, $searchResults, $allCats, $allCond, $allShip, $allPrices,  $rightsName];
+        $params = [$userInfos, $searchResults, $allCats, $allCond, $allShip, $allPrices, $allUsers, $allSubCat, $mostViewd,  $rightsName];
     } else {
-        $params = [$searchResults, $allCats, $allCond, $allShip, $allPrices, $rightsName];
+        $params = [$searchResults, $allCats, $allCond, $allShip, $allPrices, $allUsers,  $allSubCat, $mostViewd, $rightsName];
     }
 
     (new Search)->showSearchPage( $params , 'Search');

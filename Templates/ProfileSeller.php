@@ -15,7 +15,6 @@ ob_start();
 //var_dump($_SESSION);
 //var_dump($_GET);
 //var_dump($_FILES);
-var_dump($chunks[3][0][0]);
 
 $requested= $chunks[0][0][0];
 if(isset($chunks[1][0][0])){

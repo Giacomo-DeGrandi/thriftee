@@ -4,6 +4,7 @@
 
 ob_start();
 
+
 if(isset($chunks)){
 
     $infoUser = $chunks[0];
@@ -24,6 +25,7 @@ if(isset($chunks)){
         }
 
     }
+    $rightsName = $chunks[2][0][0];
 }
 
 

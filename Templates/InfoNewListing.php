@@ -13,6 +13,7 @@ ob_start();
 $infoUser = $chunks[0];
 $cat = $chunks[1];
 $cat = array_merge(...array_values($cat));
+$rightsName = $chunks[2];
 ?>
     <div class="container">
 
