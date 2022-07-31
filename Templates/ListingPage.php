@@ -1,10 +1,18 @@
 <?php
 
+
+ob_start();
+?>
+<script src="assets/public/js/searchNav.js"></script>
+<?php
+$script = ob_get_clean();
+
+
 ob_start();
 
 if(isset($chunks)){
 
-    if(count($chunks) === 7){
+    if(count($chunks) === 10){
 
         $userInfos = $chunks[0][0][0];
         $listingInfo = $chunks[1][0][0];
@@ -12,7 +20,10 @@ if(isset($chunks)){
         $allCats = $chunks[3][0];
         $allSubCat = $chunks[4][0];
         $emailOwner = $chunks[5];
-        $rightsName = $chunks[6][0][0];
+        $allCond = $chunks[6][0];
+        $allShip = $chunks[7][0];
+        $allPrices = $chunks[8][0];
+        $rightsName = $chunks[9][0][0];
 
     } else {
 
@@ -21,7 +32,10 @@ if(isset($chunks)){
         $allCats = $chunks[2][0];
         $allSubCat = $chunks[3][0];
         $emailOwner = $chunks[4][0];
-        $rightsName = $chunks[5][0][0];
+        $allCond = $chunks[5][0];
+        $allShip = $chunks[6][0];
+        $allPrices = $chunks[7][0];
+        $rightsName = $chunks[8][0][0];
 
     }
 
@@ -56,42 +70,48 @@ if(isset($chunks)){
 
         <div class="p-2">
 
-            <form action="" method="post"  class="container d-flex justify-content-evenly d-flex-column-mobile">
+            <form action="index?SearchPage" method="get" id="listForm" class="container d-flex justify-content-evenly d-flex-column-mobile">
 
                 <div>
 
                     <label for="searchTitle" class="p-2"> Search in the offer title </label><br>
                     <input type="text" class="border border-1 rounded-pill mb-4" name="searchTitle" id="searchTitle" placeholder="search in title.."><br>
+                    <small id="searchTitleSmall"></small>
 
-                    <label for="category" class="h6 p-2">Categories</label><br>
-                    <select id="category" class="h6 p-1 border border-1 rounded-2 mb-2" name="category">
-                            <option value="ok"> here </option>
+                    <label for="searchCategory" class="h6 p-2">Categories</label><br>
+
+                    <select id="searchCategory" class="h6 p-1 border border-1 rounded-2 mb-2" name="searchCategory">
+                        <option value="">select category</option>
+                        <?php for( $i = 0 ; $i <= $allCats[$i]; $i++): ?>
+                            <option value="<?= $allCats[$i]['id'] ?>"><?= $allCats[$i]['name'] ?>  </option>
+                    <?php endfor; ?>
                     </select>
-
-                    <small></small>
+                    <small id="searchCategorySmall"></small>
 
                 </div>
 
                 <div >
 
-                    <label for="priceRange" class="p-3">Price range</label>
-                    <input type="range" id="priceRange" name="priceRange" class="rounded-pill" min="0" max="11" step="any">
-
-                    <div class="p-2">
-
-                        <label class="p-2" for="minNum">Minimum</label>
-                        <input type="number" step="0.01" id="minNum" name="minNum" class="border w-50 border-1" placeholder="Min"><br>
-                        <label class="p-2" for="maxNum">Maximum</label>
-                        <input type="number" step="0.01" id="maxNum" name="maxNum" class="border w-50 border-1" placeholder="Max">
-
-                    </div>
+                    <label for="priceRangeMin" class="p-3">Min price</label>
+                    <input type="range" id="priceRangeMin" name="rangeMin" min="<?= $allPrices[0]['price']  ?>" max="<?= end($allPrices)['price'] ?>" step="any" class=" ms-2 rounded-pill" >
+                    <label for="priceRangeMax" class="p-3">Max price</label>
+                    <input type="range" id="priceRangeMax" name="rangeMax" min="<?= $allPrices[0]['price']  ?>" max="<?= end($allPrices)['price'] ?>" step="any" class=" me-2 rounded-pill" >
+                    <br>
+                    <small id="priceRangeShowMin" class="ms-3">min Price</small>
+                    <small id="priceRangeShowMax" class="ms-3">max Price</small>
+                    <small id="priceRangeSmall"></small>
 
                     <div>
 
                         <label for="condSearch" class="p-2">Conditions</label>
                         <select id="condSearch" class=" w-50 h6 border border-1 rounded-2" name="condSearch">
-                            <option value="ok"> conditions </option>
+                            <option value="">select conditions</option>
+                            <?php for( $i = 0 ; $i <= $allCond[$i]; $i++): ?>
+                                <option value="<?= $allCond[$i]['id'] ?>"><?= $allCond[$i]['name'] ?>  </option>
+                            <?php endfor; ?>
                         </select>
+                        <small id="condSearchSmall"></small>
+
 
                     </div>
 
@@ -100,15 +120,22 @@ if(isset($chunks)){
                 <div >
 
                     <div class="row p-2">
-                        <label for="yearSearch" class="p-2"> Year</label>
-                        <input type="number" name="yearSearch" id="yearSearch" min="1900" max="2099" step="1" placeholder="2022" /> <br>
+                        <label for="yearSearch" class="p-2">From Year</label>
+                        <input type="number" name="yearSearch" id="yearSearch" min="1900" max="2099" step="1" placeholder="year" /> <br>
+                        <small id="yearSearchSmall"></small>
                     </div>
+
 
                     <div class="mb-2">
                         <label for="shipMethSearch">Shipping Method</label>
                         <select id="shipSearch" class=" w-50 h6 border border-1 rounded-2" name="shipSearch">
-                            <option value="ok"> shipping </option>
+                            <option value="">select shipping method</option>
+                            <?php for( $i = 0 ; $i <= $allShip[$i]; $i++): ?>
+                                <option value="<?= $allShip[$i]['id'] ?>"><?= $allShip[$i]['name'] ?>  </option>
+                            <?php endfor; ?>
                         </select>
+                        <small id="shipSearchSmall"></small>
+
                     </div>
 
                     <div class="mt-3">

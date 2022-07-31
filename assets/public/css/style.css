@@ -26,6 +26,15 @@
     .w-100-mobile{
         width:100vh!important;
     }
+
+    .logos-plat {
+        width:  14vh !important;
+        height: 14vh !important;
+    }
+    .logos-octo {
+        width:  25vh !important;
+        height: 21vh !important;
+    }
 }
 
 @media screen and (min-width: 769px){
@@ -122,6 +131,14 @@ a {
 .logos {
     width:  8vh !important;
     height: 8vh !important;
+}
+.logos-plat {
+    width:  11vh !important;
+    height: 11vh !important;
+}
+.logos-octo {
+    width:  19vh !important;
+    height: 16vh !important;
 }
 
 .bg-main-img {

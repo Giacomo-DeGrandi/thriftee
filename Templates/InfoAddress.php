@@ -4,7 +4,24 @@
 
 ob_start();
 
-$address = $chunks[0][0][0];
+if(isset($chunks)){
+    if(count($chunks) === 2){
+        $address= $chunks[0][0][0];
+        if(isset($chunks[1][0][0])){
+            $rightsName = $chunks[1][0][0];
+        } else {
+            $errors = $chunks[1][0];
+        }
+    } else {
+        $address= $chunks[0][0][0];
+        if(isset($chunks[1][0][0])){
+            $errors = $chunks[1][0][0];
+        } else {
+            $errors = $chunks[1][0];
+        }
+        $rightsName = $chunks[2][0][0];
+    }
+}
 
 ?>
     <div class="container">
@@ -15,7 +32,7 @@ $address = $chunks[0][0][0];
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPersonal">Personal Information</button>
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoPassword">Password</button>
                 <button type="submit" class="h5 p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoAddress">Address</button>
-                <?php if($rights[0] === 'Buyer'): ?>
+                <?php if($rightsName[0] !== 'Buyer'): ?>
                     <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoListings">Listings</button>
                 <?php  endif;  ?>
                 <button type="submit" class="h5 fw-light p-1 px-4 bg-white blue-font rounded-pill border border-0" name="infoProfile">Public Profile</button>
@@ -24,9 +41,15 @@ $address = $chunks[0][0][0];
 
         <hr>
 
+        <!-- ERRORS  -->
+
+        <div class="d-flex align-items-center justify-content-center h5 orange-font p-1"><?php if(isset($errors) && !empty($errors)){ for($i=0;$i<=isset($errors[$i]);$i++){ echo $errors[$i]; }  } ?></div>
+
+
+
         <!-- MODIFY  -->
         <div class="container row p-1">
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" action="index?infoAdress">
 
                 <table class="table">
                     <tr>
@@ -46,8 +69,12 @@ $address = $chunks[0][0][0];
 
                 <hr>
 
+                <!-- CSRF Token  -->
+                <input type="hidden" name="token" id="token" value="<?= $_SESSION["token"] ?>"/>
+
+
                 <div class="d-flex align-items-center justify-content-center">
-                    <button type="submit" class="bg-blue border border-0 rounded-1" name="info1">Save</button>
+                    <button type="submit" class="bg-blue border border-0 rounded-1" name="infoAddress">Save</button>
                 </div>
             </form>
 

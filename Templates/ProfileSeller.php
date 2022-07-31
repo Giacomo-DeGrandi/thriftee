@@ -9,10 +9,13 @@ $script = ob_get_clean();
 
 ob_start();
 
+
+
 //var_dump($_POST);
 //var_dump($_SESSION);
 //var_dump($_GET);
 //var_dump($_FILES);
+var_dump($chunks[3][0][0]);
 
 $requested= $chunks[0][0][0];
 if(isset($chunks[1][0][0])){
@@ -20,7 +23,9 @@ if(isset($chunks[1][0][0])){
 } else {
     $errors = $chunks[1][0];
 }
-$rightsName = $chunks[2][0][0];
+$token = $chunks[2][0][0];
+$tokenExp = $chunks[2][0][0][1];
+$rightName = $chunks[3][0][0];
 
 
 ?>
