@@ -619,6 +619,8 @@ if (isset($_GET['index'])) {       //    <------------ INDEX
     $errors = array_merge($errors,$errors_valid[0]);
     $valid = $errors_valid[1];
 
+
+
     if($valid)
     {
         $id = (new Listing)->registerListing($_SESSION['id'], $title, $price, $category, $subCat, $description, $cond, $ship, $year, $newFilepath1, $newFilepath2, $newFilepath3, $newFilepath4);

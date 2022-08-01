@@ -137,8 +137,8 @@ a {
     height: 6vh !important;
 }
 .logos-octo {
-    width:  15vh !important;
-    height: 13vh !important;
+    width:  11vh !important;
+    height: 9vh !important;
 }
 
 .bg-main-img {
@@ -202,8 +202,6 @@ a {
 
 input[type='range'] {
     overflow: hidden!important;
-    -webkit-appearance: none!important;
-    background-color: var(--orange)!important;
 }
 
     /* ICONS   */

@@ -132,9 +132,11 @@ if(isset($chunks)){
                     <label for="priceRangeMax" class="p-3">Max price</label>
                     <input type="range" id="priceRangeMax" name="rangeMax" min="<?= $allPrices[0]['price']  ?>" max="<?= end($allPrices)['price'] ?>" step="any" class=" me-2 rounded-pill" >
                     <br>
-                    <small id="priceRangeShowMin" class="ms-3">min Price</small>
-                    <small id="priceRangeShowMax" class="ms-3">max Price</small>
-                    <small id="priceRangeSmall"></small>
+                    <div class="d-flex d-flex-column-mobile align-items-center justify-content-evenly">
+                        <small id="priceRangeShowMin" class="h6 ms-5">min Price</small>
+                        <small id="priceRangeShowMax" class="h6 ms-5">max Price</small>
+                        <small id="priceRangeSmall"></small>
+                    </div>
 
                     <div>
 

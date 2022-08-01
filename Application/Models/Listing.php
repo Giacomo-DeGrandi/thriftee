@@ -15,6 +15,7 @@ class Listing extends Database
     {
         $datenow = date('Y-m-d H:i:s');
 
+
         $sql = "INSERT INTO `listings` ( `id_owner`,`title`, `id_categories`, `id_subcategories`, `img_url_1`, 
                         `img_url_2`, `img_url_3`, `img_url_4`, `obj_condition`, `shipping`, `year`, `description`, 
                         `price`, `added_on`, `views`, `offer_state`) 

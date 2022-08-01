@@ -17,7 +17,7 @@ class Listing extends Controller
         if (empty($title)) {
             $errors[] = "Title is required";
         }
-        if (!preg_match('/^[a-zA-Z0-9 ]*$/', $title)) {
+        if (!preg_match('/^[a-zA-ZÀ-ÿ0-9 ]*$/', $title)) {
             $errors[] = "You can't use special characters in title field";
         }
         if (strlen($title) < 3 || strlen($title) > 30) {
@@ -52,6 +52,7 @@ class Listing extends Controller
         }
 
         if (empty($errors)) {
+
 
             unset($_SESSION["token"]);
             unset($_SESSION["token-expire"]);

@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded',function() {
             showErrors(desc, 'Description can\'t be blank')
             // test if the length is at least 3ch and the max is 15ch
         } else if (!validateDesc(descV)) {
-            showErrors(desc, 'Description can contain only .,_ \'?!- and alphanumeric characters ')
+            showErrors(desc, 'Description can contain only .,_ \'?!- and alphanumeric characters but not newlines')
             // else validate the input
         } else if ( descV.length < min || descV.length > max) {
             showErrors(desc, 'Description has to be between 10 and 5000 characters')
